@@ -30,19 +30,18 @@ export function activate(context: vscode.ExtensionContext) {
         // Set webview - svelte built to ./app/public/*
         stackoverflowPanel.webview.html = AppPageHtml(context.extensionPath);
 
+        // Post search term
         stackoverflowPanel.webview.postMessage({
           action: 'search',
           query: searchQuery
         });
 
-        // Post search term
       } else {
         // Error: InputBox is empty
         vscode.window.showErrorMessage('Search value was null: Please enter a valid search string in order to search stackoverflow');
       }
 
     });
-
 
   });
 

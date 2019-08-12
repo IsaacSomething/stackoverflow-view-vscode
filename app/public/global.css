@@ -7,8 +7,10 @@ body {
 
 body {
   margin: 0;
-  padding: 8px;
+  padding: 24px;
   box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 button {

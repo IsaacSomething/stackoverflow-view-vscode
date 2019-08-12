@@ -16,8 +16,6 @@ export function AppPageHtml(contextPath: string) {
       <head>
         <meta charset='utf8'>
         <meta name='viewport' content='width=device-width'>
-
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src vscode-resource:; style-src vscode-resource:;" />
         
         <title> Learn In Visual Studio Code </title>
 

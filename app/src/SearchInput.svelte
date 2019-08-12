@@ -1,7 +1,10 @@
 <script>
   export let searchQuery = "";
-  function search() {
+  export let searchContent;
+  function search(event) {
     // TODO: if advanced search tips is open then close it.
+    console.log("eve", event);
+    console.log("input value", document.getElementByTag("input"));
   }
 </script>
 
@@ -37,10 +40,9 @@
       <strong>
         <i>{searchQuery}</i>
       </strong>
+      {#if searchContent}({searchContent.items.length} results returned){/if}
     </p>
   {/if}
   <input type="text" value={searchQuery} />
   <button on:click={search}>Search</button>
 </div>
-
-<h2>500 results</h2>

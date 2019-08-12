@@ -1,6 +1,10 @@
 <script>
   import SearchTips from "./SearchTips.svelte";
-  function showAdvancedTips() {}
+
+  let showTips = false;
+  function toggleAdvancedTips() {
+    showTips = !showTips;
+  }
 </script>
 
 <style>
@@ -35,7 +39,11 @@
 
 <div class="title-container">
   <h1>Search Results</h1>
-  <span on:click={showAdvancedTips()}>Advanced Search Tips</span>
+  <span on:click={toggleAdvancedTips}>
+    {#if !showTips}Advanced Search Tips{:else}Close Search Tips{/if}
+  </span>
 </div>
 
-<!-- <SearchTips /> -->
+{#if showTips}
+  <SearchTips />
+{/if}

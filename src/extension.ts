@@ -1,27 +1,27 @@
 import * as vscode from 'vscode';
+import { ExtensionModel } from './extension-model';
 import { posix } from 'path';
 import { AppPageHtml } from './app-page';
 
 export function activate(context: vscode.ExtensionContext) {
 
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
+  /**
+   * General stackoverflow question
+   */
   let searchStackoverflow = vscode.commands.registerCommand('extension.searchStackoverflow', () => {
 
     // Search options
     const searchOptions: vscode.InputBoxOptions = {
       placeHolder: 'Search Stackoverflow',
-      prompt: '*Required'
+      prompt: '*Required',
     };
 
     // Show Input
     vscode.window.showInputBox(searchOptions).then((searchQuery: string | undefined) => {
-      console.log('searchTerm', searchQuery);
 
       if (searchQuery) {
         // Create webview panel
-        const stackoverflowPanel = vscode.window.createWebviewPanel('webview', 'Stackoverflow:', vscode.ViewColumn.Active, {
+        const stackoverflowPanel = vscode.window.createWebviewPanel('webview', `SO: ${searchQuery}`, vscode.ViewColumn.Beside, {
           localResourceRoots: [vscode.Uri.file(posix.join(context.extensionPath, 'app', 'public'))],
           enableScripts: true,
           retainContextWhenHidden: true
@@ -36,16 +36,44 @@ export function activate(context: vscode.ExtensionContext) {
           query: searchQuery
         });
 
-      } else {
-        // Error: InputBox is empty
-        vscode.window.showErrorMessage('Search value was null: Please enter a valid search string in order to search stackoverflow');
       }
 
     });
+  });
 
+  /**
+   * Random top pick stackoverflow article
+   */
+  let topPickStackoverflow = vscode.commands.registerCommand('extension.topPickStackoverflow', () => {
+
+    vscode.window.showQuickPick(ExtensionModel.topPickQuickInputItems).then((selectedTopPick: vscode.QuickPickItem | undefined) => {
+
+      if (selectedTopPick) {
+        const selectedQuestion: any = ExtensionModel.topPickIds.find((element: any) => {
+          return element.label === selectedTopPick.label;
+        });
+
+        // Create webview panel
+        const stackoverflowPanel = vscode.window.createWebviewPanel('webview', `SO: ${selectedTopPick.label}`, vscode.ViewColumn.Beside, {
+          localResourceRoots: [vscode.Uri.file(posix.join(context.extensionPath, 'app', 'public'))],
+          enableScripts: true,
+          retainContextWhenHidden: true
+        });
+
+        // Set webview - svelte built to ./app/public/*
+        stackoverflowPanel.webview.html = AppPageHtml(context.extensionPath);
+
+        // Post article Id
+        stackoverflowPanel.webview.postMessage({
+          action: 'topPick',
+          questionId: selectedQuestion.id
+        });
+      }
+    });
   });
 
   context.subscriptions.push(searchStackoverflow);
+  context.subscriptions.push(topPickStackoverflow);
 }
 
 export function deactivate() { }

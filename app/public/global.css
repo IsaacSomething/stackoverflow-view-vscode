@@ -47,3 +47,22 @@ button.outline:hover {
   background-color: var(--vscode-button-background);
   color: var(--vscode-button-foreground);
 }
+
+a {
+  text-decoration: none;
+}
+
+pre,
+blockquote {
+  background-color: var(--vscode-textBlockQuote-background);
+  border: 1px solid var(--vscode-textCodeBlock-background);
+  padding: 10px;
+  word-wrap: break-word;
+}
+
+blockquote {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}

@@ -1,15 +1,20 @@
 <script>
   import { fade } from "svelte/transition";
+  import { createEventDispatcher } from "svelte";
+  import SearchBottomActionButtons from "./SearchBottomActionButtons.svelte";
   import Tag from "../common/Tag.svelte";
 
   export let searchContent;
 
-  $: decodeeUriTitle = decodeURIComponent(searchContent.items.title);
-  $: decodeUriDescription = decodeURIComponent(searchContent.items.body);
+  $: decodeURIComponent(searchContent.items.title);
+  $: console.log(decodeURIComponent(searchContent.items.body));
 
-  function firstSetOfQuestions() {}
-  function previousSetOfQuestions() {}
-  function nextThirtySetOfQuestions() {}
+  const dispatch = createEventDispatcher();
+  function navigateToQuestion(questionId) {
+    dispatch("gotoQuestion", {
+      questionId: questionId
+    });
+  }
 </script>
 
 <style>
@@ -62,23 +67,22 @@
   .asked-info {
     text-align: right;
   }
-  .bottom-buttons-container {
-    text-align: center;
-    padding: 20px;
-  }
 </style>
 
 {#each searchContent.items as searchItem, i}
 
   <div
-    transition:fade
+    in:fade
     class="search-result-block-container"
-    class:last-item={i === searchContent.items.length - 1}>
+    class:last-item={i === searchContent.items.length - 1}
+    on:click={() => navigateToQuestion(searchItem.question_id)}>
 
     <div class="metrics">
       <div>
         <h3>{searchItem.score}</h3>
-        <small>votes</small>
+        <small>
+          {#if searchItem.score === 1}vote{:else}votes{/if}
+        </small>
       </div>
       <div
         class="answer-count"
@@ -86,7 +90,7 @@
         class:is-answered-full={searchItem.is_answered}>
         <h3>{searchItem.answer_count}</h3>
         <small>
-          {#if searchItem.answer_count > 1}answers{:else}answer{/if}
+          {#if searchItem.answer_count === 1}answer{:else}answers{/if}
         </small>
       </div>
     </div>
@@ -113,11 +117,8 @@
       </div>
 
     </div>
+
   </div>
 {/each}
 
-<div class="bottom-buttons-container">
-  <button on:click={firstSetOfQuestions}>First</button>
-  <button on:click={previousSetOfQuestions}>Previous</button>
-  <button on:click={nextThirtySetOfQuestions}>Next</button>
-</div>
+<SearchBottomActionButtons />

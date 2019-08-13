@@ -8,11 +8,6 @@
 </script>
 
 <style>
-  h3 {
-    font-weight: normal;
-    color: var(--vscode-textLink-foreground);
-    margin: 0;
-  }
   .title-container {
     display: block;
     width: 100%;
@@ -31,11 +26,6 @@
     cursor: pointer;
   }
 </style>
-
-<h3>
-  Stack
-  <strong>overflow</strong>
-</h3>
 
 <div class="title-container">
   <h1>Search Results</h1>

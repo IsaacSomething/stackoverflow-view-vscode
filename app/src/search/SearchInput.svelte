@@ -5,7 +5,7 @@
   function search(event) {
     // TODO: if advanced search tips is open then close it.
     console.log("eve", event);
-    console.log("input value", document.getElementByTag("input"));
+    console.log("searchQuery", searchQuery);
   }
 </script>
 
@@ -44,6 +44,6 @@
       {#if searchContent}({searchContent.items.length} results returned){/if}
     </p>
   {/if}
-  <input type="text" value={searchQuery} />
+  <input type="text" bind:value={searchQuery} />
   <button on:click={search}>Search</button>
 </div>

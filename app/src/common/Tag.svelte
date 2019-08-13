@@ -13,4 +13,4 @@
   }
 </style>
 
-<span class="tag">{tag}</span>
+<strong class="tag">{tag}</strong>

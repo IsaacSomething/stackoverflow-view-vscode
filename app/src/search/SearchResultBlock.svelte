@@ -1,6 +1,11 @@
 <script>
   import { fade } from "svelte/transition";
+  import Tag from "../common/Tag.svelte";
+
   export let searchContent;
+
+  $: decodeeUriTitle = decodeURIComponent(searchContent.items.title);
+  $: decodeUriDescription = decodeURIComponent(searchContent.items.body);
 
   function firstSetOfQuestions() {}
   function previousSetOfQuestions() {}
@@ -57,14 +62,6 @@
   .asked-info {
     text-align: right;
   }
-  .tag {
-    background-color: var(--vscode-badge-background);
-    color: var(--vscode-badge-foreground);
-    padding: 0 4px 2px;
-    margin-right: 4px;
-    border-radius: 2px;
-    font-size: 11px;
-  }
   .bottom-buttons-container {
     text-align: center;
     padding: 20px;
@@ -95,19 +92,26 @@
     </div>
 
     <div class="information">
+
       <header>{searchItem.title}</header>
-      <p>{searchItem.body.replace(/<\/?[^>]+(>|$)/g, '').substring(0, 350)}</p>
+
+      <p>
+        {searchItem.body.replace(/<\/?[^>]+(>|$)/g, '').substring(0, 350)}
+        {#if searchItem.body.length > 350}...{/if}
+      </p>
+
       <div class="information-bottom">
-        <div>
-          {#each searchItem.tags as tag}
-            <span class="tag">{tag}</span>
-          {/each}
-        </div>
+
+        {#each searchItem.tags as tag}
+          <Tag {tag} />
+        {/each}
+
         <div class="asked-info">
           by
           <i>{searchItem.owner.display_name}</i>
         </div>
       </div>
+
     </div>
   </div>
 {/each}

@@ -6,7 +6,7 @@
   import Question from "./question/Question.svelte";
 
   let searchQuery;
-  let searchContent;
+  let searchData;
   let section;
   let questionId;
 
@@ -19,25 +19,32 @@
 
       if (searchQuery === "1337") {
         section = "leeeeeeet";
+      } else if (event.data.action === "topPick") {
+        questionId = event.data.questionId;
+        section = "question";
       } else {
-        fetch(
-          `https://api.stackexchange.com/2.2/search/advanced?order=desc&sort=relevance&q=${searchQuery}&answers=1&site=stackoverflow&filter=withbody`
-        ).then(response => {
+        const baseUri = "https://api.stackexchange.com/2.2/";
+        const filter =
+          "!*HLLcWlQCK43*mBSve5VfxaFn4ViZXqgUbGGE_mAAV)uESSvP55ushhPKq26Nm";
+        const key = "VP5SbX4dbH8MJUft7hjoaA((";
+        const site = "stackoverflow";
+        /* `https://api.stackexchange.com/2.2/search/advanced?order=desc&sort=relevance&q=${searchQuery}&answers=1&site=stackoverflow&filter=withbody` */
+        /* /advanced?page=1&pagesize=10&order=desc&sort=activity&q=base64&site=stackoverflow */
+        const uri = `${baseUri}search/advanced?q=${searchQuery}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
+
+        fetch(uri).then(response => {
           console.log("data", response.clone().json());
-          if (response.ok) {
+          if (response.status === 200) {
             response
               .clone()
               .json()
               .then(data => {
                 section = "search";
-                searchContent = data;
+                searchData = data;
               });
           }
         });
       }
-    } else if (event.data.action === "topPick") {
-      questionId = event.data.questionId;
-      section = "question";
     }
   });
 
@@ -66,18 +73,16 @@
   <strong>overflow</strong>
 </h3>
 
-{#if searchContent && section === 'search'}
-  <SearchTitle />
-  <SearchInput {searchQuery} {searchContent} />
-  <SearchResultBlock {searchContent} on:gotoQuestion={handleGotoQuestion} />
-{:else if searchContent && searchContent.items.length === 0}
-  <h1>No Results Found</h1>
-{:else}Loading Results...{/if}
-
 {#if section === 'question'}
   <Question on:gotoSearch={handleGotoSearch} {questionId} />
-{/if}
-
-{#if section === 'leeeeeeet'}
+{:else if section === 'leeeeeeet'}
   <Leet />
+{:else if section === 'search'}
+  {#if searchData}
+    <SearchTitle />
+    <SearchInput {searchQuery} {searchData} />
+    <SearchResultBlock {searchData} on:gotoQuestion={handleGotoQuestion} />
+  {:else if searchData.items.length === 0}
+    <h1>No Results Found</h1>
+  {/if}
 {/if}

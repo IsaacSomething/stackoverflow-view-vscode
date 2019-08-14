@@ -4,53 +4,27 @@
   import QuestionComments from "./QuestionComments.svelte";
   import QuestionUser from "./QuestionUser.svelte";
   import QuestionTitle from "./QuestionTitle.svelte";
+  import QuestionAnswer from "./QuestionAnswer.svelte";
   import Tag from "../common/Tag.svelte";
 
   export let questionId;
   let question;
-  let comments;
-  let answers;
-  let questionTitle;
 
-  fetch(
-    `https://api.stackexchange.com/2.2/questions/${questionId}?order=desc&sort=activity&site=stackoverflow&filter=withBody`
-    /* `https://api.stackexchange.com/2.2/questions/881510?order=desc&sort=activity&site=stackoverflow&filter=withcomments` */
-  ).then(response => {
-    console.log("data", response.clone().json());
-    if (response.ok) {
+  const baseUri = "https://api.stackexchange.com/2.2/";
+  const filter = "!SWKA349kRTzWrhUzlQ";
+  const key = "VP5SbX4dbH8MJUft7hjoaA((";
+  const site = "stackoverflow";
+  const uri = `${baseUri}questions/${questionId}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
+
+  fetch(uri).then(response => {
+    console.log("response", response);
+    if (response.status === 200) {
       response
         .clone()
         .json()
         .then(questionData => {
+          console.log("questionData", questionData);
           question = questionData.items[0];
-
-          fetch(
-            `https://api.stackexchange.com/2.2/questions/${questionId}/comments?order=asc&site=stackoverflow&filter=withbody`
-          ).then(response => {
-            console.log("comments", response.clone().json());
-            if (response.ok) {
-              response
-                .clone()
-                .json()
-                .then(commentData => {
-                  comments = commentData.items;
-
-                  fetch(
-                    `https://api.stackexchange.com/2.2/questions/${questionId}/answers?order=asc&site=stackoverflow&filter=withbody&filter=withtitle`
-                  ).then(response => {
-                    console.log("answers", response.clone().json());
-                    if (response.ok) {
-                      response
-                        .clone()
-                        .json()
-                        .then(commentData => {
-                          answers = commentData.items;
-                        });
-                    }
-                  });
-                });
-            }
-          });
         });
     }
   });
@@ -89,22 +63,17 @@
   <a href={question.link} target="_blank">view online</a>
 
   <QuestionUser user={question.owner} />
+  <QuestionComments comments={question.comments} />
+
+  <h2>{question.answer_count} Answers</h2>
+
+  {#if question.answers.length > 0}
+    {#each question.answers as answer, i}
+      {#if i < 10}
+        <QuestionAnswer {answer} />
+      {/if}
+    {/each}
+  {/if}
 {:else}
   <p>Loading Question...</p>
-{/if}
-
-{#if comments}
-  <QuestionComments {comments} />
-{/if}
-
-{#if answers}
-  {#each answers as answer}
-    <div>
-      <h2>{answer.title}</h2>
-      <div>
-        {@html answer.body}
-      </div>
-      <QuestionUser user={answer.owner} />
-    </div>
-  {/each}
 {/if}

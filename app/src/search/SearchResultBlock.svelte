@@ -4,10 +4,10 @@
   import SearchBottomActionButtons from "./SearchBottomActionButtons.svelte";
   import Tag from "../common/Tag.svelte";
 
-  export let searchContent;
+  export let searchData;
 
-  $: decodeURIComponent(searchContent.items.title);
-  $: console.log(decodeURIComponent(searchContent.items.body));
+  $: decodeURIComponent(searchData.items.title);
+  $: console.log(decodeURIComponent(searchData.items.body));
 
   const dispatch = createEventDispatcher();
   function navigateToQuestion(questionId) {
@@ -69,12 +69,12 @@
   }
 </style>
 
-{#each searchContent.items as searchItem, i}
+{#each searchData.items as searchItem, i}
 
   <div
     in:fade
     class="search-result-block-container"
-    class:last-item={i === searchContent.items.length - 1}
+    class:last-item={i === searchData.items.length - 1}
     on:click={() => navigateToQuestion(searchItem.question_id)}>
 
     <div class="metrics">
@@ -97,10 +97,12 @@
 
     <div class="information">
 
-      <header>{searchItem.title}</header>
+      <header>{decodeURIComponent(searchItem.title)}</header>
 
       <p>
-        {searchItem.body.replace(/<\/?[^>]+(>|$)/g, '').substring(0, 350)}
+        {decodeURIComponent(searchItem.body
+            .replace(/<\/?[^>]+(>|$)/g, '')
+            .substring(0, 350))}
         {#if searchItem.body.length > 350}...{/if}
       </p>
 

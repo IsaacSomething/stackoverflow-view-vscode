@@ -12,39 +12,36 @@
 
   // Search post from extension.ts on showInputBox()
   window.addEventListener("message", event => {
-    console.log("event,event", event);
+    console.log("primary event", event);
 
-    if (event.data.action === "search") {
-      searchQuery = event.data.query;
+    if (searchQuery === "1337") {
+      section = "leeeeeeet";
+    } else if (event.data.action === "topPick") {
+      questionId = event.data.questionId;
+      section = "question";
+    } else if (event.data.action === "search") {
+      const baseUri = "https://api.stackexchange.com/2.2/";
+      const filter =
+        "!*HLLcWlQCK43*mBSve5VfxaFn4ViZXqgUbGGE_mAAV)uESSvP55ushhPKq26Nm";
+      const key = "VP5SbX4dbH8MJUft7hjoaA((";
+      const site = "stackoverflow";
+      /* `https://api.stackexchange.com/2.2/search/advanced?order=desc&sort=relevance&q=${searchQuery}&answers=1&site=stackoverflow&filter=withbody` */
+      /* /advanced?page=1&pagesize=10&order=desc&sort=activity&q=base64&site=stackoverflow */
+      const uri = `${baseUri}search/advanced?q=${searchQuery}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
 
-      if (searchQuery === "1337") {
-        section = "leeeeeeet";
-      } else if (event.data.action === "topPick") {
-        questionId = event.data.questionId;
-        section = "question";
-      } else {
-        const baseUri = "https://api.stackexchange.com/2.2/";
-        const filter =
-          "!*HLLcWlQCK43*mBSve5VfxaFn4ViZXqgUbGGE_mAAV)uESSvP55ushhPKq26Nm";
-        const key = "VP5SbX4dbH8MJUft7hjoaA((";
-        const site = "stackoverflow";
-        /* `https://api.stackexchange.com/2.2/search/advanced?order=desc&sort=relevance&q=${searchQuery}&answers=1&site=stackoverflow&filter=withbody` */
-        /* /advanced?page=1&pagesize=10&order=desc&sort=activity&q=base64&site=stackoverflow */
-        const uri = `${baseUri}search/advanced?q=${searchQuery}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
-
-        fetch(uri).then(response => {
-          console.log("data", response.clone().json());
-          if (response.status === 200) {
-            response
-              .clone()
-              .json()
-              .then(data => {
-                section = "search";
-                searchData = data;
-              });
-          }
-        });
-      }
+      fetch(uri).then(response => {
+        console.log("data", response.clone().json());
+        if (response.status === 200) {
+          response
+            .clone()
+            .json()
+            .then(data => {
+              section = "search";
+              searchQuery = event.data.query;
+              searchData = data;
+            });
+        }
+      });
     }
   });
 

@@ -11,11 +11,14 @@
   let question;
 
   const baseUri = "https://api.stackexchange.com/2.2/";
-  const filter = "!SWKA349kRTzWrhUzlQ";
+  const filter = "!GHc3(WllPAn.XMe9k80za9VhmRPZ7fIxYdF8E188YvKl9udQvPaRSmW3kg-";
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
   const site = "stackoverflow";
   const uri = `${baseUri}questions/${questionId}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
 
+  /**
+   * Fetch question
+   */
   fetch(uri).then(response => {
     console.log("response", response);
     if (response.status === 200) {
@@ -25,6 +28,16 @@
         .then(questionData => {
           console.log("questionData", questionData);
           question = questionData.items[0];
+
+          /**
+           * Fetch answers page 1
+           */
+          const baseUriAnswers = "https://api.stackexchange.com/2.2/";
+          const filterAnswers =
+            "!GHc3(WllPAn.XMe9k80za9VhmRPZ7fIxYdF8E188YvKl9udQvPaRSmW3kg-";
+          const keyAnswers = "VP5SbX4dbH8MJUft7hjoaA((";
+          const siteAnswers = "stackoverflow";
+          const uriAnswers = `${baseUri}answers/${questionId}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
         });
     }
   });
@@ -65,7 +78,7 @@
   <QuestionUser user={question.owner} />
   <QuestionComments comments={question.comments} />
 
-  <h2>{question.answer_count} Answers</h2>
+  <!-- <h2>{question.answer_count} Answers</h2>
 
   {#if question.answers.length > 0}
     {#each question.answers as answer, i}
@@ -73,7 +86,7 @@
         <QuestionAnswer {answer} />
       {/if}
     {/each}
-  {/if}
+  {/if} -->
 {:else}
   <p>Loading Question...</p>
 {/if}

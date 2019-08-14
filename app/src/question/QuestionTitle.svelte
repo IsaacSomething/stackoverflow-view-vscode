@@ -23,7 +23,7 @@
 
 <div class="title-container" in:fade>
   <!-- <small on:click={navigateBack}>back</small> -->
-  <h1>{decodeURIComponent(title)}</h1>
+  <h1>{title}</h1>
   <div>
     Asked
     <span>

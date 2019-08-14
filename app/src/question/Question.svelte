@@ -9,6 +9,7 @@
   export let questionId;
   let question;
   let comments;
+  let answers;
   let questionTitle;
 
   fetch(
@@ -33,6 +34,20 @@
                 .json()
                 .then(commentData => {
                   comments = commentData.items;
+
+                  fetch(
+                    `https://api.stackexchange.com/2.2/questions/${questionId}/answers?order=asc&site=stackoverflow&filter=withbody&filter=withtitle`
+                  ).then(response => {
+                    console.log("answers", response.clone().json());
+                    if (response.ok) {
+                      response
+                        .clone()
+                        .json()
+                        .then(commentData => {
+                          answers = commentData.items;
+                        });
+                    }
+                  });
                 });
             }
           });
@@ -80,4 +95,16 @@
 
 {#if comments}
   <QuestionComments {comments} />
+{/if}
+
+{#if answers}
+  {#each answers as answer}
+    <div>
+      <h2>{answer.title}</h2>
+      <div>
+        {@html answer.body}
+      </div>
+      <QuestionUser user={answer.owner} />
+    </div>
+  {/each}
 {/if}

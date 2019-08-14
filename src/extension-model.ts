@@ -29,6 +29,9 @@ export class ExtensionModel {
   }, {
     label: 'What was the strangest coding standard rule that you were forced to follow?',
     detail: '173^ (Asked 10 years, 9 months ago)'
+  }, {
+    label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
+    detail: '406^ (Asked 10 years, 3 months ago)'
   }];
 
   public static readonly topPickIds = [{
@@ -58,6 +61,9 @@ export class ExtensionModel {
   }, {
     label: 'What was the strangest coding standard rule that you were forced to follow?',
     id: '218123'
+  }, {
+    label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
+    id: '811074'
   }];
 
 }

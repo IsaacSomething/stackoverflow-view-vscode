@@ -60,6 +60,10 @@ blockquote {
   word-wrap: break-word;
 }
 
+blockquote pre {
+  border: 0;
+}
+
 blockquote {
   margin-block-start: 0;
   margin-block-end: 0;

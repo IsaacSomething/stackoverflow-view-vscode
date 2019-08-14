@@ -9,17 +9,27 @@
     date,
     "yy"
   )} at ${format(date, "HH:mm")}`;
+
+  $: rep = kFormatter(user.reputation);
+
+  function kFormatter(num) {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  }
 </script>
 
 <style>
   div {
-    background-color: var(--vscode-badge-background);
+    background-color: var(--vscode-textLink-foreground);
     color: var(--vscode-badge-foreground);
     min-width: 200px;
     padding: 10px;
+    font-size: 13px;
   }
   div a {
     color: var(--vscode-badge-foreground);
+    padding-top: 2px;
   }
   img {
     float: left;
@@ -47,7 +57,7 @@
     width="32" />
   <a href={user.link} title="External Link: {user.link}">{user.display_name}</a>
   <br />
-  <strong>{user.reputation}</strong>
+  <strong>{rep}</strong>
   <span class="gold">●</span>
   {user.badge_counts.gold}
   <span class="silver">●</span>

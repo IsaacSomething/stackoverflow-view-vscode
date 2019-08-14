@@ -6,15 +6,21 @@
   export let asked;
   export let active;
   export let viewed;
+
+  var str = title;
+  var enc = window.btoa(str);
+  let dec = window.atob(enc);
+  console.log("dec", dec);
 </script>
 
 <style>
   .title-container {
     border-bottom: 1px solid var(--vscode-textSeparator-foreground);
     padding-bottom: 20px;
+    margin-bottom: 4px;
   }
-  .title-container {
-    font-weight: 100;
+  h1 {
+    margin-bottom: 6px;
   }
   span {
     margin-right: 20px;
@@ -23,7 +29,7 @@
 
 <div class="title-container" in:fade>
   <!-- <small on:click={navigateBack}>back</small> -->
-  <h1>{title}</h1>
+  <h1>{dec}</h1>
   <div>
     Asked
     <span>

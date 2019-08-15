@@ -100,10 +100,10 @@
       <header>{decodeURIComponent(searchItem.title)}</header>
 
       <p>
-        {decodeURIComponent(searchItem.body
+        {decodeURIComponent(searchItem.body_markdown
             .replace(/<\/?[^>]+(>|$)/g, '')
             .substring(0, 350))}
-        {#if searchItem.body.length > 350}...{/if}
+        {#if searchItem.body_markdown.length > 350}...{/if}
       </p>
 
       <div class="information-bottom">

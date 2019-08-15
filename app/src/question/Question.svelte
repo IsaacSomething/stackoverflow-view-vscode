@@ -25,24 +25,25 @@
    */
   fetch(uri).then(
     response => {
-      console.log("response", response);
       if (response.status === 200) {
         response
           .clone()
           .json()
           .then(questionData => {
-            console.log("questionData", questionData);
             question = questionData.items[0];
+            // Fetch answers page 1
+            // const baseUriAnswers = "https://api.stackexchange.com/2.2/";
+            // const filterAnswers =
+            //   "!*i5bc-n8Kaka(2FRl(J-bw8Z3rwRuHp(OQGhtQ6ITye3YjQT1q7a5PTE9i1E8.eAJPcta5"; // NB!! If this is changed PLEASE UPDATE the filters.md
+            // const keyAnswers = "VP5SbX4dbH8MJUft7hjoaA((";
+            // const siteAnswers = "stackoverflow";
+            // const uriAnswers = `${baseUri}answers/${questionId}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`; */
 
-            /**
-             * Fetch answers page 1
-             */
-            /* const baseUriAnswers = "https://api.stackexchange.com/2.2/";
-            const filterAnswers =
-              "!*i5bc-n8Kaka(2FRl(J-bw8Z3rwRuHp(OQGhtQ6ITye3YjQT1q7a5PTE9i1E8.eAJPcta5"; // NB!! If this is changed PLEASE UPDATE the filters.md 
-            const keyAnswers = "VP5SbX4dbH8MJUft7hjoaA((";
-            const siteAnswers = "stackoverflow";
-            const uriAnswers = `${baseUri}answers/${questionId}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`; */
+            const vscode = acquireVsCodeApi();
+            vscode.postMessage({
+              command: "progress",
+              action: "stop"
+            });
           });
       }
     },
@@ -92,7 +93,7 @@
 
 {#if question}
   <QuestionTitle
-    title={decodeURI(question.title)}
+    title={question.title}
     asked={question.creation_date}
     active={question.last_activity_date}
     viewed={question.view_count} />

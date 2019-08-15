@@ -2,7 +2,6 @@
   import { format, fromUnixTime } from "date-fns";
   export let user;
   export let createdDate;
-  console.log(createdDate);
 
   const date = fromUnixTime(createdDate);
   $: atTime = `asked ${format(date, "MMM dd")} '${format(

@@ -4,8 +4,6 @@
 
   function search(event) {
     // TODO: if advanced search tips is open then close it.
-    console.log("eve", event);
-    console.log("searchQuery", searchQuery);
   }
 </script>
 

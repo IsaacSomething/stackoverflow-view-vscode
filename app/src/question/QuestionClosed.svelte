@@ -23,7 +23,7 @@
 <blockquote>
   <header>
     <strong>closed</strong>
-    as {reason} on {date}
+    as {reason} on {atTime}
   </header>
   {@html details.description}
 </blockquote>

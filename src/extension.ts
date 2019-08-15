@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.showQuickPick(ExtensionModel.topPickQuickInputItems).then((selectedTopPick: vscode.QuickPickItem | undefined) => {
 
       if (selectedTopPick) {
-        const selectedQuestion: any = ExtensionModel.topPickIds.find((element: any) => {
+        const selectedArticle: any = ExtensionModel.topPickIds.find((element: any) => {
           return element.label === selectedTopPick.label;
         });
 
@@ -66,14 +66,47 @@ export function activate(context: vscode.ExtensionContext) {
         // Post article Id
         stackoverflowPanel.webview.postMessage({
           action: 'topPick',
-          questionId: selectedQuestion.id
+          questionId: selectedArticle.id
         });
+
+        showWindowProgress(`Loading Stackoverflow Article`, stackoverflowPanel);
+
       }
     });
   });
 
   context.subscriptions.push(searchStackoverflow);
   context.subscriptions.push(topPickStackoverflow);
+
+}
+
+/**
+ * Show built in loader
+ * @param title string
+ */
+function showWindowProgress(title: string, panel: vscode.WebviewPanel) {
+  vscode.window.withProgress({
+    location: vscode.ProgressLocation.Window,
+    title: title,
+  }, (progress, token) => {
+
+    const progressPromise = new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 5000);
+      // TODO: resolve once fetch() is complete - needs a listener
+    });
+
+    // Resolve once fetch() is complete - needs a listener
+    panel.webview.onDidReceiveMessage(message => {
+      console.log('message', message);
+      if (message.command === 'progress' && message.action === 'stop') {
+        console.log('TEST');
+      }
+    });
+
+    return progressPromise;
+  });
 }
 
 export function deactivate() { }

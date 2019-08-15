@@ -16,8 +16,6 @@
     opacity: 0.5;
     font-size: 1rem;
   }
-  .star {
-  }
   .star-score {
     margin-left: -5px;
   }

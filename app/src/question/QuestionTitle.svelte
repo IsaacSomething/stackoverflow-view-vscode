@@ -7,10 +7,6 @@
   export let active;
   export let viewed;
 
-  var str = title;
-  var enc = window.btoa(str);
-  let dec = window.atob(enc);
-  console.log("dec", dec);
 </script>
 
 <style>
@@ -29,7 +25,7 @@
 
 <div class="title-container" in:fade>
   <!-- <small on:click={navigateBack}>back</small> -->
-  <h1>{dec}</h1>
+  <h1>{title}</h1>
   <div>
     Asked
     <span>

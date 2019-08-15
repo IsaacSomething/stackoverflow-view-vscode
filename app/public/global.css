@@ -21,6 +21,7 @@ button {
   color: var(--vscode-button-foreground);
   background-color: var(--vscode-button-background);
   border: 1px solid var(--vscode-button-background);
+  border-radius: 2px;
 }
 
 button:hover {
@@ -57,11 +58,15 @@ blockquote {
   background-color: var(--vscode-textBlockQuote-background);
   border: 1px solid var(--vscode-textCodeBlock-background);
   padding: 10px;
-  word-wrap: break-word;
 }
 
 blockquote pre {
   border: 0;
+}
+
+pre,
+pre code {
+  white-space: pre-wrap;
 }
 
 blockquote {

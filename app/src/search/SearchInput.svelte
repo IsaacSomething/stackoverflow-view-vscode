@@ -24,6 +24,7 @@
     padding: 5px;
     height: 17px;
     width: calc(100% - 120px);
+    border-radius: 2px;
   }
   .search-input-container button {
     min-width: 100px;

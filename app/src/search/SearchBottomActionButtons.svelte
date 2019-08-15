@@ -1,4 +1,6 @@
 <script>
+  let activePage = 1;
+
   function firstSetOfQuestions() {}
   function previousSetOfQuestions() {}
   function nextThirtySetOfQuestions() {}
@@ -10,14 +12,44 @@
   }
   button {
     min-width: auto;
+    margin-right: 5px;
+  }
+  button.active {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
   }
 </style>
 
 <div class="bottom-buttons-container">
-  <button on:click={firstSetOfQuestions}>1</button>
-  <button on:click={previousSetOfQuestions}>2</button>
-  <button on:click={nextThirtySetOfQuestions}>3</button>
-  <button on:click={nextThirtySetOfQuestions}>4</button>
-  <button on:click={nextThirtySetOfQuestions}>5</button>
-  <button on:click={nextThirtySetOfQuestions}>next</button>
+  <button
+    class="outline"
+    class:active={activePage === 1}
+    on:click={firstSetOfQuestions}>
+    1
+  </button>
+  <button
+    class="outline"
+    class:active={activePage === 2}
+    on:click={previousSetOfQuestions}>
+    2
+  </button>
+  <button
+    class="outline"
+    class:active={activePage === 3}
+    on:click={nextThirtySetOfQuestions}>
+    3
+  </button>
+  <button
+    class="outline"
+    class:active={activePage === 3}
+    on:click={nextThirtySetOfQuestions}>
+    4
+  </button>
+  <button
+    class="outline"
+    class:active={activePage === 4}
+    on:click={nextThirtySetOfQuestions}>
+    5
+  </button>
+  <button class="outline" on:click={nextThirtySetOfQuestions}>next</button>
 </div>

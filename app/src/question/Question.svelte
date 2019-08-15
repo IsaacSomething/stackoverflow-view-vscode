@@ -11,6 +11,7 @@
   import Tag from "../common/Tag.svelte";
 
   export let questionId;
+  export let gif;
   export let vscode;
   let question;
 
@@ -20,6 +21,11 @@
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
   const site = "stackoverflow";
   const uri = `${baseUri}questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
+
+  vscode.postMessage({
+    command: "progress",
+    action: "start"
+  });
 
   /**
    * Fetch question
@@ -88,16 +94,23 @@
   .answers-count-container {
     border-bottom: 2px solid var(--vscode-textSeparator-foreground);
   }
+  iframe {
+    min-height: 500px;
+    min-width: 500px;
+  }
 </style>
 
 {#if question}
+
+  {#if gif}
+    <iframe src={gif} frameborder="0" title="haha" />
+  {/if}
 
   <QuestionTitle
     title={question.title}
     asked={question.creation_date}
     active={question.last_activity_date}
-    viewed={question.view_count}
-    on:back />
+    viewed={question.view_count} />
 
   <div class="question-container">
 

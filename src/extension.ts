@@ -60,11 +60,18 @@ export function activate(context: vscode.ExtensionContext) {
         // Post article Id to app, read in App.svelte as window.addEventListener("message"
         stackoverflowPanel.webview.postMessage({
           action: 'topPick',
-          questionId: selectedArticle.id
+          questionId: selectedArticle.id,
+          gif: selectedArticle.gif
         });
 
         // Show progress loader
         showWindowProgress(`Loading Stackoverflow Article`, stackoverflowPanel);
+
+        stackoverflowPanel.webview.onDidReceiveMessage(message => {
+          if (message.command === 'progress' && message.action === 'start') {
+            showWindowProgress(`Loading Stackoverflow Question`, stackoverflowPanel);
+          }
+        });
 
       }
     });

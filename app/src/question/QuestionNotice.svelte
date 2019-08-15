@@ -3,7 +3,7 @@
   export let notice;
 
   const date = fromUnixTime(notice.creation_date);
-  $: atTime = ` ${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
+  $: atTime = `${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
     date,
     "HH:mm"
   )}`;

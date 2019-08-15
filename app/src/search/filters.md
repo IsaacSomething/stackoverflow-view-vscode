@@ -2,7 +2,7 @@
 
 ```
 current applied filter
-!E-NkAUAPp-dl_BLxWqa1LE5g5C*VNBKpydoTSQ
+!E-NkAUAPp-dl_BLxWqa1LE5g5C*VNBzgv9-ThQ
 ```
 <details> 
  <summary><strong>  answer (0/27)</strong></summary>
@@ -121,8 +121,8 @@ current applied filter
  - **answer_count ✓**
  - answers
  - body
- - **body_markdown✓**
- - bounty_amount
+ - body_markdown
+ - **bounty_amount✓**
  - bounty_closes_date
  - bounty_user (shallow_user)
  - can_close

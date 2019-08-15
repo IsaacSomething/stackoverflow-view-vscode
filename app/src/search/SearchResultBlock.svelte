@@ -9,10 +9,7 @@
 
   function setAskedValue(date) {
     const dateFromUnix = fromUnixTime(date);
-    return ` ${format(dateFromUnix, "MMM dd")} '${format(
-      dateFromUnix,
-      "yy"
-    )} at ${format(dateFromUnix, "HH:mm")}`;
+    return ` ${format(dateFromUnix, "MMM dd")} '${format(dateFromUnix, "yy")}`;
   }
 
   const dispatch = createEventDispatcher();
@@ -38,6 +35,7 @@
     float: left;
     width: 80px;
     margin-right: 30px;
+    padding: 0px 20px 0 0;
   }
   .metrics div {
     padding: 10px;
@@ -49,11 +47,13 @@
     border: 1px solid var(--vscode-textLink-foreground);
     color: var(--vscode-textLink-foreground);
     font-weight: bold;
+    border-radius: 2px;
   }
   .answer-count.is-answered-full {
     background-color: var(--vscode-textLink-foreground);
     color: var(--vscode-button-foreground);
     font-weight: bold;
+    border-radius: 2px;
   }
   .information {
     width: 100%;
@@ -80,8 +80,7 @@
   <div
     in:fade
     class="search-result-block-container"
-    class:last-item={i === searchData.length - 1}
-    on:click={() => navigateToQuestion(searchItem.question_id)}>
+    class:last-item={i === searchData.length - 1}>
 
     <div class="metrics">
       <div>
@@ -103,13 +102,13 @@
 
     <div class="information">
 
-      <header>{searchItem.title}</header>
+      <header on:click={() => navigateToQuestion(searchItem.question_id)}>
+        {@html searchItem.title}
+      </header>
 
       <p>
-        {searchItem.body_markdown
-          .replace(/<\/?[^>]+(>|$)/g, '')
-          .substring(0, 350)}
-        {#if searchItem.body_markdown.length > 350}...{/if}
+        {@html searchItem.body.replace(/<\/?[^>]+(>|$)/g, '').substring(0, 350)}
+        {#if searchItem.body.length > 350}...{/if}
       </p>
 
       <div class="information-bottom">

@@ -32,38 +32,51 @@ export class ExtensionModel {
   }, {
     label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
     detail: '406^ (Asked 10 years, 3 months ago)'
+  }, {
+    label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
+    detail: '406^ (Asked 10 years, 3 months ago)'
   }];
 
   public static readonly topPickIds = [{
     label: 'Why does HTML think "chucknorris" is a color?',
-    id: '8318911'
+    id: '8318911',
+    gif: 'https://giphy.com/embed/3yhmYJ0A5lQv6'
   }, {
     label: 'What\'s your favorite "programmer" cartoon?',
-    id: '84556'
+    id: '84556',
+    gif: 'https://thecodinglove.com/wp-content/uploads/2019/07/img_2661-1.jpg'
   }, {
     label: 'What is the best comment in source code you have ever encountered?',
-    id: '184618'
+    id: '184618',
+    gif: 'https://giphy.com/embed/fGuqeA6PiXINa'
   }, {
     label: 'How to pair socks from a pile efficiently?',
-    id: '14415881'
+    id: '14415881',
+    gif: 'https://giphy.com/embed/y65VoOlimZaus'
   }, {
     label: 'What\'s the difference between JavaScript and Java?',
-    id: '245062'
+    id: '245062',
+    gif: 'https://giphy.com/embed/l36kU80xPf0ojG0Erg'
   }, {
     label: 'Strangest language feature',
-    id: '1995113'
+    id: '1995113',
+    gif: 'https://giphy.com/embed/5WhcSpUjK02f30sDQr'
   }, {
     label: 'Why does ++[[]][+[]]+[+[]] return the string "10"?',
-    id: '7202157'
+    id: '7202157',
+    gif: 'https://giphy.com/embed/8fjedJmOkkcTu'
   }, {
     label: 'What\'s the least useful comment you\'ve ever seen?',
-    id: '143429'
+    id: '143429',
+    gif: 'https://giphy.com/embed/lz67zZWfWPsWnuGH0s'
   }, {
     label: 'What was the strangest coding standard rule that you were forced to follow?',
-    id: '218123'
+    id: '218123',
+    gif: 'https://giphy.com/embed/c4u2gld3Or69i'
   }, {
     label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
-    id: '811074'
+    id: '811074',
+    gif: 'https://giphy.com/embed/oMpJql97PCGHe'
   }];
 
 }

@@ -38,8 +38,6 @@
             // const keyAnswers = "VP5SbX4dbH8MJUft7hjoaA((";
             // const siteAnswers = "stackoverflow";
             // const uriAnswers = `${baseUri}answers/${questionId}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`; */
-
-            const vscode = acquireVsCodeApi();
             vscode.postMessage({
               command: "progress",
               action: "stop"

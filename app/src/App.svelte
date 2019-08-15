@@ -3,6 +3,7 @@
   import Question from "./question/Question.svelte";
   import Search from "./search/Search.svelte";
 
+  const vscode = acquireVsCodeApi();
   let searchQuery;
   let searchData;
   let section;
@@ -46,9 +47,9 @@
 </h3>
 
 {#if section === 'question'}
-  <Question on:gotoSearch={handleGotoSearch} {questionId} />
+  <Question on:gotoSearch={handleGotoSearch} {questionId} {vscode} />
 {:else if section === 'leeeeeeet'}
   <Leet />
 {:else if section === 'search'}
-  <Search on:gotoQuestion={handleGotoQuestion} {searchQuery} />
+  <Search {searchQuery} {vscode} />
 {/if}

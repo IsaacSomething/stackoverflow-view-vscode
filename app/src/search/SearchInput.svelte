@@ -1,6 +1,5 @@
 <script>
   export let searchQuery = "";
-  export let searchContent;
 
   function search(event) {
     // TODO: if advanced search tips is open then close it.
@@ -39,7 +38,6 @@
       <strong>
         <i>{searchQuery}</i>
       </strong>
-      {#if searchContent}({searchContent.items.length} results returned){/if}
     </p>
   {/if}
   <input type="text" bind:value={searchQuery} />

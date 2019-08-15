@@ -6,9 +6,6 @@
 
   export let searchData;
 
-  $: decodeURIComponent(searchData.items.title);
-  $: console.log(decodeURIComponent(searchData.items.body));
-
   const dispatch = createEventDispatcher();
   function navigateToQuestion(questionId) {
     dispatch("gotoQuestion", {
@@ -69,12 +66,12 @@
   }
 </style>
 
-{#each searchData.items as searchItem, i}
+{#each searchData as searchItem, i}
 
   <div
     in:fade
     class="search-result-block-container"
-    class:last-item={i === searchData.items.length - 1}
+    class:last-item={i === searchData.length - 1}
     on:click={() => navigateToQuestion(searchItem.question_id)}>
 
     <div class="metrics">
@@ -97,12 +94,12 @@
 
     <div class="information">
 
-      <header>{decodeURIComponent(searchItem.title)}</header>
+      <header>{searchItem.title}</header>
 
       <p>
-        {decodeURIComponent(searchItem.body_markdown
-            .replace(/<\/?[^>]+(>|$)/g, '')
-            .substring(0, 350))}
+        {searchItem.body_markdown
+          .replace(/<\/?[^>]+(>|$)/g, '')
+          .substring(0, 350)}
         {#if searchItem.body_markdown.length > 350}...{/if}
       </p>
 

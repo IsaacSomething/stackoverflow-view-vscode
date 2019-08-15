@@ -29,6 +29,8 @@
   }
 
   function handleGotoSearch() {
+    console.log("tron");
+
     section = "search";
   }
 </script>
@@ -47,9 +49,9 @@
 </h3>
 
 {#if section === 'question'}
-  <Question on:gotoSearch={handleGotoSearch} {questionId} {vscode} />
+  <Question on:back={handleGotoSearch} {questionId} {vscode} />
 {:else if section === 'leeeeeeet'}
   <Leet />
 {:else if section === 'search'}
-  <Search {searchQuery} {vscode} />
+  <Search on:gotoQuestion={handleGotoQuestion} {searchQuery} {vscode} />
 {/if}

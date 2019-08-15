@@ -12,7 +12,7 @@
   let isLoading = true;
 
   const baseUri = "https://api.stackexchange.com/2.2/";
-  const filter = "!)IMBoe*2yeLILOkExfCIybFW_Hi2HQB6AF_Q";
+  const filter = "!E-NkAUAPp-dl_BLxWqa1LE5g5C*VNBKpydoTSQ";
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
   const site = "stackoverflow";
   const uri = `${baseUri}search/advanced?q=${searchQuery}&page=1&pagesize=10&order=desc&sort=relevance&site=${site}&filter=${filter}&key=${key}`;
@@ -54,5 +54,5 @@
 {:else if !isLoading && searchData.length === 0}
   <SearchNoResults {searchQuery} />
 {:else}
-  <SearchResultBlock {searchData} />
+  <SearchResultBlock {searchData} on:gotoQuestion on:navigateBack />
 {/if}

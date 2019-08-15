@@ -11,6 +11,7 @@
   import Tag from "../common/Tag.svelte";
 
   export let questionId;
+  export let vscode;
   let question;
 
   const baseUri = "https://api.stackexchange.com/2.2/";
@@ -90,11 +91,13 @@
 </style>
 
 {#if question}
+
   <QuestionTitle
     title={question.title}
     asked={question.creation_date}
     active={question.last_activity_date}
-    viewed={question.view_count} />
+    viewed={question.view_count}
+    on:back />
 
   <div class="question-container">
 

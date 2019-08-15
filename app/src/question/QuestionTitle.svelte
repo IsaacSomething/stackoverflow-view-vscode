@@ -1,4 +1,5 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
   import { fromUnixTime, formatDistanceToNow } from "date-fns";
 
@@ -7,6 +8,12 @@
   export let active;
   export let viewed;
 
+  const dispatch = createEventDispatcher();
+  function navigateBack() {
+    dispatch("back", {
+      isBack: true
+    });
+  }
 </script>
 
 <style>
@@ -21,11 +28,29 @@
   span {
     margin-right: 20px;
   }
+  .back::before {
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    content: "";
+    display: inline-block;
+    height: 0.45em;
+    left: 12px;
+    position: relative;
+    top: 13px;
+    transform: rotate(-135deg);
+    vertical-align: top;
+    width: 0.45em;
+    cursor: pointer;
+  }
 </style>
 
 <div class="title-container" in:fade>
   <!-- <small on:click={navigateBack}>back</small> -->
-  <h1>{title}</h1>
+
+  <h1>
+    <span class="back" on:click={navigateBack} />
+    {title}
+  </h1>
   <div>
     Asked
     <span>

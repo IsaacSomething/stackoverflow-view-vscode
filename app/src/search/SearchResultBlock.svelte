@@ -1,10 +1,19 @@
 <script>
   import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
+  import { format, fromUnixTime } from "date-fns";
   import SearchBottomActionButtons from "./SearchBottomActionButtons.svelte";
   import Tag from "../common/Tag.svelte";
 
   export let searchData;
+
+  function setAskedValue(date) {
+    const dateFromUnix = fromUnixTime(date);
+    return ` ${format(dateFromUnix, "MMM dd")} '${format(
+      dateFromUnix,
+      "yy"
+    )} at ${format(dateFromUnix, "HH:mm")}`;
+  }
 
   const dispatch = createEventDispatcher();
   function navigateToQuestion(questionId) {
@@ -110,7 +119,7 @@
         {/each}
 
         <div class="asked-info">
-          by
+          asked {setAskedValue(searchItem.creation_date)} by
           <i>{searchItem.owner.display_name}</i>
         </div>
       </div>

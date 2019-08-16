@@ -1,5 +1,4 @@
 <script>
-  import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
   import Comments from "../common/Comments.svelte";
   import User from "../common/User.svelte";
@@ -13,6 +12,7 @@
   export let questionId;
   export let gif;
   export let vscode;
+  export let language;
   let question;
   let answers;
 
@@ -20,7 +20,7 @@
   const filter =
     "!846.ilK3D.2Pl0pgfPfmnelLqFsIyM(vhzUILxWBbRUYVMGZZc56l7wJcBD70KfJmVD"; // NB!! If this is changed PLEASE UPDATE the filters.md
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
-  const site = "stackoverflow";
+  const site = `${language.code}stackoverflow`;
   const uri = `${baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
 
   vscode.postMessage({
@@ -51,11 +51,6 @@
       console.log("ERROR:", error);
     }
   );
-
-  const dispatch = createEventDispatcher();
-  function navigateBack() {
-    dispatch("gotoSearch");
-  }
 </script>
 
 <style>
@@ -130,7 +125,10 @@
           <a href={question.link} target="_blank">view online</a>
         </div>
 
-        <User user={question.owner} createdDate={question.creation_date} />
+        <User
+          user={question.owner}
+          createdDate={question.creation_date}
+          isQuestion={true} />
       </div>
 
       {#if question.closed_details}
@@ -160,7 +158,7 @@
 
   <!-- ANSWERS -->
   {#if question.answer_count > 0}
-    <QuestionAnswer {questionId} />
+    <QuestionAnswer {questionId} {language} />
   {/if}
 {:else}
   <p>Loading Question...</p>

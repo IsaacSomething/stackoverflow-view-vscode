@@ -2,8 +2,7 @@
   import { format, fromUnixTime } from "date-fns";
   export let user;
   export let createdDate;
-
-  console.log("user", user);
+  export let isQuestion = false;
 
   const date = fromUnixTime(createdDate);
   $: atTime = `asked ${format(date, "MMM dd")} '${format(
@@ -24,13 +23,22 @@
   div {
     background-color: var(--vscode-textLink-foreground);
     color: var(--vscode-badge-foreground);
+    max-width: 200px;
     min-width: 200px;
     padding: 10px;
     font-size: 13px;
+    float: right;
   }
   div a {
     color: var(--vscode-badge-foreground);
     padding-top: 2px;
+  }
+  div.is-question {
+    background-color: transparent;
+    color: var(--vscode-foreground);
+  }
+  div.is-question a {
+    color: var(--vscode-textLink-foreground);
   }
   img {
     float: left;
@@ -48,10 +56,9 @@
   }
 </style>
 
-<div>
+<div class:is-question={!isQuestion}>
   {atTime}
   <br />
-
   {#if user.profile_image}
     <img
       src={user.profile_image}
@@ -59,7 +66,6 @@
       height="32"
       width="32" />
   {/if}
-
   {#if user.link}
     <a href={user.link} title="External Link: {user.link}">
       {user.display_name}

@@ -1,17 +1,19 @@
 <script>
   import Leet from "./common/Leet.svelte";
+  import Header from "./common/Header.svelte";
   import Question from "./question/Question.svelte";
   import Search from "./search/Search.svelte";
 
   const vscode = acquireVsCodeApi();
+  let section;
   let searchQuery;
   let searchData;
-  let section;
   let questionId;
-  let gif;
   let totalResults;
   let isLoading;
   let eventAction;
+  let language;
+  let gif;
 
   // Search post from extension.ts on showInputBox()
   window.addEventListener("message", event => {
@@ -26,11 +28,13 @@
     } else if (event.data.action === "search") {
       searchQuery = event.data.query;
       section = "search";
+      language = event.data.language;
+      console.log("event.data", event.data);
 
       const baseUri = "https://api.stackexchange.com/2.2";
       const filter = "!E-NkAUAPp-dl_BLxWqa1LE5g5C*VNBzgv9-ThQ";
       const key = "VP5SbX4dbH8MJUft7hjoaA((";
-      const site = "stackoverflow";
+      const site = `${language.code}stackoverflow`;
       const uri = `${baseUri}/search/advanced?q=${searchQuery}&page=1&pagesize=10&order=desc&sort=relevance&site=${site}&filter=${filter}&key=${key}`;
 
       fetch(uri).then(response => {
@@ -74,46 +78,10 @@
   }
 </script>
 
-<style>
-  h3 {
-    font-weight: normal;
-    color: var(--vscode-textLink-foreground);
-    margin: 0;
-  }
-  .back {
-    cursor: pointer;
-  }
-  .back span::before {
-    border-style: solid;
-    border-width: 2px 2px 0 0;
-    content: "";
-    display: inline-block;
-    height: 0.45em;
-    left: 0;
-    position: relative;
-    top: 6px;
-    transform: rotate(-135deg);
-    vertical-align: top;
-    width: 0.45em;
-    cursor: pointer;
-  }
-</style>
-
-<h3>
-  {#if section === 'question' && eventAction === 'search'}
-    <div class="back" on:click={handleGotoSearch}>
-      <span />
-      Back to search
-      <strong>results</strong>
-    </div>
-  {:else}
-    Stack
-    <strong>overflow</strong>
-  {/if}
-</h3>
+<Header on:goBack={handleGotoSearch} {language} {section} {eventAction} />
 
 {#if section === 'question'}
-  <Question {questionId} {vscode} {gif} />
+  <Question {questionId} {language} {vscode} {gif} />
 {:else if section === 'leeeeeeet'}
   <Leet />
 {:else if section === 'search'}

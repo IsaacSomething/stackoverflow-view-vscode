@@ -20,5 +20,5 @@
 {:else if !isLoading && searchData.length === 0}
   <SearchNoResults {searchQuery} />
 {:else}
-  <SearchResultBlock {searchData} on:gotoQuestion on:navigateBack />
+  <SearchResultBlock {searchData} on:gotoQuestion on:searchByTag/>
 {/if}

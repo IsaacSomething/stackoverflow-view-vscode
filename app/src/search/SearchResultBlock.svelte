@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
   import { format, fromUnixTime } from "date-fns";
   import SearchBottomActionButtons from "./SearchBottomActionButtons.svelte";
-  import Tag from "../common/Tag.svelte";
+  import Tags from "../common/Tags.svelte";
 
   export let searchData;
 
@@ -113,9 +113,7 @@
 
       <div class="information-bottom">
 
-        {#each searchItem.tags as tag}
-          <Tag {tag} />
-        {/each}
+        <Tags tags={searchItem.tags} on:searchByTag />
 
         <div class="asked-info">
           asked {setAskedValue(searchItem.creation_date)} by

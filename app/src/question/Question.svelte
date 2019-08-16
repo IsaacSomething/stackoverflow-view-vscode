@@ -1,26 +1,27 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
-  import QuestionComments from "./QuestionComments.svelte";
-  import QuestionUser from "./QuestionUser.svelte";
+  import Comments from "../common/Comments.svelte";
+  import User from "../common/User.svelte";
+  import Tags from "../common/Tags.svelte";
   import QuestionTitle from "./QuestionTitle.svelte";
   import QuestionAnswer from "./QuestionAnswer.svelte";
   import QuestionIndices from "./QuestionIndices.svelte";
   import QuestionNotice from "./QuestionNotice.svelte";
   import QuestionClosed from "./QuestionClosed.svelte";
-  import Tag from "../common/Tag.svelte";
 
   export let questionId;
   export let gif;
   export let vscode;
   let question;
+  let answers;
 
-  const baseUri = "https://api.stackexchange.com/2.2/";
+  const baseUri = "https://api.stackexchange.com/2.2";
   const filter =
     "!846.ilK3D.2Pl0pgfPfmnelLqFsIyM(vhzUILxWBbRUYVMGZZc56l7wJcBD70KfJmVD"; // NB!! If this is changed PLEASE UPDATE the filters.md
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
   const site = "stackoverflow";
-  const uri = `${baseUri}questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
+  const uri = `${baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
 
   vscode.postMessage({
     command: "progress",
@@ -38,13 +39,7 @@
           .json()
           .then(questionData => {
             question = questionData.items[0];
-            // Fetch answers page 1
-            // const baseUriAnswers = "https://api.stackexchange.com/2.2/";
-            // const filterAnswers =
-            //   "!*i5bc-n8Kaka(2FRl(J-bw8Z3rwRuHp(OQGhtQ6ITye3YjQT1q7a5PTE9i1E8.eAJPcta5"; // NB!! If this is changed PLEASE UPDATE the filters.md
-            // const keyAnswers = "VP5SbX4dbH8MJUft7hjoaA((";
-            // const siteAnswers = "stackoverflow";
-            // const uriAnswers = `${baseUri}answers/${questionId}?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`; */
+
             vscode.postMessage({
               command: "progress",
               action: "stop"
@@ -127,9 +122,7 @@
       </div>
 
       <div class="tags">
-        {#each question.tags as tag}
-          <Tag {tag} />
-        {/each}
+        <Tags tags={question.tags} />
       </div>
 
       <div class="question-left-bottom">
@@ -137,9 +130,7 @@
           <a href={question.link} target="_blank">view online</a>
         </div>
 
-        <QuestionUser
-          user={question.owner}
-          createdDate={question.creation_date} />
+        <User user={question.owner} createdDate={question.creation_date} />
       </div>
 
       {#if question.closed_details}
@@ -153,7 +144,7 @@
         <QuestionNotice notice={question.notice} />
       {/if}
 
-      <QuestionComments comments={question.comments} />
+      <Comments comments={question.comments} />
 
     </div>
 
@@ -162,18 +153,15 @@
   <div class="answers-count-container">
     {#if question.answer_count > 0}
       <h2>{question.answer_count} Answers</h2>
+    {:else}
+      <h1>No Answers</h1>
     {/if}
   </div>
 
-  <!-- <h2>{question.answer_count} Answers</h2>
-
-  {#if question.answers.length > 0}
-    {#each question.answers as answer, i}
-      {#if i < 10}
-        <QuestionAnswer {answer} />
-      {/if}
-    {/each}
-  {/if} -->
+  <!-- ANSWERS -->
+  {#if question.answer_count > 0}
+    <QuestionAnswer {questionId} />
+  {/if}
 {:else}
   <p>Loading Question...</p>
 {/if}

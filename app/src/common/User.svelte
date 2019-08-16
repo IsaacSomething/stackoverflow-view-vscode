@@ -3,6 +3,8 @@
   export let user;
   export let createdDate;
 
+  console.log("user", user);
+
   const date = fromUnixTime(createdDate);
   $: atTime = `asked ${format(date, "MMM dd")} '${format(
     date,
@@ -49,18 +51,30 @@
 <div>
   {atTime}
   <br />
-  <img
-    src={user.profile_image}
-    alt={user.display_name}
-    height="32"
-    width="32" />
-  <a href={user.link} title="External Link: {user.link}">{user.display_name}</a>
+
+  {#if user.profile_image}
+    <img
+      src={user.profile_image}
+      alt={user.display_name}
+      height="32"
+      width="32" />
+  {/if}
+
+  {#if user.link}
+    <a href={user.link} title="External Link: {user.link}">
+      {user.display_name}
+    </a>
+  {:else}{user.display_name}{/if}
   <br />
-  <strong>{rep}</strong>
-  <span class="gold">●</span>
-  {user.badge_counts.gold}
-  <span class="silver">●</span>
-  {user.badge_counts.silver}
-  <span class="bronze">●</span>
-  {user.badge_counts.bronze}
+  {#if rep}
+    <strong>{rep}</strong>
+  {/if}
+  {#if user.badge_counts}
+    <span class="gold">●</span>
+    {user.badge_counts.gold}
+    <span class="silver">●</span>
+    {user.badge_counts.silver}
+    <span class="bronze">●</span>
+    {user.badge_counts.bronze}
+  {/if}
 </div>

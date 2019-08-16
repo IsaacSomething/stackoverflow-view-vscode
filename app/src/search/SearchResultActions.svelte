@@ -12,7 +12,6 @@
   }
 
   function setSearchOrder(type) {
-    console.log("type", type);
     activeSearchType = type;
   }
 </script>

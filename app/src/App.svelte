@@ -16,7 +16,7 @@
   // Search post from extension.ts on showInputBox()
   window.addEventListener("message", event => {
     eventAction = event.data.action;
-    console.log("searchQuery", searchQuery);
+
     if (event.data.action === "topPick") {
       questionId = event.data.questionId;
       gif = event.data.gif;
@@ -27,11 +27,11 @@
       searchQuery = event.data.query;
       section = "search";
 
-      const baseUri = "https://api.stackexchange.com/2.2/";
+      const baseUri = "https://api.stackexchange.com/2.2";
       const filter = "!E-NkAUAPp-dl_BLxWqa1LE5g5C*VNBzgv9-ThQ";
       const key = "VP5SbX4dbH8MJUft7hjoaA((";
       const site = "stackoverflow";
-      const uri = `${baseUri}search/advanced?q=${searchQuery}&page=1&pagesize=10&order=desc&sort=relevance&site=${site}&filter=${filter}&key=${key}`;
+      const uri = `${baseUri}/search/advanced?q=${searchQuery}&page=1&pagesize=10&order=desc&sort=relevance&site=${site}&filter=${filter}&key=${key}`;
 
       fetch(uri).then(response => {
         if (response.status === 200) {
@@ -40,7 +40,6 @@
             .json()
             .then(
               data => {
-                console.log("searchData", data);
                 searchData = data.items;
                 totalResults = data.total;
                 isLoading = false;
@@ -67,6 +66,11 @@
   // From back button click on question page
   function handleGotoSearch() {
     section = "search";
+  }
+
+  // /common/tag
+  function handleTagSearch(tag) {
+    console.log("tag", tag.detail.tag);
   }
 </script>
 
@@ -115,6 +119,7 @@
 {:else if section === 'search'}
   <Search
     on:gotoQuestion={handleGotoQuestion}
+    on:searchByTag={handleTagSearch}
     {searchQuery}
     {vscode}
     {searchData}

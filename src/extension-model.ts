@@ -1,6 +1,28 @@
-import { QuickPickItem } from 'vscode';
+import { QuickPickItem, languages } from 'vscode';
+
+export interface ILanguage {
+  language: string;
+  code: string;
+}
 
 export class ExtensionModel {
+
+  public static readonly languages: ILanguage[] = [{
+    language: 'Spanish',
+    code: 'es.'
+  }, {
+    language: 'Russian',
+    code: 'ru.'
+  }, {
+    language: 'Portuguese',
+    code: 'pt.'
+  }, {
+    language: 'Japanese',
+    code: 'ja.'
+  }, {
+    language: 'English',
+    code: ''
+  }];
 
   public static readonly topPickQuickInputItems: QuickPickItem[] = [{
     label: 'Why does HTML think "chucknorris" is a color?',

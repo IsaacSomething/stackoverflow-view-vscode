@@ -24,6 +24,26 @@
         "command": "extension.topPickStackoverflow",
         "title": "Stackoverflow: Top Pick Questions"
       }
+    ],
+    "configuration": [
+      {
+        "title": "Stackoverflow View",
+        "properties": {
+          "stackoverflow.view.language": {
+            "type": "string",
+            "enum": [
+              "English",
+              "Spanish",
+              "Russian",
+              "Portuguese",
+              "Japanese"
+            ],
+            "default": "English",
+            "description": "Select your prefered language for Stackoverflow",
+            "scope": "window"
+          }
+        }
+      }
     ]
   },
   "scripts": {

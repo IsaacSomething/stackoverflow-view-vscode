@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { ExtensionModel } from './extension-model';
-import { posix, resolve } from 'path';
+import { posix } from 'path';
 import { AppPageHtml } from './app-page';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -21,6 +21,12 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (searchQuery) {
 
+        // Get Language
+        const currentLanguageSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.language');
+        const language: any = ExtensionModel.languages.find((element: any) => {
+          return element.language === currentLanguageSelection && element;
+        });
+
         // Create webview panel
         const stackoverflowPanel = createWebViewPanel(`SO: ${searchQuery}`, context.extensionPath);
         // Set webview - svelte built to ./app/public/*
@@ -28,7 +34,8 @@ export function activate(context: vscode.ExtensionContext) {
         // Post search term, read in App.svelte as window.addEventListener("message"
         stackoverflowPanel.webview.postMessage({
           action: 'search',
-          query: searchQuery
+          query: searchQuery,
+          language: language
         });
 
         // Show progress loader
@@ -40,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   /**
-   * Random top pick stackoverflow article
+   * Top pick stackoverflow articles
    */
   let topPickStackoverflow = vscode.commands.registerCommand('extension.topPickStackoverflow', () => {
 
@@ -83,7 +90,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 /**
- * Create a vscode webViewPanel
+ * Create vscode webViewPanel - sets default html with connection to /app
  * @param panelTitle string
  * @param path string
  */
@@ -96,7 +103,7 @@ function createWebViewPanel(panelTitle: string, path: string): vscode.WebviewPan
 }
 
 /**
- * Show progress in window (bottom left)
+ * Show progress in window - bottom left
  * @param title string
  */
 function showWindowProgress(title: string, panel: vscode.WebviewPanel) {

@@ -8,7 +8,7 @@
 
   const dispatch = createEventDispatcher();
   function goBack() {
-    dispatch("gotoSearch");
+    dispatch("goBack");
   }
 </script>
 

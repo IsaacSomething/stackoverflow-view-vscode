@@ -4,7 +4,7 @@
   import User from "../common/User.svelte";
   import Tags from "../common/Tags.svelte";
   import QuestionTitle from "./QuestionTitle.svelte";
-  import QuestionAnswer from "./QuestionAnswer.svelte";
+  import QuestionAnswers from "./QuestionAnswers.svelte";
   import QuestionIndices from "./QuestionIndices.svelte";
   import QuestionNotice from "./QuestionNotice.svelte";
   import QuestionClosed from "./QuestionClosed.svelte";
@@ -156,9 +156,8 @@
     {/if}
   </div>
 
-  <!-- ANSWERS -->
   {#if question.answer_count > 0}
-    <QuestionAnswer {questionId} {language} />
+    <QuestionAnswers {questionId} {language} />
   {/if}
 {:else}
   <p>Loading Question...</p>

@@ -33,14 +33,15 @@
 </style>
 
 <div class="search-input-container">
-  {#if searchQuery}
-    <p>
-      Results for
-      <strong>
-        <i>{searchQuery}</i>
-      </strong>
-    </p>
-  {/if}
+
+  <p>
+    Results for
+    <strong>
+      <i>
+        {#if searchQuery}{searchQuery}{:else}null{/if}
+      </i>
+    </strong>
+  </p>
   <input type="text" bind:value={searchQuery} />
-  <button on:click={search}>Search</button>
+  <button on:click={search} disabled={!searchQuery}>Search</button>
 </div>

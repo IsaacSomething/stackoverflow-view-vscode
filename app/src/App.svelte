@@ -47,6 +47,9 @@
                 searchData = data.items;
                 totalResults = data.total;
                 isLoading = false;
+
+                console.log("searchData", searchData);
+
                 vscode.postMessage({
                   command: "progress",
                   action: "stop"

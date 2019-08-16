@@ -4,7 +4,6 @@
   import Tags from "../common/Tags.svelte";
 
   export let questionId;
-  export let answer;
   export let language;
   let answers;
 

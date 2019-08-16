@@ -3,6 +3,7 @@
   import { createEventDispatcher } from "svelte";
   import { format, fromUnixTime } from "date-fns";
   import SearchBottomActionButtons from "./SearchBottomActionButtons.svelte";
+  import SearchVotesAnswers from "./SearchVotesAnswers.svelte";
   import Tags from "../common/Tags.svelte";
 
   export let searchData;
@@ -30,31 +31,7 @@
   .search-result-block-container.last-item {
     border: 0;
   }
-  .metrics {
-    text-align: center;
-    float: left;
-    width: 80px;
-    margin-right: 30px;
-    padding: 0px 20px 0 0;
-  }
-  .metrics div {
-    padding: 10px;
-  }
-  .metrics h3 {
-    margin: 0;
-  }
-  .answer-count.is-answered {
-    border: 1px solid var(--vscode-textLink-foreground);
-    color: var(--vscode-textLink-foreground);
-    font-weight: bold;
-    border-radius: 2px;
-  }
-  .answer-count.is-answered-full {
-    background-color: var(--vscode-textLink-foreground);
-    color: var(--vscode-button-foreground);
-    font-weight: bold;
-    border-radius: 2px;
-  }
+
   .information {
     width: 100%;
   }
@@ -82,23 +59,7 @@
     class="search-result-block-container"
     class:last-item={i === searchData.length - 1}>
 
-    <div class="metrics">
-      <div>
-        <h3>{searchItem.score}</h3>
-        <small>
-          {#if searchItem.score === 1}vote{:else}votes{/if}
-        </small>
-      </div>
-      <div
-        class="answer-count"
-        class:is-answered={!searchItem.is_answered}
-        class:is-answered-full={searchItem.is_answered}>
-        <h3>{searchItem.answer_count}</h3>
-        <small>
-          {#if searchItem.answer_count === 1}answer{:else}answers{/if}
-        </small>
-      </div>
-    </div>
+    <SearchVotesAnswers {searchItem} />
 
     <div class="information">
 
@@ -112,9 +73,7 @@
       </p>
 
       <div class="information-bottom">
-
         <Tags tags={searchItem.tags} on:searchByTag />
-
         <div class="asked-info">
           asked {setAskedValue(searchItem.creation_date)} by
           <i>{searchItem.owner.display_name}</i>

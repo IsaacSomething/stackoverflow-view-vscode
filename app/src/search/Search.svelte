@@ -9,16 +9,19 @@
   export let searchQuery;
   export let searchData;
   export let totalResults;
+  export let tagData;
   export let isLoading = true;
 </script>
 
-<SearchTitle />
-<SearchInput {searchQuery} />
+<SearchTitle {tagData} on:gotoTag />
+{#if !tagData}
+  <SearchInput {searchQuery} />
+{/if}
 <SearchResultsActions {totalResults} />
 {#if isLoading}
   Loading Search Results...
 {:else if !isLoading && searchData.length === 0}
   <SearchNoResults {searchQuery} />
 {:else}
-  <SearchResultBlock {searchData} on:gotoQuestion on:searchByTag/>
+  <SearchResultBlock {searchData} on:gotoQuestion on:searchByTag />
 {/if}

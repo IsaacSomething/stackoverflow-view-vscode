@@ -4,8 +4,6 @@
   export let language;
   export let eventAction;
 
-  console.log("language", language);
-
   const dispatch = createEventDispatcher();
   function goBack() {
     dispatch("goBack");
@@ -41,7 +39,7 @@
 </style>
 
 <h3>
-  {#if section === 'question' && eventAction === 'search'}
+  {#if (section === 'question' && eventAction === 'search') || section === 'tag'}
     <div class="back" on:click={goBack}>
       <span />
       Back to search

@@ -7,14 +7,12 @@
   export let language;
   let answers;
 
-  console.log("questionId", questionId);
-
   // Fetch answers page 1
   const baseUri = "https://api.stackexchange.com/2.2";
   const filter = "!M7iu1KROAgtzactMhHlgZ19xUsGuQJ(WdBhiYR*(Bw_PhIcdWN*FF1u"; // NB!! If this is changed PLEASE UPDATE the filters.md
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
   const site = `${language.code}stackoverflow`;
-  const uri = `${baseUri}/questions/${questionId}/answers?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
+  const uri = `${baseUri}/questions/${questionId}/answers?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
 
   fetch(uri).then(response => {
     if (response.status === 200) {
@@ -22,7 +20,6 @@
         .clone()
         .json()
         .then(answersData => {
-          console.log("answers", answersData);
           answers = answersData.items;
         });
     }
@@ -30,8 +27,8 @@
 </script>
 
 <style>
-  .svg-icon.iconCheckmarkLg {
-    color: #45a163 !important;
+  .answer-tick {
+    fill: #45a163;
   }
 </style>
 
@@ -44,7 +41,7 @@
         {#if answer.is_accepted}
           <svg
             aria-hidden="true"
-            class="svg-icon iconCheckmarkLg"
+            class="answer-tick"
             width="36"
             height="36"
             viewBox="0 0 36 36">

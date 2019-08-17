@@ -65,6 +65,9 @@
 
       <header on:click={() => navigateToQuestion(searchItem.question_id)}>
         {@html searchItem.title}
+        {#if searchItem.closed_date && searchItem.closed_details.on_hold}
+          [on hold]
+        {:else if searchItem.closed_date}[closed]{/if}
       </header>
 
       <p>

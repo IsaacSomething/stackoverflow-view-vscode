@@ -2,8 +2,13 @@
 
 ```
 current applied filter
-!E-NkAUAPp-dl_BLxWqa1LE5g5C*VNBzgv9-ThQ
+!6hZ6dglG-BiYJou9Z(tZVYJRjfjw2FfHacerRTypmqpeKv
 ```
+**run test:**
+`https://api.stackexchange.com/docs/advanced-search#order=desc&sort=activity&filter=!6hZ6dglG-BiYJou9Z(tZVYJRjfjw2FfHacerRTypmqpeKv&site=stackoverflow&run=true`
+**decode:**
+`https://api.stackexchange.com/docs/read-filter`
+
 <details> 
  <summary><strong>  answer (0/27)</strong></summary>
 
@@ -66,7 +71,7 @@ current applied filter
 
   - by_users
   - description
-  - on_hold
+  - **on_hold ✓**
   - original_questions
   - reason
 </details>
@@ -120,21 +125,21 @@ current applied filter
  - **accepted_answer_id ✓**
  - **answer_count ✓**
  - answers
- - body
+ - **body ✓**
  - body_markdown
- - **bounty_amount✓**
+ - bounty_amount
  - bounty_closes_date
  - bounty_user (shallow_user)
  - can_close
  - can_flag
  - close_vote_count
- - closed_date
- - closed_details (closed_details)
+ - **closed_date ✓**
+ - **closed_details (closed_details) ✓**
  - closed_reason
  - comment_count
  - comments
  - community_owned_date
- - creation_date
+ - **creation_date ✓**
  - delete_vote_count 
  - down_vote_count
  - downvoted

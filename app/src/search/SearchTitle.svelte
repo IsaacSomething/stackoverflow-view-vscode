@@ -50,8 +50,10 @@
   <h1>Questions tagged [{tagData.tag_name}]</h1>
   <p>
     {@html tagData.excerpt}
-    <span class="link" on:click={learnMoreAboutTag}>
-      <strong>...learn more</strong>
-    </span>
+    {#if tagData.body.length > 0}
+      <span class="link" on:click={learnMoreAboutTag}>
+        <strong>...learn more</strong>
+      </span>
+    {/if}
   </p>
 {/if}

@@ -10,18 +10,27 @@
   export let searchData;
   export let totalResults;
   export let tagData;
+  export let sortTypes;
   export let isLoading = true;
 </script>
 
 <SearchTitle {tagData} on:gotoTag />
+
 {#if !tagData}
   <SearchInput {searchQuery} on:searchInput />
 {/if}
-<SearchResultsActions {tagData} {totalResults} on:sortChange on:enableSearch />
-{#if isLoading}
-  Loading Search Results...
-{:else if !isLoading && searchData.length === 0}
-  <SearchNoResults {searchQuery} />
-{:else}
+
+<SearchResultsActions
+  {sortTypes}
+  {tagData}
+  {totalResults}
+  on:sortChange
+  on:enableSearch />
+
+{#if isLoading}Loading Search Results...{/if}
+
+{#if !isLoading && searchData}
   <SearchResultBlock {isLoading} {searchData} on:gotoQuestion on:searchByTag />
 {/if}
+
+<!-- <SearchNoResults {searchQuery} /> -->

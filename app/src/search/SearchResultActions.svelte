@@ -3,14 +3,7 @@
 
   export let totalResults;
   export let tagData;
-
-  let activeSearchType = "relevance";
-  const sortTypes = [
-    { label: "relevance", sortDefinition: "relevance" },
-    { label: "newest", sortDefinition: "creation" },
-    { label: "active", sortDefinition: "activity" },
-    { label: "votes", sortDefinition: "votes" }
-  ];
+  export let sortTypes;
 
   $: total = kFormatter(totalResults);
   function kFormatter(num) {
@@ -20,10 +13,12 @@
   }
 
   const dispatch = createEventDispatcher();
-  function setSearchOrder(type) {
-    activeSearchType = type.label;
+  function setSearchOrder(sortTypeIndex) {
+    sortTypes.forEach((element, key) => {
+      element.isSelected = key !== sortTypeIndex ? false : true;
+    });
     dispatch("sortChange", {
-      sort: type.sortDefinition
+      selectedSort: sortTypes[sortTypeIndex]
     });
   }
 
@@ -63,13 +58,15 @@
     <h3>{total} results</h3>
     <p>
       {#if tagData}
-        <span class="link" on:click={enableSearch}>search</span>
+        <span class="link" on:click={enableSearch}>
+          <strong>search</strong>
+        </span>
       {/if}
-      {#each sortTypes as type}
+      {#each sortTypes as sort, i}
         <span
-          class:active={activeSearchType === type.label}
-          on:click={() => setSearchOrder(type)}>
-          {type.label}
+          class:active={sort.isSelected}
+          on:click={() => setSearchOrder(i)}>
+          {sort.label.toLowerCase()}
         </span>
       {/each}
     </p>

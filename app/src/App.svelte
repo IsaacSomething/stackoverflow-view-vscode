@@ -16,9 +16,10 @@
   let tagData;
 
   let language;
+  let sortTypes;
+  let selectedSort;
   let gif;
   let page = 1;
-  let sort = "relevance";
 
   // Search post from extension.ts on showInputBox()
   window.addEventListener("message", event => {
@@ -33,9 +34,9 @@
     } else if (event.data.action === "search") {
       searchQuery = event.data.query;
       language = event.data.language;
+      sortTypes = event.data.sortTypes;
+      selectedSort = sortTypes.find(element => element.isSelected);
       section = "search";
-      tagData = null;
-      // Search
       search();
     }
   });
@@ -51,8 +52,26 @@
     section = "search";
   }
 
+  // Set tag page
   function handleGotoTag() {
     section = "tag";
+  }
+
+  // Removes tag excerpt and adds search input
+  function handleEnableSearch() {
+    tagData = null;
+  }
+
+  // Search by search input box
+  function handleInputSearch(event) {
+    searchQuery = event.detail.query;
+    search();
+  }
+
+  // Change sort & search
+  function handleSortChange(event) {
+    selectedSort = event.detail.selectedSort;
+    search();
   }
 
   // Search by selected tag
@@ -69,15 +88,9 @@
           response
             .clone()
             .json()
-            .then(
-              data => {
-                tagData = data.items[0];
-                console.log("tag data", tagData);
-              },
-              error => {
-                console.log("ERROR", error);
-              }
-            );
+            .then(data => {
+              tagData = data.items[0];
+            });
         }
       });
 
@@ -86,51 +99,49 @@
     }
   }
 
-  function handleEnableSearch() {
-    tagData = null;
-  }
-
-  function handleInputSearch(event) {
-    searchQuery = event.detail.query;
-    search();
-  }
-
-  function handleSortChangeSearch(event) {
-    sort = event.detail.sort;
-    search();
-  }
-
   // Main search functionality
   function search() {
-    isLoading = true;
+    searchStartResetData();
+
     const baseUri = "https://api.stackexchange.com/2.2";
     const filter = "!6hZ6dglG-BiYJou9Z(tZVYJRjfjw2FfHacerRTypmqpeKv";
     const key = "VP5SbX4dbH8MJUft7hjoaA((";
     const site = `${language.code}stackoverflow`;
-    const uri = `${baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${sort}&site=${site}&filter=${filter}&key=${key}`;
+    const uri = `${baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${filter}&key=${key}`;
 
     fetch(uri).then(response => {
+      isLoading = false;
+
       if (response.status === 200) {
         response
           .clone()
           .json()
-          .then(
-            data => {
-              searchData = data.items;
-              totalResults = data.total;
-              isLoading = false;
-              vscode.postMessage({
-                command: "progress",
-                action: "stop"
-              });
-            },
-            error => {
-              console.log("ERROR:", error);
-            }
-          );
+          .then(data => {
+            console.log("searchData", data);
+            searchData = data.items;
+            totalResults = data.total;
+            vscode.postMessage({
+              command: "progress",
+              action: "stop",
+              error: false
+            });
+          });
+      } else {
+        vscode.postMessage({
+          command: "progress",
+          action: "stop",
+          error: true,
+          errorMessage: "An error has error."
+        });
       }
     });
-    //TODO: srcoll to top?
+  }
+
+  function searchStartResetData() {
+    isLoading = true;
+    vscode.postMessage({ command: "progress", action: "start", error: false });
+    totalResults = null;
+    searchData = null;
   }
 </script>
 
@@ -146,14 +157,15 @@
     on:gotoTag={handleGotoTag}
     on:searchByTag={handleTagSearch}
     on:searchInput={handleInputSearch}
-    on:sortChange={handleSortChangeSearch}
+    on:sortChange={handleSortChange}
     on:enableSearch={handleEnableSearch}
     {searchQuery}
     {vscode}
     {searchData}
     {totalResults}
     {isLoading}
-    {tagData} />
+    {tagData}
+    {sortTypes} />
 {:else if section === 'tag'}
   <Tag {tagData} />
 {/if}

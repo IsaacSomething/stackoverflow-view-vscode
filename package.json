@@ -53,7 +53,19 @@
               "Japanese"
             ],
             "default": "English",
-            "description": "Select your prefered language for Stackoverflow",
+            "description": "Select your preferred language for Stackoverflow",
+            "scope": "window"
+          },
+          "stackoverflow.view.sort": {
+            "type": "string",
+            "enum": [
+              "Relevance",
+              "Newest",
+              "Active",
+              "Votes"
+            ],
+            "default": "Relevance",
+            "description": "Select your preferred sort for returns search results",
             "scope": "window"
           }
         }

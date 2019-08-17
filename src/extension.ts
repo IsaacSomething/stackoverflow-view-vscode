@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExtensionModel } from './extension-model';
+import { ExtensionModel, ISortTypes, ILanguage } from './extension-model';
 import { posix } from 'path';
 import { AppPageHtml } from './app-page';
 
@@ -21,10 +21,18 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (searchQuery) {
 
-        // Get Language
+        // Get language
         const currentLanguageSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.language');
-        const language: any = ExtensionModel.languages.find((element: any) => {
+        const language: any = ExtensionModel.languages.find((element: ILanguage) => {
           return element.language === currentLanguageSelection && element;
+        });
+
+        // Get sort type
+        const currentSortSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.sort');
+        ExtensionModel.sortTypes.find((element: ISortTypes) => {
+          const labelIsEqualToSelectedSortType = element.label === currentSortSelection;
+          element.isSelected = labelIsEqualToSelectedSortType;
+          return labelIsEqualToSelectedSortType;
         });
 
         // Create webview panel
@@ -35,7 +43,8 @@ export function activate(context: vscode.ExtensionContext) {
         stackoverflowPanel.webview.postMessage({
           action: 'search',
           query: searchQuery,
-          language: language
+          language: language,
+          sortTypes: ExtensionModel.sortTypes
         });
 
         // Show progress loader
@@ -116,9 +125,15 @@ function showWindowProgress(title: string, panel: vscode.WebviewPanel) {
     // message has command: "progress", action: "stop" | "start" 
     const progressPromise = new Promise(resolve => {
       panel.webview.onDidReceiveMessage(message => {
+
         if (message.command === 'progress' && message.action === 'stop') {
           resolve();
         }
+
+        if (message.error) {
+          vscode.window.showErrorMessage(message.errorMessage);
+        }
+
       });
     });
 

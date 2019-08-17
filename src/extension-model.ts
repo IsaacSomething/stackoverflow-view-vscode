@@ -5,24 +5,28 @@ export interface ILanguage {
   code: string;
 }
 
+export interface ISortTypes {
+  label: string;
+  apiReference: string;
+  isSelected: boolean;
+}
+
 export class ExtensionModel {
 
-  public static readonly languages: ILanguage[] = [{
-    language: 'Spanish',
-    code: 'es.'
-  }, {
-    language: 'Russian',
-    code: 'ru.'
-  }, {
-    language: 'Portuguese',
-    code: 'pt.'
-  }, {
-    language: 'Japanese',
-    code: 'ja.'
-  }, {
-    language: 'English',
-    code: ''
-  }];
+  public static readonly languages: ILanguage[] = [
+    { language: 'Spanish', code: 'es.' },
+    { language: 'Russian', code: 'ru.' },
+    { language: 'Portuguese', code: 'pt.' },
+    { language: 'Japanese', code: 'ja.' },
+    { language: 'English', code: '' }
+  ];
+
+  public static readonly sortTypes: ISortTypes[] = [
+    { label: "Relevance", apiReference: "relevance", isSelected: false },
+    { label: "Newest", apiReference: "creation", isSelected: false },
+    { label: "Active", apiReference: "activity", isSelected: false },
+    { label: "Votes", apiReference: "votes", isSelected: false }
+  ];
 
   public static readonly topPickQuickInputItems: QuickPickItem[] = [{
     label: 'Why does HTML think "chucknorris" is a color?',

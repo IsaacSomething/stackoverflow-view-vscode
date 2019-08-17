@@ -3,11 +3,25 @@
   "displayName": "stackoverflow-view",
   "description": "Integrated solution for searching and finding answers in stackoverflow",
   "version": "0.0.1",
+  "homepage": "https://github.com/IsaacSomething/stackoverflow-view-vscode",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IsaacSomething/stackoverflow-view-vscode"
+  },
+  "author": {
+    "name": "Tim"
+  },
   "engines": {
     "vscode": "^1.37.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "Stack Overflow",
+    "StackOverflow",
+    "Answers",
+    "Questions"
   ],
   "activationEvents": [
     "onCommand:extension.searchStackoverflow",
@@ -43,6 +57,13 @@
             "scope": "window"
           }
         }
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.searchStackoverflow",
+        "key": "ctrl+alt+s",
+        "mac": "ctrl+cmd+s"
       }
     ]
   },

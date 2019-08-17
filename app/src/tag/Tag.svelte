@@ -31,6 +31,7 @@
   <h1>About</h1>
   <span>{tagData.tag_name}</span>
 </div>
+
 <h3>Tag Info</h3>
 
 <div class="excerpt">

@@ -1,18 +1,34 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
   export let totalResults;
+  export let tagData;
 
   let activeSearchType = "relevance";
+  const sortTypes = [
+    { label: "relevance", sortDefinition: "relevance" },
+    { label: "newest", sortDefinition: "creation" },
+    { label: "active", sortDefinition: "activity" },
+    { label: "votes", sortDefinition: "votes" }
+  ];
 
   $: total = kFormatter(totalResults);
-
   function kFormatter(num) {
     return Math.abs(num) > 999
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
       : Math.sign(num) * Math.abs(num);
   }
 
+  const dispatch = createEventDispatcher();
   function setSearchOrder(type) {
-    activeSearchType = type;
+    activeSearchType = type.label;
+    dispatch("sortChange", {
+      sort: type.sortDefinition
+    });
+  }
+
+  function enableSearch() {
+    dispatch("enableSearch");
   }
 </script>
 
@@ -46,26 +62,16 @@
   <div>
     <h3>{total} results</h3>
     <p>
-      <span
-        class:active={activeSearchType === 'relevance'}
-        on:click={() => setSearchOrder('relevance')}>
-        relevance
-      </span>
-      <span
-        class:active={activeSearchType === 'newest'}
-        on:click={() => setSearchOrder('newest')}>
-        newest
-      </span>
-      <span
-        class:active={activeSearchType === 'active'}
-        on:click={() => setSearchOrder('active')}>
-        active
-      </span>
-      <span
-        class:active={activeSearchType === 'votes'}
-        on:click={() => setSearchOrder('votes')}>
-        votes
-      </span>
+      {#if tagData}
+        <span class="link" on:click={enableSearch}>search</span>
+      {/if}
+      {#each sortTypes as type}
+        <span
+          class:active={activeSearchType === type.label}
+          on:click={() => setSearchOrder(type)}>
+          {type.label}
+        </span>
+      {/each}
     </p>
   </div>
 {/if}

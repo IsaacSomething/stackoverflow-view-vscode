@@ -7,6 +7,7 @@
   import Tags from "../common/Tags.svelte";
 
   export let searchData;
+  export let isLoading;
 
   function setAskedValue(date) {
     const dateFromUnix = fromUnixTime(date);
@@ -31,7 +32,6 @@
   .search-result-block-container.last-item {
     border: 0;
   }
-
   .information {
     width: 100%;
   }
@@ -50,6 +50,9 @@
   .asked-info {
     text-align: right;
   }
+  .is-loading {
+    filter: blur(0.4);
+  }
 </style>
 
 {#each searchData as searchItem, i}
@@ -57,7 +60,8 @@
   <div
     in:fade
     class="search-result-block-container"
-    class:last-item={i === searchData.length - 1}>
+    class:last-item={i === searchData.length - 1}
+    class:is-loading={isLoading}>
 
     <SearchVotesAnswers {searchItem} />
 

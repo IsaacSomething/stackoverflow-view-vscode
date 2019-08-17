@@ -2,14 +2,14 @@
   import { createEventDispatcher } from "svelte";
   import SearchTips from "./SearchTips.svelte";
 
+  const dispatch = createEventDispatcher();
   export let tagData;
-
   let showTips = false;
+
   function toggleAdvancedTips() {
     showTips = !showTips;
   }
 
-  const dispatch = createEventDispatcher();
   function learnMoreAboutTag() {
     dispatch("gotoTag");
   }
@@ -43,7 +43,6 @@
       {#if !showTips}Advanced Search Tips{:else}Close Search Tips{/if}
     </span>
   </div>
-
   {#if showTips}
     <SearchTips />
   {/if}
@@ -51,6 +50,8 @@
   <h1>Questions tagged [{tagData.tag_name}]</h1>
   <p>
     {@html tagData.excerpt}
+    <span class="link" on:click={learnMoreAboutTag}>
+      <strong>...learn more</strong>
+    </span>
   </p>
-  <span class="link" on:click={learnMoreAboutTag}>Learn more...</span>
 {/if}

@@ -11,7 +11,7 @@
   let searchData;
   let questionId;
   let totalResults;
-  let isLoading;
+  let isLoading = true;
   let eventAction;
   let tagData;
 
@@ -86,13 +86,23 @@
     }
   }
 
+  function handleEnableSearch() {
+    tagData = null;
+  }
+
   function handleInputSearch(event) {
     searchQuery = event.detail.query;
     search();
   }
 
+  function handleSortChangeSearch(event) {
+    sort = event.detail.sort;
+    search();
+  }
+
   // Main search functionality
   function search() {
+    isLoading = true;
     const baseUri = "https://api.stackexchange.com/2.2";
     const filter = "!6hZ6dglG-BiYJou9Z(tZVYJRjfjw2FfHacerRTypmqpeKv";
     const key = "VP5SbX4dbH8MJUft7hjoaA((";
@@ -136,6 +146,8 @@
     on:gotoTag={handleGotoTag}
     on:searchByTag={handleTagSearch}
     on:searchInput={handleInputSearch}
+    on:sortChange={handleSortChangeSearch}
+    on:enableSearch={handleEnableSearch}
     {searchQuery}
     {vscode}
     {searchData}

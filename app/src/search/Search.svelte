@@ -17,11 +17,11 @@
 {#if !tagData}
   <SearchInput {searchQuery} on:searchInput />
 {/if}
-<SearchResultsActions {totalResults} />
+<SearchResultsActions {tagData} {totalResults} on:sortChange on:enableSearch />
 {#if isLoading}
   Loading Search Results...
 {:else if !isLoading && searchData.length === 0}
   <SearchNoResults {searchQuery} />
 {:else}
-  <SearchResultBlock {searchData} on:gotoQuestion on:searchByTag />
+  <SearchResultBlock {isLoading} {searchData} on:gotoQuestion on:searchByTag />
 {/if}

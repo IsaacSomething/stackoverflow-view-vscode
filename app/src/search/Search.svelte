@@ -15,7 +15,7 @@
 
 <SearchTitle {tagData} on:gotoTag />
 {#if !tagData}
-  <SearchInput {searchQuery} />
+  <SearchInput {searchQuery} on:searchInput />
 {/if}
 <SearchResultsActions {totalResults} />
 {#if isLoading}

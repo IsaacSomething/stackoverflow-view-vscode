@@ -1,8 +1,10 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   export let searchQuery = "";
 
+  const dispatch = createEventDispatcher();
   function search(event) {
-    // TODO: if advanced search tips is open then close it.
+     dispatch("searchInput", { query: searchQuery });
   }
 </script>
 

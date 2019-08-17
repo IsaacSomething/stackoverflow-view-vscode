@@ -56,11 +56,9 @@
   }
 
   // Search by selected tag
-  function handleTagSearch(tag) {
-    console.log("tag", tag.detail.tag);
-
-    if (tag.detail.tag) {
-      const selectedTag = tag.detail.tag;
+  function handleTagSearch(event) {
+    const selectedTag = event.detail.tag;
+    if (selectedTag) {
       const baseUri = "https://api.stackexchange.com/2.2";
       const filter = "!Fu4hf8)e-ZPMLisJD6KbEP37j-";
       const key = "VP5SbX4dbH8MJUft7hjoaA((";
@@ -86,6 +84,11 @@
       searchQuery = selectedTag;
       search();
     }
+  }
+
+  function handleInputSearch(event) {
+    searchQuery = event.detail.query;
+    search();
   }
 
   // Main search functionality
@@ -130,8 +133,9 @@
 {:else if section === 'search'}
   <Search
     on:gotoQuestion={handleGotoQuestion}
-    on:searchByTag={handleTagSearch}
     on:gotoTag={handleGotoTag}
+    on:searchByTag={handleTagSearch}
+    on:searchInput={handleInputSearch}
     {searchQuery}
     {vscode}
     {searchData}

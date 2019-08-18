@@ -1,6 +1,7 @@
 <script>
   export let score;
   export let favorite;
+  export let language;
 </script>
 
 <style>

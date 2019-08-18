@@ -4,6 +4,7 @@
   import SearchResultBlock from "./SearchResultBlock.svelte";
   import SearchNoResults from "./SearchNoResults.svelte";
   import SearchResultsActions from "./SearchResultActions.svelte";
+  import Loader from "../common/Loader.svelte";
 
   export let vscode;
   export let searchQuery;
@@ -11,26 +12,37 @@
   export let totalResults;
   export let tagData;
   export let sortTypes;
+  export let language;
   export let isLoading = true;
 </script>
 
-<SearchTitle {tagData} on:gotoTag />
+<SearchTitle {tagData} {language} on:gotoTag />
 
 {#if !tagData}
-  <SearchInput {searchQuery} on:searchInput />
+  <SearchInput {searchQuery} {language} on:searchInput />
 {/if}
 
 <SearchResultsActions
   {sortTypes}
   {tagData}
   {totalResults}
+  {language}
   on:sortChange
   on:enableSearch />
 
-{#if isLoading}Loading Search Results...{/if}
-
-{#if !isLoading && searchData}
-  <SearchResultBlock {isLoading} {searchData} on:gotoQuestion on:searchByTag />
+{#if isLoading}
+  <Loader />
 {/if}
 
-<!-- <SearchNoResults {searchQuery} /> -->
+{#if !isLoading && searchData}
+  {#if searchData.length > 0}
+    <SearchResultBlock
+      {isLoading}
+      {searchData}
+      {language}
+      on:gotoQuestion
+      on:searchByTag />
+  {:else}
+    <SearchNoResults {searchQuery} {language} />
+  {/if}
+{/if}

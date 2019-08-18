@@ -4,6 +4,7 @@
   export let totalResults;
   export let tagData;
   export let sortTypes;
+  export let language;
 
   $: total = kFormatter(totalResults);
   function kFormatter(num) {
@@ -24,6 +25,27 @@
 
   function enableSearch() {
     dispatch("enableSearch");
+  }
+
+  function setLabel(label, index) {
+    switch (language.code) {
+      case "es.":
+        return sortTypes[index].text.spanish;
+        break;
+      case "ru.":
+        return sortTypes[index].text.russian;
+        break;
+      case "pt.":
+        return sortTypes[index].text.portuguese;
+        break;
+      case "ja.":
+        return sortTypes[index].text.japanese;
+        break;
+      default:
+        return sortTypes[index].text.english;
+        break;
+    }
+    return;
   }
 </script>
 
@@ -59,16 +81,19 @@
 
 {#if totalResults}
   <div>
-    <h3>{total} results</h3>
+    <h3>
+      {total}
+      {#if language}{language.text.results}{/if}
+    </h3>
     <p>
       {#if tagData}
         <span class="link" on:click={enableSearch}>
-          <strong>search</strong>
+          <strong>{language.text.search}</strong>
         </span>
       {/if}
       {#each sortTypes as sort, i}
         <span class:active={sort.isSelected} on:click={() => setSearchOrder(i)}>
-          {sort.label.toLowerCase()}
+          {setLabel(sort.label, i)}
         </span>
       {/each}
     </p>

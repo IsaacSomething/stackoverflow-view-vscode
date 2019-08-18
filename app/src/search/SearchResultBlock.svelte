@@ -8,6 +8,7 @@
 
   export let searchData;
   export let isLoading;
+  export let language;
 
   function setAskedValue(date) {
     const dateFromUnix = fromUnixTime(date);
@@ -64,7 +65,7 @@
     class:last-item={i === searchData.length - 1}
     class:is-loading={isLoading}>
 
-    <SearchVotesAnswers {searchItem} />
+    <SearchVotesAnswers {language} {searchItem} />
 
     <div class="information">
 
@@ -72,8 +73,8 @@
         on:click={() => navigateToQuestion(searchItem.question_id, searchItem.title)}>
         {@html searchItem.title}
         {#if searchItem.closed_date && searchItem.closed_details.on_hold}
-          [on hold]
-        {:else if searchItem.closed_date}[closed]{/if}
+          [{language.text.on_hold}]
+        {:else if searchItem.closed_date}[{language.text.closed}]{/if}
       </header>
 
       <p>
@@ -84,7 +85,8 @@
       <div class="information-bottom">
         <Tags tags={searchItem.tags} on:searchByTag />
         <div class="asked-info">
-          asked {setAskedValue(searchItem.creation_date)} by
+          {language.text.asked} {setAskedValue(searchItem.creation_date)}
+          {language.text.by}
           <i>{searchItem.owner.display_name}</i>
         </div>
       </div>
@@ -94,4 +96,4 @@
   </div>
 {/each}
 
-<SearchBottomActionButtons />
+<SearchBottomActionButtons {language} />

@@ -4,6 +4,7 @@
   import Comments from "../common/Comments.svelte";
   import User from "../common/User.svelte";
   import Tags from "../common/Tags.svelte";
+  import Loader from "../common/Loader.svelte";
   import QuestionTitle from "./QuestionTitle.svelte";
   import QuestionAnswers from "./QuestionAnswers.svelte";
   import QuestionIndices from "./QuestionIndices.svelte";
@@ -85,14 +86,16 @@
     title={question.title}
     asked={question.creation_date}
     active={question.last_activity_date}
-    viewed={question.view_count} />
+    viewed={question.view_count}
+    {language} />
 
   <div class="row">
 
     <div class="left">
       <QuestionIndices
         score={question.score}
-        favorite={question.favorite_count} />
+        favorite={question.favorite_count}
+        {language} />
     </div>
 
     <div class="right">
@@ -107,27 +110,31 @@
 
       <div class="question-answer-bottom">
         <div class="view-online">
-          <a href={question.link} target="_blank">view online</a>
+          <a href={question.link} target="_blank">
+            {language.text.view_online}
+          </a>
         </div>
 
         <User
           user={question.owner}
           createdDate={question.creation_date}
-          isQuestion={true} />
+          isQuestion={true}
+          {language} />
       </div>
 
       {#if question.closed_details}
         <QuestionClosed
           details={question.closed_details}
           reason={question.closed_reason}
-          closedDate={question.closed_date} />
+          closedDate={question.closed_date}
+          {language} />
       {/if}
 
       {#if question.notice}
         <QuestionNotice notice={question.notice} />
       {/if}
 
-      <Comments comments={question.comments} />
+      <Comments comments={question.comments} {language} />
 
     </div>
 
@@ -135,9 +142,9 @@
 
   <div class="answers-count-container">
     {#if question.answer_count > 0}
-      <h2>{question.answer_count} Answers</h2>
+      <h2>{question.answer_count} {language.text.answers}</h2>
     {:else}
-      <h2>No Answers</h2>
+      <h2>{language.text.no_answers}</h2>
     {/if}
   </div>
 
@@ -145,5 +152,5 @@
     <QuestionAnswers {questionId} {language} {vscode} />
   {/if}
 {:else}
-  <p>Loading Question...</p>
+  <Loader />
 {/if}

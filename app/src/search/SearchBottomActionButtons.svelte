@@ -1,4 +1,5 @@
 <script>
+  export let language;
   let activePage = 1;
 
   function firstSetOfQuestions() {}
@@ -51,5 +52,5 @@
     on:click={nextThirtySetOfQuestions}>
     5
   </button>
-  <button class="outline" on:click={nextThirtySetOfQuestions}>next</button>
+  <button class="outline" on:click={nextThirtySetOfQuestions}>{language.text.next}</button>
 </div>

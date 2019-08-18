@@ -42,8 +42,8 @@
   {#if (section === 'question' && eventAction === 'search') || section === 'tag'}
     <div class="back" on:click={goBack}>
       <span />
-      Back to search
-      <strong>results</strong>
+      {language.text.back_to_search_results}
+      <strong>{language.text.results}</strong>
     </div>
   {:else if section === 'leeeeeeet'}
     5t4©k
@@ -53,7 +53,7 @@
     <strong>overflow</strong>
     {#if language && language.code !== ''}
       <small>
-        &nbsp;
+        &nbsp;&nbsp;
         <i>{language.language}</i>
       </small>
     {/if}

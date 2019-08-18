@@ -25,8 +25,6 @@
   // Search post from extension.ts on showInputBox()
   window.addEventListener("message", event => {
     eventAction = event.data.action;
-    console.log("event.data", event.data);
-
     if (event.data.action === "topPick") {
       stopProgressMessage(false);
       questionId = event.data.questionId;
@@ -94,11 +92,10 @@
       const baseUri = "https://api.stackexchange.com/2.2";
       const filter = "!Fu4hf8)e-ZPMLisJD6KbEP37j-";
       const key = "VP5SbX4dbH8MJUft7hjoaA((";
-      const uri = `${baseUri}/tags/${selectedTag}/wikis?site=stackoverflow&filter=${filter}&key=${key}`;
+      const site = `${language.code}stackoverflow`;
+      const uri = `${baseUri}/tags/${selectedTag}/wikis?site=${site}&filter=${filter}&key=${key}`;
 
       axios.get(uri).then(response => {
-        console.log("response", response);
-
         if (response.status === 200) {
           tagData = response.data.items[0];
         } else {
@@ -167,6 +164,7 @@
     on:sortChange={handleSortChange}
     on:enableSearch={handleEnableSearch}
     {searchQuery}
+    {language}
     {vscode}
     {searchData}
     {totalResults}
@@ -174,5 +172,5 @@
     {tagData}
     {sortTypes} />
 {:else if section === 'tag'}
-  <Tag {tagData} />
+  <Tag {tagData} {language} />
 {/if}

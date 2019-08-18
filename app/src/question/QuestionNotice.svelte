@@ -1,6 +1,7 @@
 <script>
   import { format, fromUnixTime } from "date-fns";
   export let notice;
+  export let language;
 
   const date = fromUnixTime(notice.creation_date);
   $: atTime = `${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
@@ -20,7 +21,7 @@
 
 <blockquote>
   <header>
-    <strong>locked</strong>
+    <strong>{language.text.locked}</strong>
     on {atTime}
   </header>
   {@html notice.body}

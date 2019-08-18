@@ -1,5 +1,19 @@
 <script>
   export let searchQuery;
+  export let language;
 </script>
 
-<h1>There were no results for the search term "{searchQuery}"</h1>
+<style>
+  p {
+    font-size: 15px;
+  }
+</style>
+
+<p>
+  {language.text.no_results_abbr_01}
+  <strong>
+    <i>"{searchQuery}"</i>
+    .
+  </strong>
+  {language.text.no_results_abbr_02}
+</p>

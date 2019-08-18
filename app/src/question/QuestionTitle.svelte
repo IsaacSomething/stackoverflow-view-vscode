@@ -7,6 +7,7 @@
   export let asked;
   export let active;
   export let viewed;
+  export let language;
 
   $: totalViews = kFormatter(viewed);
 
@@ -38,18 +39,18 @@
     {@html title}
   </h1>
   <div>
-    Asked
+    {language.text.asked}
     <span>
       <strong>{formatDistanceToNow(fromUnixTime(asked))}</strong>
     </span>
-    Active
+    {language.text.active}
     <span>
       <strong>{formatDistanceToNow(fromUnixTime(active))}</strong>
     </span>
-    Viewed
+    {language.text.viewed}
     <span>
       <strong>{totalViews}</strong>
-      times
+      {language.text.times}
     </span>
   </div>
 </div>

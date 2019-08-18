@@ -1,6 +1,6 @@
 <script>
   export let tagData;
-  console.log("tagData pag", tagData);
+  export let language;
 </script>
 
 <style>
@@ -28,11 +28,11 @@
 </style>
 
 <div>
-  <h1>About</h1>
+  <h1>{language.text.about}</h1>
   <span>{tagData.tag_name}</span>
 </div>
 
-<h3>Tag Info</h3>
+<h3>{language.text.tag_info}</h3>
 
 <div class="excerpt">
   {@html tagData.excerpt}

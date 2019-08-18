@@ -1,5 +1,6 @@
 <script>
   export let searchItem;
+  export let language;
 </script>
 
 <style>
@@ -33,7 +34,9 @@
   <div>
     <h3>{searchItem.score}</h3>
     <small>
-      {#if searchItem.score === 1}vote{:else}votes{/if}
+      {#if searchItem.score === 1}
+        {language.text.vote}
+      {:else}{language.text.votes}{/if}
     </small>
   </div>
   <div
@@ -42,7 +45,9 @@
     class:is-answered-full={searchItem.accepted_answer_id}>
     <h3>{searchItem.answer_count}</h3>
     <small>
-      {#if searchItem.answer_count === 1}answer{:else}answers{/if}
+      {#if searchItem.answer_count === 1}
+        {language.text.answer}
+      {:else}{language.text.answers}{/if}
     </small>
   </div>
 </div>

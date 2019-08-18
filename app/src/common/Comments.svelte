@@ -2,8 +2,9 @@
   import { fade } from "svelte/transition";
   import { format, fromUnixTime } from "date-fns";
   export let comments;
+  export let language;
   let commentsShowAmount = 5;
-  
+
   $: commentsLength = comments && comments.length - commentsShowAmount - 1;
 
   function setDate(date) {
@@ -67,8 +68,10 @@
 
     <span class="link" on:click={toggleComments}>
       {#if comments.length > commentsShowAmount}
-        show {commentsLength} more comments
-      {:else if comments.length === commentsShowAmount}hide comments{/if}
+        {`${language.text.show} ${commentsLength} ${language.text.more_comments}`}
+      {:else if comments.length === commentsShowAmount && comments.length > commentsShowAmount}
+        {language.text.hide_comments}
+      {/if}
     </span>
 
   </div>

@@ -3,12 +3,15 @@
   export let user;
   export let createdDate;
   export let isQuestion = false;
+  export let language;
 
   const date = fromUnixTime(createdDate);
-  $: atTime = `asked ${format(date, "MMM dd")} '${format(
-    date,
-    "yy"
-  )} at ${format(date, "HH:mm")}`;
+  $: atTime = language
+    ? `${language.text.asked} ${format(date, "MMM dd")} '${format(
+        date,
+        "yy"
+      )} at ${format(date, "HH:mm")}`
+    : null;
 
   $: rep = kFormatter(user.reputation);
 

@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
+  export let language;
   export let searchQuery = "";
   let searchQueryPreviousValue;
 
@@ -50,14 +51,20 @@
 <svelte:window on:keydown={handleSearchByEnterKey} />
 
 <div class="search-input-container">
+
   <p>
-    Results for
+    {language.text.results_for}
     <strong>
       <i>
-        {#if searchQuery}{searchQuery}{:else}null{/if}
+        {#if searchQuery}{searchQuery}{/if}
       </i>
     </strong>
   </p>
+
   <input type="text" bind:value={searchQuery} />
-  <button on:click={search} disabled={!searchQuery}>Search</button>
+
+  <button on:click={search} disabled={!searchQuery}>
+    {language.text.search}
+  </button>
+
 </div>

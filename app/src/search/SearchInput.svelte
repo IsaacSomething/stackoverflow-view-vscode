@@ -1,10 +1,23 @@
 <script>
   import { createEventDispatcher } from "svelte";
+
   export let searchQuery = "";
+  let searchQueryPreviousValue;
+
+  function handleSearchByEnterKey(event) {
+    if (
+      event.keyCode === 13 &&
+      searchQuery !== "" &&
+      searchQuery !== searchQueryPreviousValue
+    ) {
+      search();
+    }
+  }
 
   const dispatch = createEventDispatcher();
   function search(event) {
-     dispatch("searchInput", { query: searchQuery });
+    searchQueryPreviousValue = searchQuery;
+    dispatch("searchInput", { query: searchQuery });
   }
 </script>
 
@@ -34,8 +47,9 @@
   }
 </style>
 
-<div class="search-input-container">
+<svelte:window on:keydown={handleSearchByEnterKey} />
 
+<div class="search-input-container">
   <p>
     Results for
     <strong>

@@ -15,9 +15,10 @@
   }
 
   const dispatch = createEventDispatcher();
-  function navigateToQuestion(questionId) {
+  function navigateToQuestion(id, title) {
     dispatch("gotoQuestion", {
-      questionId: questionId
+      questionId: id,
+      questionTitle: title
     });
   }
 </script>
@@ -67,7 +68,8 @@
 
     <div class="information">
 
-      <header on:click={() => navigateToQuestion(searchItem.question_id)}>
+      <header
+        on:click={() => navigateToQuestion(searchItem.question_id, searchItem.title)}>
         {@html searchItem.title}
         {#if searchItem.closed_date && searchItem.closed_details.on_hold}
           [on hold]

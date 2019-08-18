@@ -19,7 +19,7 @@
 
 <style>
   .title-container {
-    border-bottom: 1px solid var(--vscode-textSeparator-foreground);
+    border-bottom: 2px solid var(--vscode-textSeparator-foreground);
     padding-bottom: 20px;
     margin-bottom: 4px;
   }

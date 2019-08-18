@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
           return element.language === currentLanguageSelection && element;
         });
 
-        // Get sort type
+        // Get sort type - set isSelected property
         const currentSortSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.sort');
         ExtensionModel.sortTypes.find((element: ISortTypes) => {
           const labelIsEqualToSelectedSortType = element.label === currentSortSelection;
@@ -37,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Create webview panel
         const stackoverflowPanel = createWebViewPanel(`SO: ${searchQuery}`, context.extensionPath);
-        // Set webview - svelte built to ./app/public/*
+        // Set webview - svelte - built to ./app/public/*
         stackoverflowPanel.webview.html = AppPageHtml(context.extensionPath);
         // Post search term, read in App.svelte as window.addEventListener("message"
         stackoverflowPanel.webview.postMessage({
@@ -48,7 +48,10 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         // Show progress loader
-        showWindowProgress(`Loading Stackoverflow Search Results`, stackoverflowPanel);
+        showWindowProgress(stackoverflowPanel, `Loading Stackoverflow Search Results`);
+
+        // Listen for changes to window title
+        changeWindowTitle(stackoverflowPanel);
 
       }
 
@@ -81,13 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         // Show progress loader
-        showWindowProgress(`Loading Stackoverflow Article`, stackoverflowPanel);
-
-        stackoverflowPanel.webview.onDidReceiveMessage(message => {
-          if (message.command === 'progress' && message.action === 'start') {
-            showWindowProgress(`Loading Stackoverflow Question`, stackoverflowPanel);
-          }
-        });
+        showWindowProgress(stackoverflowPanel, 'Loading Stackoverflow Article');
 
       }
     });
@@ -115,19 +112,26 @@ function createWebViewPanel(panelTitle: string, path: string): vscode.WebviewPan
  * Show progress in window - bottom left
  * @param title string
  */
-function showWindowProgress(title: string, panel: vscode.WebviewPanel) {
+function showWindowProgress(panel: vscode.WebviewPanel, title: string) {
   vscode.window.withProgress({
     location: vscode.ProgressLocation.Window,
     title: title,
   }, (progress, token) => {
 
-    // Resolve once fetch() is complete 
+    // Resolve once GET is complete 
     // message has command: "progress", action: "stop" | "start" 
     const progressPromise = new Promise(resolve => {
       panel.webview.onDidReceiveMessage(message => {
 
-        if (message.command === 'progress' && message.action === 'stop') {
-          resolve();
+        if (message.command === 'progress') {
+          switch (message.action) {
+            case 'start':
+              progress.report({ message: 'Loading Stackoverflow Article' });
+              break;
+            case 'stop':
+              resolve();
+              break;
+          }
         }
 
         if (message.error) {
@@ -139,6 +143,20 @@ function showWindowProgress(title: string, panel: vscode.WebviewPanel) {
 
     return progressPromise;
   });
+}
+
+/**
+ * Change window title based on user actions in the app
+ * @param panel webview panel
+ */
+function changeWindowTitle(panel: vscode.WebviewPanel) {
+
+  panel.webview.onDidReceiveMessage(message => {
+    if (message.command === 'titleChange') {
+      panel.title = message.title;
+    }
+  });
+
 }
 
 export function deactivate() { }

@@ -34,7 +34,7 @@
     cursor: pointer;
   }
   small {
-    text-transform: uppercase;
+    color: var(--vscode-textLink-foreground);
   }
 </style>
 
@@ -45,6 +45,9 @@
       Back to search
       <strong>results</strong>
     </div>
+  {:else if section === 'leeeeeeet'}
+    5t4©k
+    <strong>0\/3rf10w</strong>
   {:else}
     Stack
     <strong>overflow</strong>

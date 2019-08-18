@@ -31,24 +31,28 @@
   div {
     border-bottom: 2px solid var(--vscode-textSeparator-foreground);
     display: flex;
+    height: 45px;
   }
   h3 {
-    margin-bottom: 7px;
+    margin: 0;
+    align-self: center;
     font-weight: normal;
   }
   p {
     align-self: center;
     text-align: right;
     flex: auto;
+    margin: 0;
   }
   p span {
     margin-left: 10px;
     cursor: pointer;
+    font-size: 14px;
   }
   p .active {
     color: var(--vscode-textLink-foreground);
     font-weight: bold;
-    padding-bottom: 13px;
+    padding-bottom: 12px;
     border-bottom: 2px solid var(--vscode-textLink-foreground);
   }
 </style>
@@ -63,9 +67,7 @@
         </span>
       {/if}
       {#each sortTypes as sort, i}
-        <span
-          class:active={sort.isSelected}
-          on:click={() => setSearchOrder(i)}>
+        <span class:active={sort.isSelected} on:click={() => setSearchOrder(i)}>
           {sort.label.toLowerCase()}
         </span>
       {/each}

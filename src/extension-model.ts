@@ -21,6 +21,27 @@ export class ExtensionModel {
     { language: 'English', code: '' }
   ];
 
+  public static readonly languageChanges: any = [{
+    language: 'es.',
+    text: [{
+      search: ['buscar'],
+      search_results: ['resultados de Búsqueda'],
+      results_for: ['resultados para'],
+      results: ['resultados'],
+      advanced_search_tips: ['consejos de búsqueda avanzada'],
+      asked: ['formulada el'],
+      by: ['por'],
+      answers: ['respuestas'],
+      votes: ['voto'],
+      relevance: ['relevancia'],
+      newest: ['más reciente'],
+      active: ['activo'],
+      next: ['siguiente'],
+      viewed: ['vista'],
+      times: ['veces']
+    }]
+  }];
+
   public static readonly sortTypes: ISortTypes[] = [
     { label: "Relevance", apiReference: "relevance", isSelected: false },
     { label: "Newest", apiReference: "creation", isSelected: false },

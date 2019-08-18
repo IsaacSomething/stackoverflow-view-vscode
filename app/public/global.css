@@ -79,3 +79,15 @@ blockquote {
   margin-inline-start: 0;
   margin-inline-end: 0;
 }
+
+p {
+  font-size: 15px;
+}
+
+p img {
+  display: block;
+}
+
+.row {
+  display: flex;
+}

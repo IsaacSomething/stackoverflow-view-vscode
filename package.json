@@ -53,7 +53,7 @@
               "Japanese"
             ],
             "default": "English",
-            "description": "Select your preferred language for Stackoverflow",
+            "description": "Select your preferred language for Stackoverflow.",
             "scope": "window"
           },
           "stackoverflow.view.sort": {
@@ -65,7 +65,7 @@
               "Votes"
             ],
             "default": "Relevance",
-            "description": "Select your preferred sort for returns search results",
+            "description": "Select your preferred sort type for returned search results.",
             "scope": "window"
           }
         }

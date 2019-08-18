@@ -1,4 +1,5 @@
 <script>
+  import axios from "axios";
   import Leet from "./common/Leet.svelte";
   import Header from "./common/Header.svelte";
   import Question from "./question/Question.svelte";
@@ -24,17 +25,21 @@
   // Search post from extension.ts on showInputBox()
   window.addEventListener("message", event => {
     eventAction = event.data.action;
+    console.log("event.data", event.data);
 
     if (event.data.action === "topPick") {
+      stopProgressMessage(false);
       questionId = event.data.questionId;
+      language = event.data.language;
       gif = event.data.gif;
       section = "question";
     } else if (event.data.action === "search" && event.data.query === "1337") {
+      stopProgressMessage(false);
       section = "leeeeeeet";
     } else if (event.data.action === "search") {
       searchQuery = event.data.query;
-      language = event.data.language;
       sortTypes = event.data.sortTypes;
+      language = event.data.language;
       selectedSort = sortTypes.find(element => element.isSelected);
       section = "search";
       search();
@@ -44,12 +49,20 @@
   // From SearchResultBlock component
   function handleGotoQuestion(event) {
     section = "question";
+    vscode.postMessage({
+      command: "titleChange",
+      title: `SO: ${event.detail.questionTitle}`
+    });
     questionId = event.detail.questionId;
   }
 
-  // From back button click on question page
+  // From back button clicked on question page
   function handleGotoSearch() {
     section = "search";
+    vscode.postMessage({
+      command: "titleChange",
+      title: `SO: ${searchQuery}`
+    });
   }
 
   // Set tag page
@@ -83,14 +96,16 @@
       const key = "VP5SbX4dbH8MJUft7hjoaA((";
       const uri = `${baseUri}/tags/${selectedTag}/wikis?site=stackoverflow&filter=${filter}&key=${key}`;
 
-      fetch(uri).then(response => {
+      axios.get(uri).then(response => {
+        console.log("response", response);
+
         if (response.status === 200) {
-          response
-            .clone()
-            .json()
-            .then(data => {
-              tagData = data.items[0];
-            });
+          tagData = response.data.items[0];
+        } else {
+          stopProgressMessage(
+            true,
+            "An error occured getting tag results. Check your internet connection."
+          );
         }
       });
 
@@ -101,7 +116,10 @@
 
   // Main search functionality
   function search() {
-    searchStartResetData();
+    isLoading = true;
+    totalResults = null;
+    searchData = null;
+    vscode.postMessage({ command: "progress", action: "start", error: false });
 
     const baseUri = "https://api.stackexchange.com/2.2";
     const filter = "!6hZ6dglG-BiYJou9Z(tZVYJRjfjw2FfHacerRTypmqpeKv";
@@ -109,39 +127,28 @@
     const site = `${language.code}stackoverflow`;
     const uri = `${baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${filter}&key=${key}`;
 
-    fetch(uri).then(response => {
+    axios.get(uri).then(response => {
       isLoading = false;
-
       if (response.status === 200) {
-        response
-          .clone()
-          .json()
-          .then(data => {
-            console.log("searchData", data);
-            searchData = data.items;
-            totalResults = data.total;
-            vscode.postMessage({
-              command: "progress",
-              action: "stop",
-              error: false
-            });
-          });
+        searchData = response.data.items;
+        totalResults = response.data.total;
+        stopProgressMessage(false);
       } else {
-        vscode.postMessage({
-          command: "progress",
-          action: "stop",
-          error: true,
-          errorMessage: "An error has error."
-        });
+        stopProgressMessage(
+          true,
+          "An error occured getting search results. Check your internet connection."
+        );
       }
     });
   }
 
-  function searchStartResetData() {
-    isLoading = true;
-    vscode.postMessage({ command: "progress", action: "start", error: false });
-    totalResults = null;
-    searchData = null;
+  function stopProgressMessage(hasError, errorMessage) {
+    vscode.postMessage({
+      command: "progress",
+      action: "stop",
+      error: hasError,
+      errorMessage: errorMessage ? errorMessage : null
+    });
   }
 </script>
 

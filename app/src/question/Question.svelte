@@ -1,5 +1,6 @@
 <script>
   import { fade } from "svelte/transition";
+  import axios from "axios";
   import Comments from "../common/Comments.svelte";
   import User from "../common/User.svelte";
   import Tags from "../common/Tags.svelte";
@@ -12,7 +13,7 @@
   export let questionId;
   export let gif;
   export let vscode;
-  export let language;
+  export let language = { language: "English", code: "" };
   let question;
   let answers;
 
@@ -23,41 +24,21 @@
   const site = `${language.code}stackoverflow`;
   const uri = `${baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
 
-  vscode.postMessage({
-    command: "progress",
-    action: "start"
-  });
+  vscode.postMessage({ command: "progress", action: "start" });
 
-  /**
-   * Fetch question
-   */
-  fetch(uri).then(
-    response => {
-      if (response.status === 200) {
-        response
-          .clone()
-          .json()
-          .then(questionData => {
-            question = questionData.items[0];
-
-            vscode.postMessage({
-              command: "progress",
-              action: "stop"
-            });
-          });
-      }
-    },
-    error => {
+  // Get question
+  axios.get(uri).then(response => {
+    if (response.status === 200) {
+      question = response.data.items[0];
+      vscode.postMessage({ command: "progress", action: "stop" });
+    } else {
+      // TODO send message to extension
       console.log("ERROR:", error);
     }
-  );
+  });
 </script>
 
 <style>
-  .question-container {
-    font-size: 14px;
-    display: flex;
-  }
   .left {
     text-align: center;
     margin: 2%;
@@ -71,8 +52,10 @@
   .tags {
     margin-top: 20px;
   }
-  .question-left-bottom {
-    display: flex;
+  .question-answer-bottom {
+    display: block;
+    width: 100%;
+    height: 70px;
   }
   .view-online {
     width: 100%;
@@ -80,6 +63,8 @@
   }
   .view-online a {
     cursor: pointer;
+    float: left;
+    margin-top: 30px;
   }
   .answers-count-container {
     border-bottom: 2px solid var(--vscode-textSeparator-foreground);
@@ -102,7 +87,7 @@
     active={question.last_activity_date}
     viewed={question.view_count} />
 
-  <div class="question-container">
+  <div class="row">
 
     <div class="left">
       <QuestionIndices
@@ -120,7 +105,7 @@
         <Tags tags={question.tags} />
       </div>
 
-      <div class="question-left-bottom">
+      <div class="question-answer-bottom">
         <div class="view-online">
           <a href={question.link} target="_blank">view online</a>
         </div>
@@ -152,12 +137,12 @@
     {#if question.answer_count > 0}
       <h2>{question.answer_count} Answers</h2>
     {:else}
-      <h1>No Answers</h1>
+      <h2>No Answers</h2>
     {/if}
   </div>
 
   {#if question.answer_count > 0}
-    <QuestionAnswers {questionId} {language} />
+    <QuestionAnswers {questionId} {language} {vscode} />
   {/if}
 {:else}
   <p>Loading Question...</p>

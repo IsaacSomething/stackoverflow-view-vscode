@@ -9,12 +9,14 @@ Visual Studio Code extension for access to Stack Overflow inside of the editor.
 
 ### Configuration
 ---
-Supports internationalization (Set in configuration)
+Supports internationalization
   - English (default)
   - Russian
   - Portuguese
   - Japanese
   - Spanish
+
+<blockquote><small> Please note: Some of the translation was done bcopying Stackoverflows language sites and some of it was done witgoogle translate - if there is any issues with translation it is nointentional </small></blockquote>
 
 Set your preferred sort type
   - relevance
@@ -22,7 +24,7 @@ Set your preferred sort type
   - activity
   - newest
 
-### Keyboard Shorcuts
+### Keyboard Shortcuts
 ---
 **not mac** : <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>s</kbd><br />
 **mac** : <kbd>ctrl</kbd> + <kbd>cmd</kbd> + <kbd>s</kbd>

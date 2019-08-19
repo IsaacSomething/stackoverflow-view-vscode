@@ -41,13 +41,6 @@
 </script>
 
 <style>
-  .left {
-    text-align: center;
-    margin: 2%;
-  }
-  .right {
-    width: 100%;
-  }
   .content {
     min-height: 90px;
   }
@@ -91,24 +84,15 @@
     {language} />
 
   <RowLayout>
-    <div slot="left">THIS IS THE LEFT</div>
-    <div slot="right">
-      THIS IS THE RIGHT
-      <br />
-      <Comments comments={question.comments} {language} />
-    </div>
-  </RowLayout>
 
-  <!-- <div class="row">
-
-    <div class="left">
+    <div slot="left">
       <QuestionIndices
         score={question.score}
         favorite={question.favorite_count}
         {language} />
     </div>
 
-    <div class="right">
+    <div slot="right">
 
       <div class="content">
         {@html question.body}
@@ -144,11 +128,12 @@
         <QuestionNotice notice={question.notice} {language} />
       {/if}
 
-      <Comments comments={question.comments} {language} />
-
+      {#if question.comments}
+        <Comments comments={question.comments} {language} />
+      {/if}
     </div>
 
-  </div> -->
+  </RowLayout>
 
   <div class="answers-count-container">
     {#if question.answer_count > 0}

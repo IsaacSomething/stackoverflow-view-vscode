@@ -54,41 +54,36 @@
     font-size: 11px;
     word-break: keep-all;
   }
-  .link {
-    margin-left: 62px;
-  }
 </style>
 
-{#if comments}
-  <section in:fade>
+<section in:fade>
 
-    {#each comments as comment, i}
-      {#if i <= commentsShowAmount}
-        <div class="container">
-          <div class="col">
-            <strong>
-              {#if comment.score === 0}-{:else}{comment.score}{/if}
-            </strong>
-          </div>
-          <div class="col">
-            {@html comment.body}
-            <i>
-              &nbsp;&nbsp;–&nbsp;&nbsp
-              <span class="display-name">{comment.owner.display_name}</span>
-              &nbsp {setDate(comment.creation_date)}
-            </i>
-          </div>
+  {#each comments as comment, i}
+    {#if i <= commentsShowAmount}
+      <div class="container">
+        <div class="col">
+          <strong>
+            {#if comment.score === 0}-{:else}{comment.score}{/if}
+          </strong>
         </div>
-      {/if}
-    {/each}
+        <div class="col">
+          {@html comment.body}
+          <i>
+            &nbsp;&nbsp;–&nbsp;&nbsp
+            <span class="display-name">{comment.owner.display_name}</span>
+            &nbsp {setDate(comment.creation_date)}
+          </i>
+        </div>
+      </div>
+    {/if}
+  {/each}
 
-    <span class="link" on:click={toggleComments}>
-      {#if comments.length > commentsShowAmount}
-        {`${language.text.show} ${commentsLength} ${language.text.more_comments}`}
-      {:else if comments.length === commentsShowAmount && comments.length > commentsShowAmount}
-        {language.text.hide_comments}
-      {/if}
-    </span>
+  <span on:click={toggleComments}>
+    {#if comments.length > commentsShowAmount}
+      {`${language.text.show} ${commentsLength} ${language.text.more_comments}`}
+    {:else if comments.length === commentsShowAmount}
+      {language.text.hide_comments}
+    {/if}
+  </span>
 
-  </section>
-{/if}
+</section>

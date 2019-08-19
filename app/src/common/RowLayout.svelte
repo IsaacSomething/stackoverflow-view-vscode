@@ -1,20 +1,26 @@
 <style>
   .container {
-    display: block;
+    display: table;
   }
-  .left {
+  .container .col {
+    display: table-cell;
+    padding: 10px 0px 10px 10px;
+  }
+  .container .col:first-child {
     text-align: center;
-    float: left;
+    width: 12%;
   }
-  .right {
+  .container .col:last-child {
+    text-align: left;
+    word-break: keep-all;
   }
 </style>
 
 <div class="container">
-  <div class="left">
+  <div class="col left">
     <slot name="left" />
   </div>
-  <div class="right">
+  <div class="col right">
     <slot name="right" />
   </div>
 </div>

@@ -1,6 +1,8 @@
 <script>
-  import Comments from "../common/Comments.svelte";
   import axios from "axios";
+  import Comments from "../common/Comments.svelte";
+  import RowLayout from "../common/RowLayout.svelte";
+  import QuestionAnswerIndicies from "./QuestionAnswerIndicies.svelte";
   import User from "../common/User.svelte";
   import Tags from "../common/Tags.svelte";
 
@@ -31,8 +33,8 @@
 </script>
 
 <style>
-  .answer-tick {
-    fill: #45a163;
+  .container {
+    border-bottom: 2px solid var(--vscode-textSeparator-foreground);
   }
   /* Duplicate code from Questions.svelte */
   .question-answer-bottom {
@@ -44,37 +46,36 @@
 
 {#if answers}
   {#each answers as answer, i}
-    <div>
-      <h2>
-        <small>⯅</small>
-        {answer.score}
-        {#if answer.is_accepted}
-          <svg
-            aria-hidden="true"
-            class="answer-tick"
-            width="36"
-            height="36"
-            viewBox="0 0 36 36">
-            <path d="M6 14l8 8L30 6v8L14 30l-8-8v-8z" />
-          </svg>
-        {/if}
-      </h2>
+    <div class="container">
+      <RowLayout>
+
+        <div slot="left">
+          <QuestionAnswerIndicies
+            score={answer.score}
+            isAccepted={answer.is_accepted} />
+        </div>
+
+        <div slot="right">
+          <div>
+            {@html answer.body}
+          </div>
+
+          {#if answer.tags}
+            <Tags tags={answer.tags} />
+          {/if}
+
+          <div class="question-answer-bottom">
+            <User
+              user={answer.owner}
+              createdDate={answer.creation_date}
+              {language} />
+          </div>
+
+          {#if answer.comments}
+            <Comments comments={answer.comments} {language} />
+          {/if}
+        </div>
+      </RowLayout>
     </div>
-
-    <div>
-      {@html answer.body}
-    </div>
-
-    {#if answer.tags}
-      <Tags tags={answer.tags} />
-    {/if}
-
-    <div class="question-answer-bottom">
-      <User user={answer.owner} createdDate={answer.creation_date} {language} />
-    </div>
-
-    {#if answer.comments}
-      <Comments comments={answer.comments} {language}/>
-    {/if}
   {/each}
 {/if}

@@ -45,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         // Show progress loader
-        showWindowProgress(stackoverflowPanel, `Loading Stackoverflow Search Results`);
+        showWindowProgress(stackoverflowPanel);
 
         // Listen for changes to window title
         changeWindowTitle(stackoverflowPanel);
@@ -85,7 +85,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         // Show progress loader
-        showWindowProgress(stackoverflowPanel, 'Loading Stackoverflow Article');
+        showWindowProgress(stackoverflowPanel);
 
       }
     });
@@ -113,10 +113,9 @@ function createWebViewPanel(panelTitle: string, path: string): vscode.WebviewPan
  * Show progress in window - bottom left
  * @param title string
  */
-function showWindowProgress(panel: vscode.WebviewPanel, title: string) {
+function showWindowProgress(panel: vscode.WebviewPanel) {
   vscode.window.withProgress({
-    location: vscode.ProgressLocation.Window,
-    title: title,
+    location: vscode.ProgressLocation.Window
   }, (progress, token) => {
 
     // Resolve once GET is complete 

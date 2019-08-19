@@ -1,5 +1,6 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+  import { kFormatter } from "../stores/k-formatter.js";
   import { createEventDispatcher } from "svelte";
 
   export let totalResults;
@@ -7,11 +8,6 @@
   export let sortTypes;
 
   $: total = kFormatter(totalResults);
-  function kFormatter(num) {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  }
 
   const dispatch = createEventDispatcher();
   function setSearchOrder(sortTypeIndex) {

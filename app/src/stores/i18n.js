@@ -1,6 +1,6 @@
-import { writable } from 'svelte/store';
+import { readable, writable } from 'svelte/store';
 
-export const languages = writable([
+export const languages = readable([
   {
     language: 'English', code: '', text: {
       search: 'search',

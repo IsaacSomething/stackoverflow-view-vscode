@@ -1,9 +1,10 @@
 <style>
   .loader {
-    display: flex;
     height: 30px;
     width: 200px;
-    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    right: 10px;
   }
   .loader-item {
     width: 200px;

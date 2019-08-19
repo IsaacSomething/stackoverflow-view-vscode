@@ -1,6 +1,7 @@
 <script>
-  import { fade } from "svelte/transition";
   import { i18n } from "../stores/i18n.js";
+  import { uriSegments } from "../stores/static-models.js";
+  import { fade } from "svelte/transition";
   import axios from "axios";
   import Comments from "../Common/Comments.svelte";
   import RowLayout from "../Common/RowLayout.svelte";
@@ -19,16 +20,11 @@
   let question;
   let answers;
 
-  const baseUri = "https://api.stackexchange.com/2.2";
-  const filter =
-    "!846.ilK3D.2Pl0pgfPfmnelLqFsIyM(vhzUILxWBbRUYVMGZZc56l7wJcBD70KfJmVD"; // NB!! If this is changed PLEASE UPDATE the question-filters.md
-  const key = "VP5SbX4dbH8MJUft7hjoaA((";
-  const site = `${$i18n.code}stackoverflow`;
-  const uri = `${baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
-
   vscode.postMessage({ command: "progress", action: "start" });
 
-  // Get question
+  const site = `${$i18n.code}stackoverflow`;
+  const uri = `${uriSegments.baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${uriSegments.questionFilter}&key=${uriSegments.key}`;
+
   axios.get(uri).then(response => {
     if (response.status === 200) {
       question = response.data.items[0];

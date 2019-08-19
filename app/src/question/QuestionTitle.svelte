@@ -1,5 +1,6 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+  import { kFormatter } from "../stores/k-formatter.js";
   import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
   import { fromUnixTime, formatDistanceToNow } from "date-fns";
@@ -10,12 +11,6 @@
   export let viewed;
 
   $: totalViews = kFormatter(viewed);
-
-  function kFormatter(num) {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  }
 </script>
 
 <style>

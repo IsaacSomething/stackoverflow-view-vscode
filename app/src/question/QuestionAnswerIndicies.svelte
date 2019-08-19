@@ -13,6 +13,7 @@
   }
   .answer-tick {
     fill: #45a163;
+    margin-top: 16px;
   }
 </style>
 

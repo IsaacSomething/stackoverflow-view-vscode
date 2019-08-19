@@ -1,5 +1,6 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+  import { fade } from "svelte/transition";
   export let tagData;
 </script>
 
@@ -27,14 +28,16 @@
   }
 </style>
 
-<div>
-  <h1>{$i18n.text.about}</h1>
-  <span>{tagData.tag_name}</span>
-</div>
+<div in:fade>
+  <div>
+    <h1>{$i18n.text.about}</h1>
+    <span>{tagData.tag_name}</span>
+  </div>
 
-<h3>{$i18n.text.tag_info}</h3>
+  <h3>{$i18n.text.tag_info}</h3>
 
-<div class="excerpt">
-  {@html tagData.excerpt}
+  <div class="excerpt">
+    {@html tagData.excerpt}
+  </div>
+  {@html tagData.body}
 </div>
-{@html tagData.body}

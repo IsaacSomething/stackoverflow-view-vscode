@@ -1,6 +1,7 @@
 <style>
   .container {
     display: table;
+    width: 100%;
   }
   .container .col {
     display: table-cell;
@@ -8,19 +9,26 @@
   }
   .container .col:first-child {
     text-align: center;
-    width: 12%;
+    width: 10%;
   }
   .container .col:last-child {
     text-align: left;
     word-break: keep-all;
+    width: 90%;
+  }
+  @media screen and (max-width: 765px) {
+    .container .col:first-child {
+      display: none;
+      padding: 0;
+    }
   }
 </style>
 
 <div class="container">
-  <div class="col left">
+  <div class="col">
     <slot name="left" />
   </div>
-  <div class="col right">
+  <div class="col">
     <slot name="right" />
   </div>
 </div>

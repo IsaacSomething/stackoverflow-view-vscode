@@ -1,5 +1,6 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+  import { uriSegments } from "../stores/static-models.js";
   import axios from "axios";
   import Comments from "../common/Comments.svelte";
   import RowLayout from "../common/RowLayout.svelte";
@@ -11,12 +12,10 @@
   export let vscode;
   let answers;
 
-  const baseUri = "https://api.stackexchange.com/2.2";
-  const filter = "!M7iu1KROAgtzactMhHlgZ19xUsGuQJ(WdBhiYR*(Bw_PhIcdWN*FF1u"; // NB!! If this is changed PLEASE UPDATE the filters.md
-  const key = "VP5SbX4dbH8MJUft7hjoaA((";
   const site = `${$i18n.code}stackoverflow`;
-  const uri = `${baseUri}/questions/${questionId}/answers?order=desc&sort=votes&site=${site}&filter=${filter}&key=${key}`;
+  const uri = `${uriSegments.baseUri}/questions/${questionId}/answers?order=desc&sort=votes&site=${site}&filter=${uriSegments.answersFilter}&key=${uriSegments.key}`;
 
+  
   axios.get(uri).then(response => {
     if (response.status === 200) {
       answers = response.data.items;

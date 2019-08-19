@@ -1,5 +1,6 @@
 <script>
   import { languages, i18n } from "./stores/i18n.js";
+  import { uriSegments } from "./stores/static-models.js";
   import axios from "axios";
   import Leet from "./common/Leet.svelte";
   import Header from "./common/Header.svelte";
@@ -22,11 +23,12 @@
   let gif;
   let page = 1;
 
-  // Search post from extension.ts on showInputBox()
+  // Posted properties on search from extension.ts => showInputBox()
   window.addEventListener("message", event => {
     eventAction = event.data.action;
     if (event.data.action === "topPick") {
       stopProgressMessage(false);
+      $i18n = $languages[0];
       questionId = event.data.questionId;
       gif = event.data.gif;
       section = "question";
@@ -34,9 +36,7 @@
       stopProgressMessage(false);
       section = "leeeeeeet";
     } else if (event.data.action === "search") {
-      $i18n = $languages.find(
-        element => element.language === event.data.language
-      );
+      $i18n = $languages.find(_ => _.language === event.data.language);
       searchQuery = event.data.query;
       sortTypes = event.data.sortTypes;
       selectedSort = sortTypes.find(element => element.isSelected);
@@ -90,11 +90,8 @@
   function handleTagSearch(event) {
     const selectedTag = event.detail.tag;
     if (selectedTag) {
-      const baseUri = "https://api.stackexchange.com/2.2";
-      const filter = "!Fu4hf8)e-ZPMLisJD6KbEP37j-";
-      const key = "VP5SbX4dbH8MJUft7hjoaA((";
       const site = `${$i18n.code}stackoverflow`;
-      const uri = `${baseUri}/tags/${selectedTag}/wikis?site=${site}&filter=${filter}&key=${key}`;
+      const uri = `${uriSegments.baseUri}/tags/${selectedTag}/wikis?site=${site}&filter=${uriSegments.tagFilter}&key=${uriSegments.key}`;
 
       axios.get(uri).then(response => {
         if (response.status === 200) {
@@ -118,12 +115,11 @@
     totalResults = null;
     searchData = null;
     vscode.postMessage({ command: "progress", action: "start", error: false });
+    console.log("uriSegments", uriSegments);
 
-    const baseUri = "https://api.stackexchange.com/2.2";
-    const filter = "!6hZ6dglG-BiYJou9Z(tZVYJRjfjw2FfHacerRTypmqpeKv";
-    const key = "VP5SbX4dbH8MJUft7hjoaA((";
     const site = `${$i18n.code}stackoverflow`;
-    const uri = `${baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${filter}&key=${key}`;
+    const uri = `${uriSegments.baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${uriSegments.searchFilter}&key=${uriSegments.key}`;
+    console.log("uri", uri);
 
     axios.get(uri).then(response => {
       isLoading = false;
@@ -165,13 +161,13 @@
     on:searchInput={handleInputSearch}
     on:sortChange={handleSortChange}
     on:enableSearch={handleEnableSearch}
-    {searchQuery}
-    {vscode}
-    {searchData}
-    {totalResults}
     {isLoading}
+    {searchQuery}
+    {searchData}
     {tagData}
-    {sortTypes} />
+    {totalResults}
+    {sortTypes}
+    {vscode} />
 {:else if section === 'tag'}
   <Tag {tagData} />
 {/if}

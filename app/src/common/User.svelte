@@ -1,5 +1,6 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+  import { kFormatter } from "../stores/k-formatter.js";
   import { format, fromUnixTime } from "date-fns";
 
   export let user;
@@ -13,12 +14,6 @@
   )} ${$i18n.text.at} ${format(date, "HH:mm")}`;
 
   $: rep = kFormatter(user.reputation);
-
-  function kFormatter(num) {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  }
 </script>
 
 <style>

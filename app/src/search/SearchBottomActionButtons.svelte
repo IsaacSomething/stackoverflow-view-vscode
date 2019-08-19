@@ -1,5 +1,5 @@
 <script>
-  export let language;
+  import { i18n } from "../stores/i18n.js";
   let activePage = 1;
 
   function firstSetOfQuestions() {}
@@ -52,5 +52,7 @@
     on:click={nextThirtySetOfQuestions}>
     5
   </button>
-  <button class="outline" on:click={nextThirtySetOfQuestions}>{language.text.next}</button>
+  <button class="outline" on:click={nextThirtySetOfQuestions}>
+    {$i18n.text.next}
+  </button>
 </div>

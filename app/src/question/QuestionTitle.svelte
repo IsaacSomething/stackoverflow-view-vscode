@@ -1,4 +1,5 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
   import { fromUnixTime, formatDistanceToNow } from "date-fns";
@@ -7,7 +8,6 @@
   export let asked;
   export let active;
   export let viewed;
-  export let language;
 
   $: totalViews = kFormatter(viewed);
 
@@ -40,18 +40,18 @@
     {@html title}
   </h1>
   <div>
-    {language.text.asked}
+    {$i18n.text.asked}
     <span>
       <strong>{formatDistanceToNow(fromUnixTime(asked))}</strong>
     </span>
-    {language.text.active}
+    {$i18n.text.active}
     <span>
       <strong>{formatDistanceToNow(fromUnixTime(active))}</strong>
     </span>
-    {language.text.viewed}
+    {$i18n.text.viewed}
     <span>
       <strong>{totalViews}</strong>
-      {language.text.times}
+      {$i18n.text.times}
     </span>
   </div>
 </div>

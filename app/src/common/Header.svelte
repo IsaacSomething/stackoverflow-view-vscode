@@ -1,7 +1,7 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { createEventDispatcher } from "svelte";
   export let section;
-  export let language;
   export let eventAction;
 
   const dispatch = createEventDispatcher();
@@ -42,8 +42,8 @@
   {#if (section === 'question' && eventAction === 'search') || section === 'tag'}
     <div class="back" on:click={goBack}>
       <span />
-      {language.text.back_to_search_results}
-      <strong>{language.text.results}</strong>
+      {$i18n.text.back_to_search_results}
+      <strong>{$i18n.text.results}</strong>
     </div>
   {:else if section === 'leeeeeeet'}
     5t4©k
@@ -51,10 +51,10 @@
   {:else}
     Stack
     <strong>overflow</strong>
-    {#if language && language.code !== ''}
+    {#if $i18n && $i18n.code !== ''}
       <small>
         &nbsp;&nbsp;
-        <i>{language.language}</i>
+        <i>{$i18n.language}</i>
       </small>
     {/if}
   {/if}

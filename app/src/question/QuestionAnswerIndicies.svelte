@@ -1,6 +1,6 @@
 <script>
   export let score;
-  export let is_accepted;
+  export let isAccepted;
 </script>
 
 <style>
@@ -25,7 +25,7 @@
 {#if score < 0}
   <div class="vote-down">⯆</div>
 {/if}
-{#if is_accepted}
+{#if isAccepted}
   <svg
     aria-hidden="true"
     class="answer-tick"

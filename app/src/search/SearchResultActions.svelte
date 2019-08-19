@@ -1,10 +1,10 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { createEventDispatcher } from "svelte";
 
   export let totalResults;
   export let tagData;
   export let sortTypes;
-  export let language;
 
   $: total = kFormatter(totalResults);
   function kFormatter(num) {
@@ -28,7 +28,7 @@
   }
 
   function setLabel(label, index) {
-    switch (language.code) {
+    switch ($i18n.code) {
       case "es.":
         return sortTypes[index].text.spanish;
         break;
@@ -81,14 +81,11 @@
 
 {#if totalResults}
   <div>
-    <h3>
-      {total}
-      {#if language}{language.text.results}{/if}
-    </h3>
+    <h3>{total} {$i18n.text.results}</h3>
     <p>
       {#if tagData}
         <span class="link" on:click={enableSearch}>
-          <strong>{language.text.search}</strong>
+          <strong>{$i18n.text.search}</strong>
         </span>
       {/if}
       {#each sortTypes as sort, i}

@@ -1,17 +1,16 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { format, fromUnixTime } from "date-fns";
+
   export let user;
   export let createdDate;
   export let isQuestion = false;
-  export let language;
 
   const date = fromUnixTime(createdDate);
-  $: atTime = language
-    ? `${language.text.asked} ${format(date, "MMM dd")} '${format(
-        date,
-        "yy"
-      )} at ${format(date, "HH:mm")}`
-    : null;
+  $: atTime = `${$i18n.text.asked} ${format(date, "MMM dd")} '${format(
+    date,
+    "yy"
+  )} ${$i18n.text.at} ${format(date, "HH:mm")}`;
 
   $: rep = kFormatter(user.reputation);
 

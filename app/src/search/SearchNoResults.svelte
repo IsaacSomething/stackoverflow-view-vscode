@@ -1,6 +1,6 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   export let searchQuery;
-  export let language;
 </script>
 
 <style>
@@ -10,10 +10,10 @@
 </style>
 
 <p>
-  {language.text.no_results_abbr_01}
+  {$i18n.text.no_results_abbr_01}
   <strong>
     <i>"{searchQuery}"</i>
     .
   </strong>
-  {language.text.no_results_abbr_02}
+  {$i18n.text.no_results_abbr_02}
 </p>

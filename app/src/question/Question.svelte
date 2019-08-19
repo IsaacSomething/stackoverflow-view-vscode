@@ -1,11 +1,12 @@
 <script>
   import { fade } from "svelte/transition";
+  import { i18n } from "../stores/i18n.js";
   import axios from "axios";
-  import Comments from "../common/Comments.svelte";
-  import RowLayout from "../common/RowLayout.svelte";
-  import User from "../common/User.svelte";
-  import Tags from "../common/Tags.svelte";
-  import Loader from "../common/Loader.svelte";
+  import Comments from "../Common/Comments.svelte";
+  import RowLayout from "../Common/RowLayout.svelte";
+  import User from "../Common/User.svelte";
+  import Tags from "../Common/Tags.svelte";
+  import Loader from "../Common/Loader.svelte";
   import QuestionTitle from "./QuestionTitle.svelte";
   import QuestionAnswers from "./QuestionAnswers.svelte";
   import QuestionIndices from "./QuestionIndices.svelte";
@@ -15,7 +16,6 @@
   export let questionId;
   export let gif;
   export let vscode;
-  export let language;
   let question;
   let answers;
 
@@ -23,7 +23,7 @@
   const filter =
     "!846.ilK3D.2Pl0pgfPfmnelLqFsIyM(vhzUILxWBbRUYVMGZZc56l7wJcBD70KfJmVD"; // NB!! If this is changed PLEASE UPDATE the question-filters.md
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
-  const site = `${language.code}stackoverflow`;
+  const site = `${$i18n.code}stackoverflow`;
   const uri = `${baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
 
   vscode.postMessage({ command: "progress", action: "start" });
@@ -80,16 +80,14 @@
     title={question.title}
     asked={question.creation_date}
     active={question.last_activity_date}
-    viewed={question.view_count}
-    {language} />
+    viewed={question.view_count} />
 
   <RowLayout>
 
     <div slot="left">
       <QuestionIndices
         score={question.score}
-        favorite={question.favorite_count}
-        {language} />
+        favorite={question.favorite_count} />
     </div>
 
     <div slot="right">
@@ -104,32 +102,28 @@
 
       <div class="question-answer-bottom">
         <div class="view-online">
-          <a href={question.link} target="_blank">
-            {language.text.view_online}
-          </a>
+          <a href={question.link} target="_blank">{$i18n.text.view_online}</a>
         </div>
 
         <User
           user={question.owner}
           createdDate={question.creation_date}
-          isQuestion={true}
-          {language} />
+          isQuestion={true} />
       </div>
 
       {#if question.closed_details}
         <QuestionClosed
           details={question.closed_details}
           reason={question.closed_reason}
-          closedDate={question.closed_date}
-          {language} />
+          closedDate={question.closed_date} />
       {/if}
 
       {#if question.notice}
-        <QuestionNotice notice={question.notice} {language} />
+        <QuestionNotice notice={question.notice} />
       {/if}
 
       {#if question.comments}
-        <Comments comments={question.comments} {language} />
+        <Comments comments={question.comments} />
       {/if}
     </div>
 
@@ -137,14 +131,14 @@
 
   <div class="answers-count-container">
     {#if question.answer_count > 0}
-      <h2>{question.answer_count} {language.text.answers}</h2>
+      <h2>{question.answer_count} {$i18n.text.answers}</h2>
     {:else}
-      <h2>{language.text.no_answers}</h2>
+      <h2>{$i18n.text.no_answers}</h2>
     {/if}
   </div>
 
   {#if question.answer_count > 0}
-    <QuestionAnswers {questionId} {language} {vscode} />
+    <QuestionAnswers {questionId} {vscode} />
   {/if}
 {:else}
   <Loader />

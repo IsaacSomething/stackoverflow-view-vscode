@@ -1,6 +1,6 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   export let tagData;
-  export let language;
 </script>
 
 <style>
@@ -28,11 +28,11 @@
 </style>
 
 <div>
-  <h1>{language.text.about}</h1>
+  <h1>{$i18n.text.about}</h1>
   <span>{tagData.tag_name}</span>
 </div>
 
-<h3>{language.text.tag_info}</h3>
+<h3>{$i18n.text.tag_info}</h3>
 
 <div class="excerpt">
   {@html tagData.excerpt}

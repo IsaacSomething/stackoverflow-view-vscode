@@ -1,5 +1,6 @@
 <script>
   import { fade } from "svelte/transition";
+  import { i18n } from "../stores/i18n.js";
   import { createEventDispatcher } from "svelte";
   import { format, fromUnixTime } from "date-fns";
   import SearchBottomActionButtons from "./SearchBottomActionButtons.svelte";
@@ -8,7 +9,6 @@
 
   export let searchData;
   export let isLoading;
-  export let language;
 
   function setAskedValue(date) {
     const dateFromUnix = fromUnixTime(date);
@@ -65,7 +65,7 @@
     class:last-item={i === searchData.length - 1}
     class:is-loading={isLoading}>
 
-    <SearchVotesAnswers {language} {searchItem} />
+    <SearchVotesAnswers {searchItem} />
 
     <div class="information">
 
@@ -73,8 +73,8 @@
         on:click={() => navigateToQuestion(searchItem.question_id, searchItem.title)}>
         {@html searchItem.title}
         {#if searchItem.closed_date && searchItem.closed_details.on_hold}
-          [{language.text.on_hold}]
-        {:else if searchItem.closed_date}[{language.text.closed}]{/if}
+          [{$i18n.text.on_hold}]
+        {:else if searchItem.closed_date}[{$i18n.text.closed}]{/if}
       </header>
 
       <p>
@@ -85,8 +85,8 @@
       <div class="information-bottom">
         <Tags tags={searchItem.tags} on:searchByTag />
         <div class="asked-info">
-          {language.text.asked} {setAskedValue(searchItem.creation_date)}
-          {language.text.by}
+          {$i18n.text.asked} {setAskedValue(searchItem.creation_date)}
+          {$i18n.text.by}
           <i>{searchItem.owner.display_name}</i>
         </div>
       </div>
@@ -96,4 +96,4 @@
   </div>
 {/each}
 
-<SearchBottomActionButtons {language} />
+<SearchBottomActionButtons />

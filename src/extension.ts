@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExtensionModel, ISortTypes, ILanguage } from './extension-model';
+import { ExtensionModel, ISortTypes } from './extension-model';
 import { posix } from 'path';
 import { AppPageHtml } from './app-page';
 
@@ -23,9 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Get language
         const currentLanguageSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.language');
-        const language: any = ExtensionModel.languages.find((element: ILanguage) => {
-          return element.language === currentLanguageSelection && element;
-        });
 
         // Get sort type - set isSelected property
         const currentSortSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.sort');
@@ -43,7 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
         stackoverflowPanel.webview.postMessage({
           action: 'search',
           query: searchQuery,
-          language: language,
+          language: currentLanguageSelection,
           sortTypes: ExtensionModel.sortTypes
         });
 

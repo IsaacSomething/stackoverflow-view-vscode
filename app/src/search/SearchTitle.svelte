@@ -1,10 +1,10 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { createEventDispatcher } from "svelte";
   import SearchTips from "./SearchTips.svelte";
 
   const dispatch = createEventDispatcher();
   export let tagData;
-  export let language;
   let showTips = false;
 
   function toggleAdvancedTips() {
@@ -39,24 +39,24 @@
 
 {#if !tagData}
   <div class="title-container">
-    <h1>{language.text.search_results}</h1>
+    <h1>{$i18n.text.search_results}</h1>
     <span class="link" on:click={toggleAdvancedTips}>
       {#if !showTips}
-        {language.text.advanced_search_tips}
-      {:else}{language.text.close_search_tips}{/if}
+        {$i18n.text.advanced_search_tips}
+      {:else}{$i18n.text.close_search_tips}{/if}
     </span>
   </div>
   {#if showTips}
     <SearchTips />
   {/if}
 {:else}
-  <h1>{language.text.questions_tagged} [{tagData.tag_name}]</h1>
+  <h1>{$i18n.text.questions_tagged} [{tagData.tag_name}]</h1>
   {#if tagData.excerpt}
     <p>
       {@html tagData.excerpt}
       {#if tagData.body !== ''}
         <span class="link" on:click={learnMoreAboutTag}>
-          <strong>...{language.text.learn_more}</strong>
+          <strong>...{$i18n.text.learn_more}</strong>
         </span>
       {/if}
     </p>

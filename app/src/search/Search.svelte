@@ -12,21 +12,19 @@
   export let totalResults;
   export let tagData;
   export let sortTypes;
-  export let language;
   export let isLoading = true;
 </script>
 
-<SearchTitle {tagData} {language} on:gotoTag />
+<SearchTitle {tagData} on:gotoTag />
 
 {#if !tagData}
-  <SearchInput {searchQuery} {language} on:searchInput />
+  <SearchInput {searchQuery} on:searchInput />
 {/if}
 
 <SearchResultsActions
   {sortTypes}
   {tagData}
   {totalResults}
-  {language}
   on:sortChange
   on:enableSearch />
 
@@ -39,10 +37,9 @@
     <SearchResultBlock
       {isLoading}
       {searchData}
-      {language}
       on:gotoQuestion
       on:searchByTag />
   {:else}
-    <SearchNoResults {searchQuery} {language} />
+    <SearchNoResults {searchQuery} />
   {/if}
 {/if}

@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { i18n } from "../stores/i18n.js";
 
-  export let language;
   export let searchQuery;
   let searchQueryPreviousValue = searchQuery;
 
@@ -65,13 +65,13 @@
 <section>
 
   <p>
-    {language.text.results_for}
+    {$i18n.text.results_for}
     <span>
       {#if searchQueryPreviousValue}{searchQueryPreviousValue}{/if}
     </span>
   </p>
 
   <input type="text" bind:value={searchQuery} />
-  <button on:click={handleSearchByClick}>{language.text.search}</button>
+  <button on:click={handleSearchByClick}>{$i18n.text.search}</button>
 
 </section>

@@ -1,12 +1,12 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { format, fromUnixTime } from "date-fns";
   export let details;
   export let closedDate;
   export let reason;
-  export let language;
 
   const date = fromUnixTime(closedDate);
-  $: atTime = ` ${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
+  $: atTime = `${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
     date,
     "HH:mm"
   )}`;
@@ -23,10 +23,10 @@
 
 <blockquote>
   <header>
-    <strong>{language.text.closed}</strong>
-    as
+    <strong>{$i18n.text.closed}</strong>
+    {$i18n.text.as}
     {@html reason}
-    on {atTime}
+    {$i18n.text.on} {atTime}
   </header>
   {@html details.description}
 </blockquote>

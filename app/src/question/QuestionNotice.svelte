@@ -1,7 +1,7 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { format, fromUnixTime } from "date-fns";
   export let notice;
-  export let language;
 
   const date = fromUnixTime(notice.creation_date);
   $: atTime = `${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
@@ -21,8 +21,8 @@
 
 <blockquote>
   <header>
-    <strong>{language.text.locked}</strong>
-    on {atTime}
+    <strong>{$i18n.text.locked}</strong>
+    {$i18n.text.on} {atTime}
   </header>
   {@html notice.body}
 </blockquote>

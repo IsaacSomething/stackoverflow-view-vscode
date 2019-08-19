@@ -1,19 +1,18 @@
 <script>
+  import { i18n } from "../stores/i18n.js";
   import { fade } from "svelte/transition";
   import { format, fromUnixTime } from "date-fns";
 
   export let comments;
-  export let language;
   let commentsShowAmount = 5;
-
   $: commentsLength = comments && comments.length - commentsShowAmount - 1;
 
   function setDate(date) {
     const dateFromUnix = fromUnixTime(date);
-    return `asked ${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
+    return `${$i18n.text.asked} ${format(date, "MMM dd")} '${format(
       date,
-      "HH:mm"
-    )}`;
+      "yy"
+    )} at ${format(date, "HH:mm")}`;
   }
 
   function toggleComments() {
@@ -80,9 +79,9 @@
 
   <span on:click={toggleComments}>
     {#if comments.length > commentsShowAmount}
-      {`${language.text.show} ${commentsLength} ${language.text.more_comments}`}
+      {`${$i18n.text.show} ${commentsLength} ${$i18n.text.more_comments}`}
     {:else if comments.length === commentsShowAmount}
-      {language.text.hide_comments}
+      {$i18n.text.hide_comments}
     {/if}
   </span>
 

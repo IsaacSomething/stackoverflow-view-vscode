@@ -1,4 +1,5 @@
 <script>
+  import { languages, i18n } from "./stores/i18n.js";
   import axios from "axios";
   import Leet from "./common/Leet.svelte";
   import Header from "./common/Header.svelte";
@@ -16,7 +17,6 @@
   let eventAction;
   let tagData;
 
-  let language;
   let sortTypes;
   let selectedSort;
   let gif;
@@ -28,16 +28,17 @@
     if (event.data.action === "topPick") {
       stopProgressMessage(false);
       questionId = event.data.questionId;
-      language = event.data.language;
       gif = event.data.gif;
       section = "question";
     } else if (event.data.action === "search" && event.data.query === "1337") {
       stopProgressMessage(false);
       section = "leeeeeeet";
     } else if (event.data.action === "search") {
+      $i18n = $languages.find(
+        element => element.language === event.data.language
+      );
       searchQuery = event.data.query;
       sortTypes = event.data.sortTypes;
-      language = event.data.language;
       selectedSort = sortTypes.find(element => element.isSelected);
       section = "search";
       search();
@@ -92,7 +93,7 @@
       const baseUri = "https://api.stackexchange.com/2.2";
       const filter = "!Fu4hf8)e-ZPMLisJD6KbEP37j-";
       const key = "VP5SbX4dbH8MJUft7hjoaA((";
-      const site = `${language.code}stackoverflow`;
+      const site = `${$i18n.code}stackoverflow`;
       const uri = `${baseUri}/tags/${selectedTag}/wikis?site=${site}&filter=${filter}&key=${key}`;
 
       axios.get(uri).then(response => {
@@ -121,7 +122,7 @@
     const baseUri = "https://api.stackexchange.com/2.2";
     const filter = "!6hZ6dglG-BiYJou9Z(tZVYJRjfjw2FfHacerRTypmqpeKv";
     const key = "VP5SbX4dbH8MJUft7hjoaA((";
-    const site = `${language.code}stackoverflow`;
+    const site = `${$i18n.code}stackoverflow`;
     const uri = `${baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${filter}&key=${key}`;
 
     axios.get(uri).then(response => {
@@ -139,6 +140,7 @@
     });
   }
 
+  // Send a stop progess event to the extension
   function stopProgressMessage(hasError, errorMessage) {
     vscode.postMessage({
       command: "progress",
@@ -149,10 +151,10 @@
   }
 </script>
 
-<Header on:goBack={handleGotoSearch} {language} {section} {eventAction} />
+<Header on:goBack={handleGotoSearch} {section} {eventAction} />
 
 {#if section === 'question'}
-  <Question {questionId} {language} {vscode} {gif} />
+  <Question {questionId} {vscode} {gif} />
 {:else if section === 'leeeeeeet'}
   <Leet />
 {:else if section === 'search'}
@@ -164,7 +166,6 @@
     on:sortChange={handleSortChange}
     on:enableSearch={handleEnableSearch}
     {searchQuery}
-    {language}
     {vscode}
     {searchData}
     {totalResults}
@@ -172,5 +173,5 @@
     {tagData}
     {sortTypes} />
 {:else if section === 'tag'}
-  <Tag {tagData} {language} />
+  <Tag {tagData} />
 {/if}

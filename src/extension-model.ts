@@ -26,7 +26,7 @@ export class ExtensionModel {
         asked: 'asked',
         by: 'by',
         at: 'at',
-        answers: 'asnwers',
+        answers: 'answers',
         answer: 'answer',
         votes: 'votes',
         vote: 'vote',
@@ -50,7 +50,9 @@ export class ExtensionModel {
         show: 'show',
         more_comments: 'more comments',
         hide_comments: 'hide comments',
-        close_search_tips: 'close search tips'
+        close_search_tips: 'close search tips',
+        no_results_abbr_01: 'We couldn\'t find anything for',
+        no_results_abbr_02: 'Try different or less specific keywords.'
       }
     },
     {

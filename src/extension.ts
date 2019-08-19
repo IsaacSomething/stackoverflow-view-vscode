@@ -72,6 +72,9 @@ export function activate(context: vscode.ExtensionContext) {
           return element.label === selectedTopPick.label;
         });
 
+        // Get language
+        const language: any = ExtensionModel.languages[0];
+
         // Create webview panel
         const stackoverflowPanel = createWebViewPanel(`SO: ${selectedTopPick.label}`, context.extensionPath);
         // Set webview - svelte built to ./app/public/*
@@ -80,7 +83,8 @@ export function activate(context: vscode.ExtensionContext) {
         stackoverflowPanel.webview.postMessage({
           action: 'topPick',
           questionId: selectedArticle.id,
-          gif: selectedArticle.gif
+          gif: selectedArticle.gif,
+          language: language
         });
 
         // Show progress loader

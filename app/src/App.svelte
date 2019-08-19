@@ -115,11 +115,9 @@
     totalResults = null;
     searchData = null;
     vscode.postMessage({ command: "progress", action: "start", error: false });
-    console.log("uriSegments", uriSegments);
 
     const site = `${$i18n.code}stackoverflow`;
     const uri = `${uriSegments.baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${uriSegments.searchFilter}&key=${uriSegments.key}`;
-    console.log("uri", uri);
 
     axios.get(uri).then(response => {
       isLoading = false;
@@ -167,6 +165,7 @@
     {tagData}
     {totalResults}
     {sortTypes}
+    {page}
     {vscode} />
 {:else if section === 'tag'}
   <Tag {tagData} />

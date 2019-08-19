@@ -7,9 +7,9 @@
   h1 {
     font-size: 1.4rem;
     margin: 0;
-    margin-bottom: 10px;
   }
-  span {
+  .vote-up,
+  .vote-down {
     font-size: 22px;
   }
   small {
@@ -21,8 +21,13 @@
   }
 </style>
 
-<span>⯅</span>
+{#if score > 0}
+  <div class="vote-up">⯅</div>
+{/if}
 <h1>{score}</h1>
+{#if score < 0}
+  <div class="vote-down">⯆</div>
+{/if}
 {#if favorite > 0}
   <small class="star">★</small>
   <br />

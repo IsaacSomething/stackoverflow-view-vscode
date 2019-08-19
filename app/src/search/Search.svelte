@@ -4,6 +4,7 @@
   import SearchResultBlock from "./SearchResultBlock.svelte";
   import SearchNoResults from "./SearchNoResults.svelte";
   import SearchResultsActions from "./SearchResultActions.svelte";
+  import SearchPager from "./SearchPager.svelte";
   import Loader from "../common/Loader.svelte";
 
   export let vscode;
@@ -12,6 +13,7 @@
   export let totalResults;
   export let tagData;
   export let sortTypes;
+  export let page;
   export let isLoading = true;
 </script>
 
@@ -39,6 +41,8 @@
       {searchData}
       on:gotoQuestion
       on:searchByTag />
+
+    <SearchPager {totalResults} {page} />
   {:else}
     <SearchNoResults {searchQuery} />
   {/if}

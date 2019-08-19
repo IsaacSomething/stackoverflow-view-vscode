@@ -3,7 +3,6 @@
   import { i18n } from "../stores/i18n.js";
   import { createEventDispatcher } from "svelte";
   import { format, fromUnixTime } from "date-fns";
-  import SearchBottomActionButtons from "./SearchBottomActionButtons.svelte";
   import SearchVotesAnswers from "./SearchVotesAnswers.svelte";
   import Tags from "../common/Tags.svelte";
 
@@ -95,5 +94,3 @@
 
   </div>
 {/each}
-
-<SearchBottomActionButtons />

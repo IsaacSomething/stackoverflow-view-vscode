@@ -70,11 +70,11 @@
     {/if}
 
     <div class="question-answer-bottom">
-      <User user={answer.owner} createdDate={answer.creation_date} />
+      <User user={answer.owner} createdDate={answer.creation_date} {language} />
     </div>
 
     {#if answer.comments}
-      <Comments comments={answer.comments} />
+      <Comments comments={answer.comments} {language}/>
     {/if}
   {/each}
 {/if}

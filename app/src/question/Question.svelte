@@ -2,6 +2,7 @@
   import { fade } from "svelte/transition";
   import axios from "axios";
   import Comments from "../common/Comments.svelte";
+  import RowLayout from "../common/RowLayout.svelte";
   import User from "../common/User.svelte";
   import Tags from "../common/Tags.svelte";
   import Loader from "../common/Loader.svelte";
@@ -14,13 +15,13 @@
   export let questionId;
   export let gif;
   export let vscode;
-  export let language = { language: "English", code: "" };
+  export let language;
   let question;
   let answers;
 
   const baseUri = "https://api.stackexchange.com/2.2";
   const filter =
-    "!846.ilK3D.2Pl0pgfPfmnelLqFsIyM(vhzUILxWBbRUYVMGZZc56l7wJcBD70KfJmVD"; // NB!! If this is changed PLEASE UPDATE the filters.md
+    "!846.ilK3D.2Pl0pgfPfmnelLqFsIyM(vhzUILxWBbRUYVMGZZc56l7wJcBD70KfJmVD"; // NB!! If this is changed PLEASE UPDATE the question-filters.md
   const key = "VP5SbX4dbH8MJUft7hjoaA((";
   const site = `${language.code}stackoverflow`;
   const uri = `${baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${filter}&key=${key}`;
@@ -89,7 +90,16 @@
     viewed={question.view_count}
     {language} />
 
-  <div class="row">
+  <RowLayout>
+    <div slot="left">THIS IS THE LEFT</div>
+    <div slot="right">
+      THIS IS THE RIGHT
+      <br />
+      <Comments comments={question.comments} {language} />
+    </div>
+  </RowLayout>
+
+  <!-- <div class="row">
 
     <div class="left">
       <QuestionIndices
@@ -131,14 +141,14 @@
       {/if}
 
       {#if question.notice}
-        <QuestionNotice notice={question.notice} />
+        <QuestionNotice notice={question.notice} {language} />
       {/if}
 
       <Comments comments={question.comments} {language} />
 
     </div>
 
-  </div>
+  </div> -->
 
   <div class="answers-count-container">
     {#if question.answer_count > 0}

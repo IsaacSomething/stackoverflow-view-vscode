@@ -27,6 +27,7 @@
   h1 {
     margin-top: 0;
     margin-bottom: 6px;
+    word-break: break-word;
   }
   span {
     margin-right: 20px;

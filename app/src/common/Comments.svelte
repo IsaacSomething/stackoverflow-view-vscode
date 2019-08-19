@@ -1,6 +1,7 @@
 <script>
   import { fade } from "svelte/transition";
   import { format, fromUnixTime } from "date-fns";
+
   export let comments;
   export let language;
   let commentsShowAmount = 5;
@@ -21,48 +22,63 @@
 </script>
 
 <style>
-  .comments-container {
+  section {
     padding-bottom: 20px;
     margin-top: 30px;
-    border-bottom: 2px solid var(--vscode-textSeparator-foreground);
   }
-  .comments-container p {
+  .container {
+    display: table;
     border-bottom: 1px solid var(--vscode-textSeparator-foreground);
-    padding-bottom: 16px;
   }
-  .comments-container p:last-of-type {
+  .container:last-of-type {
     border-bottom: 0;
+    margin-bottom: 10px;
   }
-  .comments-container p i {
-    text-align: right;
+  .container .col {
+    display: table-cell;
+    padding: 10px 0px 10px 10px;
   }
-  .comments-container p strong {
-    margin: 0 15px;
+  .container .col:first-child {
+    text-align: center;
+    width: 30px;
+    vertical-align: middle;
   }
-  .user-name {
+  .container .col:last-child {
+    text-align: left;
+    word-break: keep-all;
+  }
+  .display-name {
     background-color: var(--vscode-textLink-foreground);
     color: var(--vscode-badge-foreground);
     padding: 0 4px 1px;
     font-size: 11px;
+    word-break: keep-all;
+  }
+  .link {
+    margin-left: 62px;
   }
 </style>
 
 {#if comments}
-  <div class="comments-container" in:fade>
+  <section in:fade>
 
     {#each comments as comment, i}
       {#if i <= commentsShowAmount}
-        <p>
-          <strong>
-            {#if comment.score === 0}-{:else}{comment.score}{/if}
-          </strong>
-          {@html comment.body}
-          <i>
-            &nbsp;&nbsp;–&nbsp;&nbsp
-            <span class="user-name">{comment.owner.display_name}</span>
-            &nbsp {setDate(comment.creation_date)}
-          </i>
-        </p>
+        <div class="container">
+          <div class="col">
+            <strong>
+              {#if comment.score === 0}-{:else}{comment.score}{/if}
+            </strong>
+          </div>
+          <div class="col">
+            {@html comment.body}
+            <i>
+              &nbsp;&nbsp;–&nbsp;&nbsp
+              <span class="display-name">{comment.owner.display_name}</span>
+              &nbsp {setDate(comment.creation_date)}
+            </i>
+          </div>
+        </div>
       {/if}
     {/each}
 
@@ -74,5 +90,5 @@
       {/if}
     </span>
 
-  </div>
+  </section>
 {/if}

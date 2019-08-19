@@ -2,8 +2,8 @@
   import { createEventDispatcher } from "svelte";
 
   export let language;
-  export let searchQuery = "";
-  let searchQueryPreviousValue;
+  export let searchQuery;
+  let searchQueryPreviousValue = searchQuery;
 
   function handleSearchByEnterKey(event) {
     if (
@@ -15,21 +15,33 @@
     }
   }
 
+  function handleSearchByClick() {
+    if (searchQuery === searchQueryPreviousValue || searchQuery === "") {
+      return;
+    } else {
+      search();
+    }
+  }
+
   const dispatch = createEventDispatcher();
-  function search(event) {
+  function search() {
     searchQueryPreviousValue = searchQuery;
     dispatch("searchInput", { query: searchQuery });
   }
 </script>
 
 <style>
-  .search-input-container {
+  section {
     display: block;
   }
-  .search-input-container p {
+  section p {
     margin-bottom: 0;
   }
-  .search-input-container input {
+  section p span {
+    font-weight: bold;
+    font-style: italic;
+  }
+  section input {
     background-color: var(--vscode-input-background);
     border: 0;
     box-shadow: 0 0 0 1px var(--vscode-input-border);
@@ -42,7 +54,7 @@
     width: calc(100% - 120px);
     border-radius: 2px;
   }
-  .search-input-container button {
+  section button {
     min-width: 100px;
     max-width: 100px;
   }
@@ -50,21 +62,16 @@
 
 <svelte:window on:keydown={handleSearchByEnterKey} />
 
-<div class="search-input-container">
+<section>
 
   <p>
     {language.text.results_for}
-    <strong>
-      <i>
-        {#if searchQuery}{searchQuery}{/if}
-      </i>
-    </strong>
+    <span>
+      {#if searchQueryPreviousValue}{searchQueryPreviousValue}{/if}
+    </span>
   </p>
 
   <input type="text" bind:value={searchQuery} />
+  <button on:click={handleSearchByClick}>{language.text.search}</button>
 
-  <button on:click={search} disabled={!searchQuery}>
-    {language.text.search}
-  </button>
-
-</div>
+</section>

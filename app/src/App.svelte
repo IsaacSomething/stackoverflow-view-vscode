@@ -1,6 +1,7 @@
 <script>
   import { languages, i18n } from "./stores/i18n.js";
   import { uriSegments } from "./stores/static-models.js";
+  import { page } from "./stores/page.js";
   import axios from "axios";
   import Leet from "./common/Leet.svelte";
   import Header from "./common/Header.svelte";
@@ -21,7 +22,6 @@
   let sortTypes;
   let selectedSort;
   let gif;
-  let page = 1;
 
   // Posted properties on search from extension.ts => showInputBox()
   window.addEventListener("message", event => {
@@ -114,10 +114,12 @@
     isLoading = true;
     totalResults = null;
     searchData = null;
-    vscode.postMessage({ command: "progress", action: "start", error: false });
+    startProgressMesssage("Loading Stackoverflow Search Results"); // NOT WORKING
+
+    console.log("test", $page);
 
     const site = `${$i18n.code}stackoverflow`;
-    const uri = `${uriSegments.baseUri}/search/advanced?q=${searchQuery}&page=${page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${uriSegments.searchFilter}&key=${uriSegments.key}`;
+    const uri = `${uriSegments.baseUri}/search/advanced?q=${searchQuery}&page=${$page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${uriSegments.searchFilter}&key=${uriSegments.key}`;
 
     axios.get(uri).then(response => {
       isLoading = false;
@@ -134,11 +136,22 @@
     });
   }
 
+  // Send a start progress event
+  function startProgressMesssage(title) {
+    vscode.postMessage({
+      command: "progress",
+      action: "start",
+      title: title,
+      error: false
+    });
+  }
+
   // Send a stop progess event to the extension
   function stopProgressMessage(hasError, errorMessage) {
     vscode.postMessage({
       command: "progress",
       action: "stop",
+      title: null,
       error: hasError,
       errorMessage: errorMessage ? errorMessage : null
     });
@@ -159,13 +172,13 @@
     on:searchInput={handleInputSearch}
     on:sortChange={handleSortChange}
     on:enableSearch={handleEnableSearch}
+    on:searchByPage={search}
     {isLoading}
     {searchQuery}
     {searchData}
     {tagData}
     {totalResults}
     {sortTypes}
-    {page}
     {vscode} />
 {:else if section === 'tag'}
   <Tag {tagData} />

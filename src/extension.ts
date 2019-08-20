@@ -150,13 +150,11 @@ function showWindowProgress(panel: vscode.WebviewPanel) {
  * @param panel webview panel
  */
 function changeWindowTitle(panel: vscode.WebviewPanel) {
-
   panel.webview.onDidReceiveMessage(message => {
     if (message.command === 'titleChange') {
       panel.title = message.title;
     }
   });
-
 }
 
 export function deactivate() { }

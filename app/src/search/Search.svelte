@@ -13,7 +13,6 @@
   export let totalResults;
   export let tagData;
   export let sortTypes;
-  export let page;
   export let isLoading = true;
 </script>
 
@@ -42,7 +41,7 @@
       on:gotoQuestion
       on:searchByTag />
 
-    <SearchPager {totalResults} {page} />
+    <SearchPager {totalResults} on:searchByPage />
   {:else}
     <SearchNoResults {searchQuery} />
   {/if}

@@ -1,17 +1,15 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+  import { page } from "../stores/page.js";
+  import { createEventDispatcher } from "svelte";
 
   export let totalResults;
-  export let page;
-  let activePage = 0;
   let pageNumbers = [10, 20, 30, 40, 50];
 
-  function gotoPage(page, index) {
-    activePage = index;
-  }
-
-  function gotoPageNext() {
-    activePage += 1;
+  const dispatch = createEventDispatcher();
+  function gotoPage(pageIndex) {
+    pageIndex ? page.set(pageIndex + 1) : page.set(($page += 1));
+    dispatch("searchByPage");
   }
 </script>
 
@@ -30,17 +28,19 @@
 </style>
 
 <div class="bottom-buttons-container">
-  {#each pageNumbers as page, i}
-    {#if totalResults > page}
+  {#each pageNumbers as pageNumber, i}
+    {#if totalResults > pageNumber}
       <button
         class="outline"
-        class:active={activePage === i}
-        on:click={() => gotoPage(page, i)}>
+        class:active={$page === i + 1}
+        on:click={() => gotoPage(i)}>
         {i + 1}
       </button>
     {/if}
   {/each}
-  {#if totalResults > 11 && activePage !== 4}
-    <button class="outline" on:click={gotoPageNext}>{$i18n.text.next}</button>
+  {#if totalResults > 11 && $page !== 5}
+    <button class="outline" on:click={() => gotoPage(null)}>
+      {$i18n.text.next}
+    </button>
   {/if}
 </div>

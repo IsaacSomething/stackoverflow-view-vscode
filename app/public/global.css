@@ -85,7 +85,7 @@ blockquote {
   margin-inline-end: 0;
 }
 
-p {
+p,ul li {
   font-size: 15px;
 }
 

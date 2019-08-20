@@ -8,7 +8,7 @@
 
   const dispatch = createEventDispatcher();
   function gotoPage(pageIndex) {
-    pageIndex ? page.set(pageIndex + 1) : page.set(($page += 1));
+    pageIndex ? page.set(pageIndex) : page.set(($page += 1));
     dispatch("searchByPage");
   }
 </script>
@@ -33,7 +33,7 @@
       <button
         class="outline"
         class:active={$page === i + 1}
-        on:click={() => gotoPage(i)}>
+        on:click={() => gotoPage(i + 1)}>
         {i + 1}
       </button>
     {/if}

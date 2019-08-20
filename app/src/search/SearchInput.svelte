@@ -64,7 +64,7 @@
 
 <section>
 
-  <div>
+  <div class="text-capitalize">
     {$i18n.text.results_for}
     <strong>
       <i>
@@ -74,6 +74,8 @@
   </div>
 
   <input type="text" bind:value={searchQuery} />
-  <button on:click={handleSearchByClick}>{$i18n.text.search}</button>
+  <button on:click={handleSearchByClick} class="text-capitalize">
+    {$i18n.text.search}
+  </button>
 
 </section>

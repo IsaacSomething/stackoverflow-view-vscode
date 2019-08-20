@@ -2,4 +2,7 @@ out
 node_modules
 .vscode-test/
 *.vsix
+
+app/node_modules
+app/public/bundle.*
 app/src/stores/static-models.js

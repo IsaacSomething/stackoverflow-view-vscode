@@ -1,5 +1,0 @@
-.DS_Store
-node_modules
-public/bundle.*
-
-src/stores/static-models.js

@@ -1,6 +1,6 @@
 {
-  "name": "stackoverflow-view",
-  "displayName": "stackoverflow-view",
+  "name": "stack-overflow-view",
+  "displayName": "Stack Overflow View",
   "description": "Integrated solution for searching and finding answers in stackoverflow",
   "version": "0.0.1",
   "homepage": "https://github.com/IsaacSomething/stackoverflow-view-vscode",
@@ -11,6 +11,7 @@
   "author": {
     "name": "Tim"
   },
+  "publisher": "4tron",
   "engines": {
     "vscode": "^1.37.0"
   },
@@ -27,7 +28,7 @@
     "onCommand:extension.searchStackoverflow",
     "onCommand:extension.topPickStackoverflow"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
@@ -80,7 +81,9 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "webpack --mode production",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
@@ -93,8 +96,11 @@
     "@types/vscode": "^1.37.0",
     "glob": "^7.1.4",
     "mocha": "^6.1.4",
-    "typescript": "^3.3.1",
+    "ts-loader": "^6.0.4",
     "tslint": "^5.12.1",
-    "vscode-test": "^1.0.0-next.0"
+    "typescript": "^3.3.1",
+    "vscode-test": "^1.0.0-next.0",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
   }
 }

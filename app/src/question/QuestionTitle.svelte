@@ -36,12 +36,15 @@
   .metrics span {
     margin-right: 20px;
   }
-  .hide {
-    color: var(--vscode-textLink-activeForeground);
+  .view-related-questions,
+  .hide-related-questions {
+    margin-right: 0;
   }
   .view-related-questions {
     float: right;
-    margin-right: 0;
+  }
+  .hide-related-questions {
+    color: var(--vscode-textLink-activeForeground);
   }
 </style>
 
@@ -65,12 +68,13 @@
       {$i18n.text.times}
     </span>
 
-    <span class="link view-related-questions" on:click={toggleRelatedQuestions}>
+    <span
+      class="link view-related-questions"
+      class:hide-related-questions={showRelatedQuestions}
+      on:click={toggleRelatedQuestions}>
       {#if !showRelatedQuestions}
         {$i18n.text.view_related_questions}
-      {:else}
-        <span class="hide">{$i18n.text.hide_related_questions}</span>
-      {/if}
+      {:else}{$i18n.text.hide_related_questions}{/if}
     </span>
 
     {#if showRelatedQuestions}

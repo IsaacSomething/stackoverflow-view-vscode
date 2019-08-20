@@ -1,0 +1,45 @@
+<script>
+  import { fade } from "svelte/transition";
+  export let relatedQuestions;
+
+  function gotoRelatedQuestion(questionId) {
+    console.log("questionId", questionId);
+  }
+</script>
+
+<style>
+  section {
+    margin-top: 26px;
+  }
+  header {
+    float: left;
+    font-size: 14px;
+    min-width: 40px;
+    text-align: center;
+    margin-right: 16px;
+  }
+  .is-answered,
+  .has-answer {
+    border-radius: 2px;
+    padding: 0 4px;
+  }
+  .is-answered {
+    background-color: #45a163;
+  }
+  .has-answer {
+    border: 1px solid #45a163;
+  }
+</style>
+
+<section in:fade>
+  {#each relatedQuestions as question}
+    <header
+      class:is-answered={question.is_answered}
+      class:has-answer={question.answer_count}>
+      {question.score}
+    </header>
+    <p class="link" on:click={() => gotoRelatedQuestion(question.question_id)}>
+      {@html question.title}
+    </p>
+  {/each}
+</section>

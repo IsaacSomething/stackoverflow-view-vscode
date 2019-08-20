@@ -38,11 +38,11 @@
   }
 </style>
 
-<h3>
+<h3 class="text-capitalize">
   {#if (section === 'question' && eventAction === 'search') || section === 'tag'}
-    <div class="back" on:click={goBack}>
+    <div class="back text-capitalize" on:click={goBack}>
       <span />
-      {$i18n.text.back_to_search_results}
+      {$i18n.text.back_to_search}
       <strong>{$i18n.text.results}</strong>
     </div>
   {:else if section === 'leeeeeeet'}

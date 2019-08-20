@@ -17,7 +17,7 @@
 </script>
 
 <style>
-  div {
+  section {
     background-color: var(--vscode-textLink-foreground);
     color: var(--vscode-badge-foreground);
     max-width: 200px;
@@ -26,15 +26,15 @@
     font-size: 13px;
     float: right;
   }
-  div a {
+  section a {
     color: var(--vscode-badge-foreground);
     padding-top: 2px;
   }
-  div.is-question {
+  section.is-question {
     background-color: transparent;
     color: var(--vscode-foreground);
   }
-  div.is-question a {
+  section.is-question a {
     color: var(--vscode-textLink-foreground);
   }
   img {
@@ -53,7 +53,7 @@
   }
 </style>
 
-<div class:is-question={!isQuestion}>
+<section class:is-question={!isQuestion}>
   {atTime}
   <br />
   {#if user.profile_image}
@@ -80,4 +80,4 @@
     <span class="bronze">●</span>
     {user.badge_counts.bronze}
   {/if}
-</div>
+</section>

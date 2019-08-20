@@ -3,7 +3,6 @@
   import { uriSegments } from "./stores/static-models.js";
   import { page } from "./stores/page.js";
   import axios from "axios";
-  import Leet from "./common/Leet.svelte";
   import Header from "./common/Header.svelte";
   import Question from "./question/Question.svelte";
   import Search from "./search/Search.svelte";
@@ -26,22 +25,20 @@
   // Posted properties on search from extension.ts => showInputBox()
   window.addEventListener("message", event => {
     eventAction = event.data.action;
-    if (event.data.action === "topPick") {
-      stopProgressMessage(false);
-      $i18n = $languages[0];
-      questionId = event.data.questionId;
-      gif = event.data.gif;
-      section = "question";
-    } else if (event.data.action === "search" && event.data.query === "1337") {
-      stopProgressMessage(false);
-      section = "leeeeeeet";
-    } else if (event.data.action === "search") {
+
+    if (event.data.action === "search") {
       $i18n = $languages.find(_ => _.language === event.data.language);
       searchQuery = event.data.query;
       sortTypes = event.data.sortTypes;
       selectedSort = sortTypes.find(element => element.isSelected);
       section = "search";
       search();
+    } else if (event.data.action === "topPick") {
+      stopProgressMessage(false);
+      $i18n = $languages[0];
+      questionId = event.data.questionId;
+      gif = event.data.gif;
+      section = "question";
     }
   });
 
@@ -113,10 +110,7 @@
   function search() {
     isLoading = true;
     totalResults = null;
-    searchData = null;
     startProgressMesssage("Loading Stackoverflow Search Results"); // NOT WORKING
-
-    console.log("test", $page);
 
     const site = `${$i18n.code}stackoverflow`;
     const uri = `${uriSegments.baseUri}/search/advanced?q=${searchQuery}&page=${$page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${uriSegments.searchFilter}&key=${uriSegments.key}`;
@@ -160,11 +154,7 @@
 
 <Header on:goBack={handleGotoSearch} {section} {eventAction} />
 
-{#if section === 'question'}
-  <Question {questionId} {vscode} {gif} />
-{:else if section === 'leeeeeeet'}
-  <Leet />
-{:else if section === 'search'}
+{#if section === 'search'}
   <Search
     on:gotoQuestion={handleGotoQuestion}
     on:gotoTag={handleGotoTag}
@@ -180,6 +170,8 @@
     {totalResults}
     {sortTypes}
     {vscode} />
+{:else if section === 'question'}
+  <Question {questionId} {vscode} {gif} />
 {:else if section === 'tag'}
   <Tag {tagData} />
 {/if}

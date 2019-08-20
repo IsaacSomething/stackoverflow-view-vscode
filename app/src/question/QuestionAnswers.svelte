@@ -15,7 +15,6 @@
   const site = `${$i18n.code}stackoverflow`;
   const uri = `${uriSegments.baseUri}/questions/${questionId}/answers?order=desc&sort=votes&site=${site}&filter=${uriSegments.answersFilter}&key=${uriSegments.key}`;
 
-  
   axios.get(uri).then(response => {
     if (response.status === 200) {
       answers = response.data.items;
@@ -32,8 +31,11 @@
 </script>
 
 <style>
-  .container {
+  section {
     border-bottom: 2px solid var(--vscode-textSeparator-foreground);
+  }
+  section:last-of-type {
+    border-bottom: 0;
   }
   /* Duplicate code from Questions.svelte */
   .question-answer-bottom {
@@ -45,7 +47,7 @@
 
 {#if answers}
   {#each answers as answer, i}
-    <div class="container">
+    <section>
       <RowLayout>
 
         <div slot="left">
@@ -72,6 +74,6 @@
           {/if}
         </div>
       </RowLayout>
-    </div>
+    </section>
   {/each}
 {/if}

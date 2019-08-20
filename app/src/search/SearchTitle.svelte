@@ -17,29 +17,27 @@
 </script>
 
 <style>
-  .title-container {
+  div {
     display: block;
     width: 100%;
     height: 42px;
   }
-  .title-container h1 {
+  div h1 {
     float: left;
+    margin-top: 6px;
   }
-  h1 {
-    margin: 0;
-  }
-  .title-container span {
-    padding: 11px 10px 11px 20px;
+  div span {
+    padding: 20px 10px 11px 10px;
     display: inline-block;
   }
-  p {
-    font-size: 16px;
+  h1 {
+    margin-bottom: 0;
   }
 </style>
 
 {#if !tagData}
-  <div class="title-container">
-    <h1>{$i18n.text.search_results}</h1>
+  <div>
+    <h1 class="text-capitalize">{$i18n.text.search_results}</h1>
     <span class="link" on:click={toggleAdvancedTips}>
       {#if !showTips}
         {$i18n.text.advanced_search_tips}
@@ -50,7 +48,7 @@
     <SearchTips />
   {/if}
 {:else}
-  <h1>{$i18n.text.questions_tagged} [{tagData.tag_name}]</h1>
+  <h1 class="text-capitalize">{$i18n.text.questions_tagged} [{tagData.tag_name}]</h1>
   {#if tagData.excerpt}
     <p>
       {@html tagData.excerpt}

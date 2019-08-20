@@ -19,6 +19,7 @@
   export let vscode;
   let question;
   let answers;
+  let relatedQuestions;
 
   vscode.postMessage({ command: "progress", action: "start" });
 
@@ -28,12 +29,29 @@
   axios.get(uri).then(response => {
     if (response.status === 200) {
       question = response.data.items[0];
-      vscode.postMessage({ command: "progress", action: "stop" });
+      // TODO send progress message, change title?
+      /* vscode.postMessage({ command: "progress", action: "stop" }); */
+
+      fetchRelatedQuestions();
     } else {
       // TODO send message to extension
       console.log("ERROR:", error);
     }
   });
+
+  function fetchRelatedQuestions() {
+    const site = `${$i18n.code}stackoverflow`;
+    const uri = `${uriSegments.baseUri}/questions/${questionId}/related?order=desc&sort=activity&site=${site}&filter=${uriSegments.relatedQuestionsFilter}&key=${uriSegments.key}`;
+
+    axios.get(uri).then(response => {
+      if (response.status === 200) {
+        relatedQuestions = response.data.items;
+      } else {
+        // TODO send message to extension
+        console.log("ERROR:", error); // Could be a quite error - jusut dont show the related action button?
+      }
+    });
+  }
 </script>
 
 <style>
@@ -76,7 +94,8 @@
     title={question.title}
     asked={question.creation_date}
     active={question.last_activity_date}
-    viewed={question.view_count} />
+    viewed={question.view_count}
+    {relatedQuestions} />
 
   <RowLayout>
 
@@ -129,7 +148,7 @@
     {#if question.answer_count > 0}
       <h2>{question.answer_count} {$i18n.text.answers}</h2>
     {:else}
-      <h2>{$i18n.text.no_answers}</h2>
+      <h2 class="text-capitalize">{$i18n.text.no_answers}</h2>
     {/if}
   </div>
 

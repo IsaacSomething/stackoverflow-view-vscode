@@ -18,9 +18,7 @@
 
 <SearchTitle {tagData} on:gotoTag />
 
-{#if !tagData}
-  <SearchInput {searchQuery} on:searchInput />
-{/if}
+<SearchInput {searchQuery} on:searchInput />
 
 <SearchResultsActions
   {sortTypes}
@@ -33,16 +31,10 @@
   <Loader />
 {/if}
 
-{#if !isLoading && searchData}
-  {#if searchData.length > 0}
-    <SearchResultBlock
-      {isLoading}
-      {searchData}
-      on:gotoQuestion
-      on:searchByTag />
-
-    <SearchPager {totalResults} on:searchByPage />
-  {:else}
-    <SearchNoResults {searchQuery} />
-  {/if}
+{#if searchData && totalResults !== 0}
+  <SearchResultBlock {isLoading} {searchData} on:gotoQuestion on:searchByTag />
+{:else if !isLoading}
+  <SearchNoResults {searchQuery} />
 {/if}
+
+<SearchPager {totalResults} on:searchByPage />

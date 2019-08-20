@@ -1,4 +1,5 @@
 <script>
+  import QuestionsRelated from "./QuestionsRelated.svelte";
   import { i18n } from "../stores/i18n.js";
   import { kFormatter } from "../stores/k-formatter.js";
   import { createEventDispatcher } from "svelte";
@@ -9,32 +10,47 @@
   export let asked;
   export let active;
   export let viewed;
+  export let relatedQuestions;
+  let showRelatedQuestions = false;
 
   $: totalViews = kFormatter(viewed);
+
+  function toggleRelatedQuestions() {
+    showRelatedQuestions = !showRelatedQuestions;
+  }
 </script>
 
 <style>
-  .title-container {
+  .question-title-container {
     border-bottom: 2px solid var(--vscode-textSeparator-foreground);
-    padding-bottom: 20px;
+    padding-bottom: 13px;
     margin-bottom: 4px;
   }
   h1 {
-    margin-top: 0;
-    margin-bottom: 6px;
+    margin: 6px 0;
     word-break: break-word;
   }
-  span {
+  .metrics {
+    margin-top: 10px;
+  }
+  .metrics span {
     margin-right: 20px;
+  }
+  .hide {
+    color: var(--vscode-textLink-activeForeground);
+  }
+  .view-related-questions {
+    float: right;
+    margin-right: 0;
   }
 </style>
 
-<div class="title-container" in:fade>
-
+<div class="question-title-container" in:fade>
   <h1>
     {@html title}
   </h1>
-  <div>
+
+  <div class="metrics">
     {$i18n.text.asked}
     <span>
       <strong>{formatDistanceToNow(fromUnixTime(asked))}</strong>
@@ -48,5 +64,17 @@
       <strong>{totalViews}</strong>
       {$i18n.text.times}
     </span>
+
+    <span class="link view-related-questions" on:click={toggleRelatedQuestions}>
+      {#if !showRelatedQuestions}
+        {$i18n.text.view_related_questions}
+      {:else}
+        <span class="hide">{$i18n.text.hide_related_questions}</span>
+      {/if}
+    </span>
+
+    {#if showRelatedQuestions}
+      <QuestionsRelated {relatedQuestions} on:gotoRelatedQuestion />
+    {/if}
   </div>
 </div>

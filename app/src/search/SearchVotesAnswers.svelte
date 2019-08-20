@@ -4,16 +4,16 @@
 </script>
 
 <style>
-  .metrics {
+  section {
     text-align: center;
     float: left;
     width: 80px;
     margin: 0 22px;
   }
-  .metrics div {
+  section div {
     padding: 10px;
   }
-  .metrics h3 {
+  section h3 {
     margin: 0;
   }
   .answer-count.is-answered {
@@ -30,7 +30,7 @@
   }
 </style>
 
-<div class="metrics">
+<section>
   <div>
     <h3>{searchItem.score}</h3>
     <small>
@@ -50,4 +50,4 @@
       {:else}{$i18n.text.answers}{/if}
     </small>
   </div>
-</div>
+</section>

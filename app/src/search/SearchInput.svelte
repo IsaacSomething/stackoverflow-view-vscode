@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { page } from "../stores/page.js";
   import { i18n } from "../stores/i18n.js";
 
   export let searchQuery;
@@ -25,6 +26,7 @@
 
   const dispatch = createEventDispatcher();
   function search() {
+    page.set(1);
     searchQueryPreviousValue = searchQuery;
     dispatch("searchInput", { query: searchQuery });
   }
@@ -33,13 +35,11 @@
 <style>
   section {
     display: block;
+    margin-top: 24px;
   }
-  section p {
+  section div {
     margin-bottom: 0;
-  }
-  section p span {
-    font-weight: bold;
-    font-style: italic;
+    display: block;
   }
   section input {
     background-color: var(--vscode-input-background);
@@ -64,12 +64,14 @@
 
 <section>
 
-  <p>
+  <div>
     {$i18n.text.results_for}
-    <span>
-      {#if searchQueryPreviousValue}{searchQueryPreviousValue}{/if}
-    </span>
-  </p>
+    <strong>
+      <i>
+        {#if searchQueryPreviousValue}{searchQueryPreviousValue}{/if}
+      </i>
+    </strong>
+  </div>
 
   <input type="text" bind:value={searchQuery} />
   <button on:click={handleSearchByClick}>{$i18n.text.search}</button>

@@ -24,13 +24,13 @@
 </script>
 
 <style>
-  .search-result-block-container {
+  section {
     display: flex;
     margin-top: 12px;
     border-bottom: 1px solid var(--vscode-textSeparator-foreground);
     padding-bottom: 18px;
   }
-  .search-result-block-container.last-item {
+  section:last-child {
     border: 0;
   }
   .information {
@@ -57,11 +57,8 @@
 </style>
 
 {#each searchData as searchItem, i}
-
-  <div
+  <section
     in:fade
-    class="search-result-block-container"
-    class:last-item={i === searchData.length - 1}
     class:is-loading={isLoading}>
 
     <SearchVotesAnswers {searchItem} />
@@ -92,5 +89,5 @@
 
     </div>
 
-  </div>
+  </section>
 {/each}

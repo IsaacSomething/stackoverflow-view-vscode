@@ -9,16 +9,6 @@
 
   $: total = kFormatter(totalResults);
 
-  const dispatch = createEventDispatcher();
-  function setSearchOrder(sortTypeIndex) {
-    sortTypes.forEach((element, key) => {
-      element.isSelected = key !== sortTypeIndex ? false : true;
-    });
-    dispatch("sortChange", {
-      selectedSort: sortTypes[sortTypeIndex]
-    });
-  }
-
   function enableSearch() {
     dispatch("enableSearch");
   }
@@ -41,12 +31,22 @@
         return sortTypes[index].text.english;
         break;
     }
-    return;
+  }
+
+  const dispatch = createEventDispatcher();
+  function setSearchOrder(sortTypeIndex) {
+    sortTypes.forEach((element, key) => {
+      element.isSelected = key !== sortTypeIndex ? false : true;
+    });
+
+    dispatch("sortChange", {
+      selectedSort: sortTypes[sortTypeIndex]
+    });
   }
 </script>
 
 <style>
-  div {
+  section {
     border-bottom: 2px solid var(--vscode-textSeparator-foreground);
     display: flex;
     height: 45px;
@@ -75,20 +75,18 @@
   }
 </style>
 
-{#if totalResults}
-  <div>
-    <h3>{total} {$i18n.text.results}</h3>
-    <p>
-      {#if tagData}
-        <span class="link" on:click={enableSearch}>
-          <strong>{$i18n.text.search}</strong>
-        </span>
-      {/if}
-      {#each sortTypes as sort, i}
-        <span class:active={sort.isSelected} on:click={() => setSearchOrder(i)}>
-          {setLabel(sort.label, i)}
-        </span>
-      {/each}
-    </p>
-  </div>
-{/if}
+<section>
+  <h3>{total} {$i18n.text.results}</h3>
+  <p>
+    {#if tagData}
+      <span class="link" on:click={enableSearch}>
+        <strong>{$i18n.text.search}</strong>
+      </span>
+    {/if}
+    {#each sortTypes as sort, i}
+      <span class:active={sort.isSelected} on:click={() => setSearchOrder(i)}>
+        {setLabel(sort.label, i)}
+      </span>
+    {/each}
+  </p>
+</section>

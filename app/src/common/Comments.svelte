@@ -77,7 +77,7 @@
     {/if}
   {/each}
 
-  <span on:click={toggleComments}>
+  <span class="link" on:click={toggleComments}>
     {#if comments.length > commentsShowAmount}
       {`${$i18n.text.show} ${commentsLength} ${$i18n.text.more_comments}`}
     {:else if comments.length === commentsShowAmount}

@@ -4,7 +4,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let totalResults;
-  let pageNumbers = [10, 20, 30, 40, 50];
+  let pageNumbers = [9, 10, 20, 30, 40];
 
   const dispatch = createEventDispatcher();
   function gotoPage(pageIndex) {
@@ -14,7 +14,7 @@
 </script>
 
 <style>
-  .bottom-buttons-container {
+  section {
     padding: 20px 20px 20px 0;
   }
   button {
@@ -27,7 +27,7 @@
   }
 </style>
 
-<div class="bottom-buttons-container">
+<section>
   {#each pageNumbers as pageNumber, i}
     {#if totalResults > pageNumber}
       <button
@@ -38,9 +38,9 @@
       </button>
     {/if}
   {/each}
-  {#if totalResults > 11 && $page !== 5}
+  {#if totalResults > 10 && $page !== pageNumbers.length}
     <button class="outline" on:click={() => gotoPage(null)}>
       {$i18n.text.next}
     </button>
   {/if}
-</div>
+</section>

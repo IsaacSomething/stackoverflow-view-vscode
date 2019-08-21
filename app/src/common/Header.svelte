@@ -1,7 +1,8 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+  import { section } from "../stores/section.js";
   import { createEventDispatcher } from "svelte";
-  export let section;
+
   export let eventAction;
 
   const dispatch = createEventDispatcher();
@@ -39,15 +40,11 @@
 </style>
 
 <h3 class="text-capitalize">
-  {#if (section === 'question' && eventAction === 'search') || section === 'tag'}
+  {#if ($section === 'question' && eventAction === 'search') || $section === 'tag'}
     <div class="back text-capitalize" on:click={goBack}>
       <span />
-      {$i18n.text.back_to_search}
-      <strong>{$i18n.text.results}</strong>
+      {$i18n.text.back_to_search_results}
     </div>
-  {:else if section === 'leeeeeeet'}
-    5t4©k
-    <strong>0\/3rf10w</strong>
   {:else}
     Stack
     <strong>overflow</strong>

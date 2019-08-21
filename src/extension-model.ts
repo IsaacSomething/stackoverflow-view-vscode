@@ -1,12 +1,4 @@
-import { QuickPickItem, languages } from 'vscode';
-
-
-export interface ISortTypes {
-  label: string;
-  apiReference: string;
-  isSelected: boolean;
-  text: any;
-}
+import { QuickPickItem } from 'vscode';
 
 export class ExtensionModel {
 
@@ -16,45 +8,6 @@ export class ExtensionModel {
     { language: 'Russian' },
     { language: 'Portuguese' },
     { language: 'Japanese' },
-  ];
-
-  public static readonly sortTypes: ISortTypes[] = [
-    {
-      label: 'Relevance', apiReference: 'relevance', isSelected: false, text: {
-        english: 'relevance',
-        spanish: 'relevancia',
-        russian: 'pелевантные',
-        portuguese: 'relevância',
-        japanese: '関連'
-      }
-    },
-    {
-      label: 'Newest', apiReference: 'creation', isSelected: false, text: {
-        english: 'newest',
-        spanish: 'más reciente',
-        russian: 'hовые',
-        portuguese: 'recente',
-        japanese: '新着'
-      }
-    },
-    {
-      label: 'Active', apiReference: 'activity', isSelected: false, text: {
-        english: 'active',
-        spanish: 'activo',
-        russian: 'tекущие',
-        portuguese: 'ativa',
-        japanese: 'アクティブ'
-      }
-    },
-    {
-      label: 'Votes', apiReference: 'votes', isSelected: false, text: {
-        english: 'votes',
-        spanish: 'votos',
-        russian: 'голосов',
-        portuguese: 'votos',
-        japanese: '投票'
-      }
-    }
   ];
 
   public static readonly topPickQuickInputItems: QuickPickItem[] = [{
@@ -88,8 +41,8 @@ export class ExtensionModel {
     label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
     detail: '406^ (Asked 10 years, 3 months ago)'
   }, {
-    label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
-    detail: '406^ (Asked 10 years, 3 months ago)'
+    label: 'What\'s your most controversial programming opinion?',
+    detail: '363^ (Asked 10 years, 7 months ago)'
   }];
 
   public static readonly topPickIds = [{
@@ -129,9 +82,9 @@ export class ExtensionModel {
     id: '218123',
     gif: 'https://giphy.com/embed/c4u2gld3Or69i'
   }, {
-    label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
-    id: '811074',
-    gif: 'https://giphy.com/embed/oMpJql97PCGHe'
+    label: 'What\'s your most controversial programming opinion?',
+    detail: '406760',
+    gif: 'https://giphy.com/embed/jxhJ8ylaYIPbG'
   }];
 
 }

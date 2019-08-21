@@ -13,7 +13,6 @@ app/node_modules/**
 app/src/**
 app/public/*.map
 app/public/favicon.png
-app/package.json
-app/package-lock.json
-app/README.md
+app/*.json
+app/**.md
 app/rollup.config.js

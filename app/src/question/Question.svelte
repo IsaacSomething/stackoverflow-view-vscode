@@ -1,10 +1,15 @@
 <script>
-  import { i18n } from "../stores/i18n.js";
-  import { uriSegments } from "../stores/static-models.js";
   import { fade } from "svelte/transition";
+  import { i18n } from "../stores/i18n.js";
+  import { uriSegments } from "../models/static-models.js";
+  import {
+    selectedAnswerFilter,
+    resultFilters
+  } from "../stores/results-filter.js";
   import axios from "axios";
   import Comments from "../Common/Comments.svelte";
   import RowLayout from "../Common/RowLayout.svelte";
+  import ResultsBar from "../Common/ResultsBar.svelte";
   import User from "../Common/User.svelte";
   import Tags from "../Common/Tags.svelte";
   import Loader from "../Common/Loader.svelte";
@@ -19,9 +24,9 @@
   export let vscode;
   let question;
   let answers;
-  let relatedQuestions;
+  let relatedQuestions; // THIS IS NOT WORKING ... yet
 
-  vscode.postMessage({ command: "progress", action: "start" });
+  /* vscode.postMessage({ command: "progress", action: "start" }); */
 
   const site = `${$i18n.code}stackoverflow`;
   const uri = `${uriSegments.baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${uriSegments.questionFilter}&key=${uriSegments.key}`;
@@ -73,10 +78,7 @@
   .view-online a {
     cursor: pointer;
     float: left;
-    margin-top: 30px;
-  }
-  .answers-count-container {
-    border-bottom: 2px solid var(--vscode-textSeparator-foreground);
+    margin-top: 38px;
   }
   iframe {
     min-height: 500px;
@@ -144,13 +146,7 @@
 
   </RowLayout>
 
-  <div class="answers-count-container">
-    {#if question.answer_count > 0}
-      <h2>{question.answer_count} {$i18n.text.answers}</h2>
-    {:else}
-      <h2 class="text-capitalize">{$i18n.text.no_answers}</h2>
-    {/if}
-  </div>
+  <ResultsBar results={question.answer_count} on:filterChange />
 
   {#if question.answer_count > 0}
     <QuestionAnswers {questionId} {vscode} />

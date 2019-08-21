@@ -1,6 +1,11 @@
 <script>
   import { languages, i18n } from "./stores/i18n.js";
-  import { uriSegments } from "./stores/static-models.js";
+  import { uriSegments } from "./models/static-models.js";
+  import { section } from "./stores/section.js";
+  import {
+    selectedSearchFilter,
+    resultFilters
+  } from "./stores/results-filter.js";
   import { page } from "./stores/page.js";
   import axios from "axios";
   import Header from "./common/Header.svelte";
@@ -9,7 +14,6 @@
   import Tag from "./tag/tag.svelte";
 
   const vscode = acquireVsCodeApi();
-  let section;
   let searchQuery;
   let searchData;
   let questionId;
@@ -17,9 +21,6 @@
   let isLoading = true;
   let eventAction;
   let tagData;
-
-  let sortTypes;
-  let selectedSort;
   let gif;
 
   // Posted properties on search from extension.ts => showInputBox()
@@ -27,24 +28,33 @@
     eventAction = event.data.action;
 
     if (event.data.action === "search") {
-      $i18n = $languages.find(_ => _.language === event.data.language);
       searchQuery = event.data.query;
-      sortTypes = event.data.sortTypes;
-      selectedSort = sortTypes.find(element => element.isSelected);
-      section = "search";
+
+      // Set language
+      $i18n = $languages.find(_ => _.language === event.data.language);
+
+      // Find & set sort filter
+      const searchFilterToSetAsSelected = resultFilters.find(
+        filter => filter.label === event.data.sortType
+      );
+      selectedSearchFilter.set(searchFilterToSetAsSelected);
+
+      // Set section
+      section.set("search");
+
       search();
     } else if (event.data.action === "topPick") {
-      stopProgressMessage(false);
+      progressMesssage("stop", null, false);
       $i18n = $languages[0];
       questionId = event.data.questionId;
       gif = event.data.gif;
-      section = "question";
+      section.set("question");
     }
   });
 
   // From SearchResultBlock component
   function handleGotoQuestion(event) {
-    section = "question";
+    section.set("question");
     vscode.postMessage({
       command: "titleChange",
       title: `SO: ${event.detail.questionTitle}`
@@ -54,7 +64,7 @@
 
   // From back button clicked on question page
   function handleGotoSearch() {
-    section = "search";
+    section.set("search");
     vscode.postMessage({
       command: "titleChange",
       title: `SO: ${searchQuery}`
@@ -63,12 +73,7 @@
 
   // Set tag page
   function handleGotoTag() {
-    section = "tag";
-  }
-
-  // Removes tag excerpt and adds search input
-  function handleEnableSearch() {
-    tagData = null;
+    section.set("tag");
   }
 
   // Search by search input box
@@ -77,15 +82,11 @@
     search();
   }
 
-  // Change sort & search
-  function handleSortChange(event) {
-    selectedSort = event.detail.selectedSort;
-    search();
-  }
-
-  // Search by selected tag
+  // Search by selected tag - Only gets the wiki info, full search still needs to be done based on tag name
   function handleTagSearch(event) {
+    isLoading = true;
     const selectedTag = event.detail.tag;
+
     if (selectedTag) {
       const site = `${$i18n.code}stackoverflow`;
       const uri = `${uriSegments.baseUri}/tags/${selectedTag}/wikis?site=${site}&filter=${uriSegments.tagFilter}&key=${uriSegments.key}`;
@@ -93,85 +94,72 @@
       axios.get(uri).then(response => {
         if (response.status === 200) {
           tagData = response.data.items[0];
+          searchQuery = selectedTag;
+          search(selectedTag);
         } else {
+          isLoading = false;
           stopProgressMessage(
             true,
             "An error occured getting tag results. Check your internet connection."
           );
         }
       });
-
-      searchQuery = selectedTag;
-      search();
     }
   }
 
   // Main search functionality
-  function search() {
+  function search(tag) {
+    progressMesssage("start", "Loading Stackoverflow Search Results", false);
     isLoading = true;
     totalResults = null;
-    startProgressMesssage("Loading Stackoverflow Search Results"); // NOT WORKING
+    tagData = !tag ? null : tagData;
 
+    const tagProperties = !tag ? "" : `&tagged=${tag}`;
     const site = `${$i18n.code}stackoverflow`;
-    const uri = `${uriSegments.baseUri}/search/advanced?q=${searchQuery}&page=${$page}&pagesize=10&order=desc&sort=${selectedSort.apiReference}&site=${site}&filter=${uriSegments.searchFilter}&key=${uriSegments.key}`;
+    const uri = `${uriSegments.baseUri}/search/advanced?q=${searchQuery}${tagProperties}&page=${$page}&pagesize=10&order=${$selectedSearchFilter.apiOrder}&sort=${$selectedSearchFilter.apiSort}&site=${site}&filter=${uriSegments.searchFilter}&key=${uriSegments.key}`;
 
     axios.get(uri).then(response => {
       isLoading = false;
       if (response.status === 200) {
         searchData = response.data.items;
         totalResults = response.data.total;
-        stopProgressMessage(false);
+        progressMesssage("stop", null, false);
       } else {
-        stopProgressMessage(
-          true,
-          "An error occured getting search results. Check your internet connection."
-        );
+        progressMesssage("stop", null, true);
       }
     });
   }
 
-  // Send a start progress event
-  function startProgressMesssage(title) {
+  // Send a progress event to extension.ts
+  function progressMesssage(action, title, hasError) {
     vscode.postMessage({
       command: "progress",
-      action: "start",
+      action: action,
       title: title,
-      error: false
-    });
-  }
-
-  // Send a stop progess event to the extension
-  function stopProgressMessage(hasError, errorMessage) {
-    vscode.postMessage({
-      command: "progress",
-      action: "stop",
-      title: null,
       error: hasError,
-      errorMessage: errorMessage ? errorMessage : null
+      errorMessage:
+        "An error occured fetching results. Check your internet connection."
     });
   }
 </script>
 
-<Header on:goBack={handleGotoSearch} {section} {eventAction} />
+<Header on:goBack={handleGotoSearch} {eventAction} />
 
-{#if section === 'search'}
+{#if $section === 'search'}
   <Search
     on:gotoQuestion={handleGotoQuestion}
     on:gotoTag={handleGotoTag}
     on:searchByTag={handleTagSearch}
     on:searchInput={handleInputSearch}
-    on:sortChange={handleSortChange}
-    on:enableSearch={handleEnableSearch}
     on:searchByPage={search}
     {isLoading}
     {searchQuery}
     {searchData}
     {tagData}
     {totalResults}
-    {sortTypes}
     {vscode} />
-{:else if section === 'question'}
+{:else if $section === 'question'}
   <Question {questionId} {vscode} {gif} />
-{:else if section === 'tag'}
+{:else if $section === 'tag'}
   <Tag {tagData} />
 {/if}

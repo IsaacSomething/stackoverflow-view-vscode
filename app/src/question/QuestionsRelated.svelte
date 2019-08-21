@@ -2,9 +2,7 @@
   import { fade } from "svelte/transition";
   export let relatedQuestions;
 
-  function gotoRelatedQuestion(questionId) {
-    console.log("questionId", questionId);
-  }
+  function gotoRelatedQuestion(questionId) {}
 </script>
 
 <style>
@@ -24,10 +22,14 @@
     padding: 0 4px;
   }
   .is-answered {
-    background-color: #45a163;
+    background-color: var(--vscode-textLink-foreground);
+    color: var(--vscode-badge-foreground);
   }
   .has-answer {
-    border: 1px solid #45a163;
+    border: 1px solid var(--vscode-textLink-foreground);
+  }
+  p {
+    font-size: 13px;
   }
 </style>
 

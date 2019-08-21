@@ -15,7 +15,7 @@
     height: 2px;
     width: 100%;
     background: var(--vscode-textLink-foreground);
-    animation: loader-item 600ms linear infinite;
+    animation: loader-item 800ms linear infinite;
   }
   @keyframes loader-item {
     0% {

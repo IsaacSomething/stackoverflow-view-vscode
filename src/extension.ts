@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExtensionModel, ISortTypes } from './extension-model';
+import { ExtensionModel } from './extension-model';
 import { posix } from 'path';
 import { AppPageHtml } from './app-page';
 
@@ -23,14 +23,8 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Get language
         const currentLanguageSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.language');
-
-        // Get sort type - set isSelected property
-        const currentSortSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.sort');
-        ExtensionModel.sortTypes.find((element: ISortTypes) => {
-          const labelIsEqualToSelectedSortType = element.label === currentSortSelection;
-          element.isSelected = labelIsEqualToSelectedSortType;
-          return labelIsEqualToSelectedSortType;
-        });
+        // Get sort type
+        const currentSortTypeSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.sort');
 
         // Create webview panel
         const stackoverflowPanel = createWebViewPanel(`SO: ${searchQuery}`, context.extensionPath);
@@ -41,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
           action: 'search',
           query: searchQuery,
           language: currentLanguageSelection,
-          sortTypes: ExtensionModel.sortTypes
+          sortType: currentSortTypeSelection
         });
 
         // Show progress loader

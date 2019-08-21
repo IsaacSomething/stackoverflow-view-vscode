@@ -1,6 +1,6 @@
 <script>
   import { i18n } from "../stores/i18n.js";
-  import { uriSegments } from "../stores/static-models.js";
+  import { uriSegments } from "../models/static-models.js";
   import axios from "axios";
   import Comments from "../common/Comments.svelte";
   import RowLayout from "../common/RowLayout.svelte";

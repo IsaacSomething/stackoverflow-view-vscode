@@ -17,12 +17,21 @@
     margin: 30px 0 20px;
     border: 0;
   }
+  header,
+  div > *{
+    font-size: 13px !important; /* This is a bit shit but i need to overwrite elements from the call */
+  }
+  div {
+    margin: 0;
+  }
 </style>
 
 <blockquote>
   <header>
-    <strong>{$i18n.text.locked}</strong>
+    <strong class="text-capitalize">{$i18n.text.locked}</strong>
     {$i18n.text.on} {atTime}
   </header>
-  {@html notice.body}
+  <div>
+    {@html notice.body}
+  </div>
 </blockquote>

@@ -1,6 +1,7 @@
 <script>
   import { i18n } from "../stores/i18n.js";
   import { format, fromUnixTime } from "date-fns";
+
   export let details;
   export let closedDate;
   export let reason;
@@ -22,11 +23,13 @@
 </style>
 
 <blockquote>
-  <header>
-    <strong>{$i18n.text.closed}</strong>
+  <p>
+    <strong class="text-capitalize">{$i18n.text.closed}</strong>
     {$i18n.text.as}
     {@html reason}
     {$i18n.text.on} {atTime}
-  </header>
-  {@html details.description}
+  </p>
+  <p>
+    {@html details.description}
+  </p>
 </blockquote>

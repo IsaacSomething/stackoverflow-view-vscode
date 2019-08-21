@@ -1,6 +1,7 @@
 <script>
   import { i18n } from "../stores/i18n.js";
   import { fade } from "svelte/transition";
+
   export let tagData;
 </script>
 
@@ -8,7 +9,7 @@
   div {
     position: relative;
   }
-  div h1 {
+  h1 {
     margin: 0;
     display: inline-flex;
   }
@@ -16,7 +17,7 @@
     background-color: var(--vscode-badge-background);
     color: var(--vscode-badge-foreground);
     padding: 0 4px 2px;
-    margin: 8px 10px;
+    margin: 9px 12px;
     border-radius: 2px;
     font-size: 16px;
     font-weight: bold;
@@ -29,10 +30,8 @@
 </style>
 
 <div in:fade>
-  <div>
-    <h1 class="text-capitalize">{$i18n.text.about}</h1>
-    <span>{tagData.tag_name}</span>
-  </div>
+  <h1 class="text-capitalize">{$i18n.text.about}</h1>
+  <span>{tagData.tag_name}</span>
 
   <h3 class="text-capitalize">{$i18n.text.tag_info}</h3>
 

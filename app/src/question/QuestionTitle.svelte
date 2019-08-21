@@ -24,7 +24,6 @@
   .question-title-container {
     border-bottom: 2px solid var(--vscode-textSeparator-foreground);
     padding-bottom: 13px;
-    margin-bottom: 4px;
   }
   h1 {
     margin: 6px 0;
@@ -36,8 +35,8 @@
   .metrics span {
     margin-right: 20px;
   }
-  .view-related-questions,
-  .hide-related-questions {
+  .metrics span.view-related-questions,
+  .metrics span.hide-related-questions {
     margin-right: 0;
   }
   .view-related-questions {

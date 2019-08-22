@@ -1,33 +1,53 @@
 <script>
+  import { onMount } from "svelte";
   import { i18n } from "../stores/i18n.js";
   import { uriSegments } from "../models/static-models.js";
+  import {
+    selectedAnswerFilter,
+    resultFilters
+  } from "../stores/results-filter.js";
   import axios from "axios";
   import Comments from "../common/Comments.svelte";
   import RowLayout from "../common/RowLayout.svelte";
+  import ResultsBar from "../Common/ResultsBar.svelte";
+  import Loader from "../Common/Loader.svelte";
+  import User from "../Common/User.svelte";
+  import Tags from "../Common/Tags.svelte";
   import QuestionAnswerIndicies from "./QuestionAnswerIndicies.svelte";
-  import User from "../common/User.svelte";
-  import Tags from "../common/Tags.svelte";
 
   export let questionId;
   export let vscode;
-  let answers;
+  let answers = [];
+  let isLoading = true;
 
-  const site = `${$i18n.code}stackoverflow`;
-  const uri = `${uriSegments.baseUri}/questions/${questionId}/answers?order=desc&sort=votes&site=${site}&filter=${uriSegments.answersFilter}&key=${uriSegments.key}`;
-
-  axios.get(uri).then(response => {
-    if (response.status === 200) {
-      answers = response.data.items;
-    } else {
-      vscode.postMessage({
-        command: "progress",
-        action: "stop",
-        error: true,
-        errorMessage:
-          "An error getting question. Check your internet connection."
-      });
-    }
+  onMount(() => {
+    searchForAnswers();
   });
+
+  function handleFilterChangeSearch(event) {
+    isLoading = true;
+    searchForAnswers();
+  }
+
+  function searchForAnswers() {
+    const site = `${$i18n.code}stackoverflow`;
+    const uri = `${uriSegments.baseUri}/questions/${questionId}/answers?order=${$selectedAnswerFilter.apiOrder}&sort=${$selectedAnswerFilter.apiSort}&site=${site}&filter=${uriSegments.answersFilter}&key=${uriSegments.key}`;
+
+    axios.get(uri).then(response => {
+      isLoading = false;
+      if (response.status === 200) {
+        answers = response.data.items;
+      } else {
+        vscode.postMessage({
+          command: "progress",
+          action: "stop",
+          error: true,
+          errorMessage:
+            "An error getting question. Check your internet connection."
+        });
+      }
+    });
+  }
 </script>
 
 <style>
@@ -44,6 +64,15 @@
     height: 70px;
   }
 </style>
+
+<ResultsBar
+  {isLoading}
+  results={answers.length}
+  on:filterChange={handleFilterChangeSearch} />
+
+{#if isLoading}
+  <Loader />
+{/if}
 
 {#if answers}
   {#each answers as answer, i}

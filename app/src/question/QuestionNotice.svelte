@@ -1,6 +1,7 @@
 <script>
   import { i18n } from "../stores/i18n.js";
   import { format, fromUnixTime } from "date-fns";
+
   export let notice;
 
   const date = fromUnixTime(notice.creation_date);
@@ -16,13 +17,10 @@
     color: var(--vscode-errorForeground);
     margin: 30px 0 20px;
     border: 0;
+    padding: 20px 13px 10px 20px;
   }
-  header,
-  div > *{
-    font-size: 13px !important; /* This is a bit shit but i need to overwrite elements from the call */
-  }
-  div {
-    margin: 0;
+  header {
+    font-size: 15px;
   }
 </style>
 
@@ -31,7 +29,5 @@
     <strong class="text-capitalize">{$i18n.text.locked}</strong>
     {$i18n.text.on} {atTime}
   </header>
-  <div>
-    {@html notice.body}
-  </div>
+  {@html notice.body}
 </blockquote>

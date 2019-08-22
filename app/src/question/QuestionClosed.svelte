@@ -19,16 +19,22 @@
     color: var(--vscode-errorForeground);
     margin: 30px 0 20px;
     border: 0;
+    padding: 20px 13px 10px 20px;
+  }
+  header {
+    font-size: 15px;
   }
 </style>
 
 <blockquote>
-  <p>
+  <header>
     <strong class="text-capitalize">{$i18n.text.closed}</strong>
     {$i18n.text.as}
-    {@html reason}
+    <strong>
+      {@html reason}
+    </strong>
     {$i18n.text.on} {atTime}
-  </p>
+  </header>
   <p>
     {@html details.description}
   </p>

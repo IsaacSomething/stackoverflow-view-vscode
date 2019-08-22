@@ -1,15 +1,11 @@
 <script>
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { i18n } from "../stores/i18n.js";
   import { uriSegments } from "../models/static-models.js";
-  import {
-    selectedAnswerFilter,
-    resultFilters
-  } from "../stores/results-filter.js";
   import axios from "axios";
   import Comments from "../Common/Comments.svelte";
   import RowLayout from "../Common/RowLayout.svelte";
-  import ResultsBar from "../Common/ResultsBar.svelte";
   import User from "../Common/User.svelte";
   import Tags from "../Common/Tags.svelte";
   import Loader from "../Common/Loader.svelte";
@@ -23,28 +19,27 @@
   export let questionTitle;
   export let gif;
   export let vscode;
+  export let extensionAction;
   let question;
   let answers;
   let isLoading = true;
-  let relatedQuestions; // THIS IS NOT WORKING ... yet
+  let relatedQuestions;
 
-  /* vscode.postMessage({ command: "progress", action: "start" }); */
-
-  const site = `${$i18n.code}stackoverflow`;
-  const uri = `${uriSegments.baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${uriSegments.questionFilter}&key=${uriSegments.key}`;
-
-  axios.get(uri).then(response => {
-    isLoading = false;
-
-    if (response.status === 200) {
-      question = response.data.items[0];
-      // TODO send progress message, change title?
-      /* vscode.postMessage({ command: "progress", action: "stop" }); */
-      fetchRelatedQuestions();
-    } else {
-      // TODO send message to extension
-    }
+  onMount(() => {
+    searchQuestion();
   });
+
+  function handleOnRelatedSearch(event) {
+    isLoading = true;
+
+    questionId = event.detail.questionId;
+    questionTitle = event.detail.questionTitle;
+    vscode.postMessage({
+      command: "titleChange",
+      title: `SO: ${questionTitle}`
+    });
+    searchQuestion();
+  }
 
   function fetchRelatedQuestions() {
     isLoading = true;
@@ -59,6 +54,24 @@
       } else {
         // TODO send message to extension
         // Could be a quit error - just dont show the related action button?
+      }
+    });
+  }
+
+  function searchQuestion() {
+    /* vscode.postMessage({ command: "progress", action: "start" }); */
+    const site = `${$i18n.code}stackoverflow`;
+    const uri = `${uriSegments.baseUri}/questions/${questionId}?site=${site}&filter=${uriSegments.questionFilter}&key=${uriSegments.key}`;
+
+    axios.get(uri).then(response => {
+      isLoading = false;
+      if (response.status === 200) {
+        question = response.data.items[0];
+        // TODO send progress message, change title?
+        vscode.postMessage({ command: "progress", action: "stop" });
+        fetchRelatedQuestions();
+      } else {
+        // TODO send message to extension
       }
     });
   }
@@ -90,24 +103,24 @@
     min-height: 500px;
     min-width: 500px;
   }
-  .loader {
-    margin-top: 40px;
-  }
 </style>
 
+{#if gif && question}
+  <iframe src={gif} frameborder="0" title="haha" />
+{/if}
+
+<QuestionTitle
+  on:relatedQuestionSearch={handleOnRelatedSearch}
+  title={questionTitle}
+  {question}
+  {relatedQuestions}
+  {extensionAction} />
+
+{#if isLoading}
+  <Loader />
+{/if}
+
 {#if question}
-
-  {#if gif}
-    <iframe src={gif} frameborder="0" title="haha" />
-  {/if}
-
-  <QuestionTitle
-    title={questionTitle}
-    asked={question.creation_date}
-    active={question.last_activity_date}
-    viewed={question.view_count}
-    {relatedQuestions} />
-
   <RowLayout>
 
     <div slot="left">
@@ -122,9 +135,11 @@
         {@html question.body}
       </div>
 
-      <div class="tags">
-        <Tags tags={question.tags} on:searchByTag />
-      </div>
+      {#if extensionAction !== 'topPick'}
+        <div class="tags">
+          <Tags tags={question.tags} on:searchByTag />
+        </div>
+      {/if}
 
       <div class="question-answer-bottom">
         <div class="view-online">
@@ -155,18 +170,7 @@
 
   </RowLayout>
 
-  <ResultsBar results={question.answer_count} {isLoading} on:filterChange />
-
   {#if question.answer_count > 0}
     <QuestionAnswers {questionId} {vscode} />
   {/if}
-{:else}
-  <div class="loader">
-    <Loader />
-  </div>
-  <p>
-    Loading Question:
-    <i>"{questionTitle}"</i>
-    ...
-  </p>
 {/if}

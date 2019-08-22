@@ -36,16 +36,13 @@
 
     if (event.data.action === "search") {
       searchQuery = event.data.query;
-
       // Set language
       $i18n = $languages.find(_ => _.language === event.data.language);
-
       // Find & set sort filter
       const searchFilterToSetAsSelected = resultFilters.find(
         _ => _.label === event.data.sortType
       );
       selectedSearchFilter.set(searchFilterToSetAsSelected);
-
       // Set section
       section.set("search");
 
@@ -55,6 +52,7 @@
       $i18n = $languages[0];
       questionId = event.data.questionId;
       gif = event.data.gif;
+      questionTitle = event.data.label;
       section.set("question");
     }
   });
@@ -79,23 +77,10 @@
     });
   }
 
-  //
-  function handleTagFromQuestionSearch(event) {
-    console.log(" handleTagFromQuestionSearch ev", event);
-    section.set("search");
-    vscode.postMessage({
-      command: "titleChange",
-      title: `SO: ${event.detail.tag}`
-    });
-    handleTagSearch(event);
-  }
-
-  // Set tag page
   function handleGotoTag() {
     section.set("tag");
   }
 
-  // Search by search input box
   function handleInputSearch(event) {
     searchQuery = event.detail.query;
     search();
@@ -111,7 +96,17 @@
     search();
   }
 
-  // Search by selected tag - Only gets the wiki info, full search still needs to be done based on tag name
+  function handleTagFromQuestionSearch(event) {
+    section.set("search");
+    vscode.postMessage({
+      command: "titleChange",
+      title: `SO: ${event.detail.tag}`
+    });
+    handleTagSearch(event);
+  }
+
+  // Search by selected tag - Only gets the wiki info
+  // full search still needs to be done based on tag name with &tagged=
   function handleTagSearch(event) {
     isLoading = true;
     page.set(1);
@@ -144,8 +139,8 @@
     isLoading = true;
 
     // Handle tag
-    let firstChar = searchQuery[0];
-    let lastChar = searchQuery[searchQuery.length - 1];
+    const firstChar = searchQuery[0];
+    const lastChar = searchQuery[searchQuery.length - 1];
     if (!tag && firstChar === "[" && lastChar === "]") {
       handleTagSearch({ detail: { tag: searchQuery } });
       return;
@@ -204,6 +199,7 @@
     {questionId}
     {questionTitle}
     {vscode}
+    {extensionAction}
     {gif} />
 {:else if $section === 'tag'}
   <Tag {tagData} />

@@ -1,8 +1,17 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
+
   export let relatedQuestions;
 
-  function gotoRelatedQuestion(questionId) {}
+  const dispatch = createEventDispatcher();
+  function gotoRelatedQuestion(questionId, questionTitle) {
+    dispatch("relatedQuestionSearch", {
+      questionId: questionId,
+      questionTitle: questionTitle
+    });
+    dispatch("closeRelatedQuestions");
+  }
 </script>
 
 <style>
@@ -41,7 +50,9 @@
       class:has-answer={question.answer_count}>
       {question.score}
     </header>
-    <p class="link" on:click={() => gotoRelatedQuestion(question.question_id)}>
+    <p
+      class="link"
+      on:click={() => gotoRelatedQuestion(question.question_id, question.title)}>
       {@html question.title}
     </p>
   {/each}

@@ -11,9 +11,9 @@ export const resultFilters = [
   { label: 'Relevance', languageReference: 'relevance', apiSort: 'relevance', apiOrder: 'desc' },
   { label: 'Newest', languageReference: 'newest', apiSort: 'creation', apiOrder: 'desc' },
   { label: 'Active', languageReference: 'active', apiSort: 'activity', apiOrder: 'desc' },
-  { label: 'Oldest', languageReference: 'oldest', apiSort: 'creation', apiOrder: 'asc' },
+  { label: 'Oldest', languageReference: 'oldest', apiSort: 'creation', apiOrder: 'desc' },
   { label: 'Votes', languageReference: 'votes', apiSort: 'votes', apiOrder: 'desc' },
 ];
 
 export const selectedSearchFilter = writable();
-export const selectedAnswerFilter = writable(resultFilters[2]); // This should reset to active onDestroy()
+export const selectedAnswerFilter = writable(resultFilters[4]);

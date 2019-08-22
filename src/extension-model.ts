@@ -56,7 +56,7 @@ export class ExtensionModel {
   }, {
     label: 'What is the best comment in source code you have ever encountered?',
     id: '184618',
-    gif: 'https://giphy.com/embed/fGuqeA6PiXINa'
+    gif: 'https://giphy.com/embed/ZHlGzvZb130nm'
   }, {
     label: 'How to pair socks from a pile efficiently?',
     id: '14415881',
@@ -82,9 +82,13 @@ export class ExtensionModel {
     id: '218123',
     gif: 'https://giphy.com/embed/c4u2gld3Or69i'
   }, {
+    label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
+    id: '811074',
+    gif: 'https://giphy.com/embed/Z543HuFdQAmkg'
+  }, {
     label: 'What\'s your most controversial programming opinion?',
-    detail: '406760',
-    gif: 'https://giphy.com/embed/jxhJ8ylaYIPbG'
+    id: '406760',
+    gif: 'https://giphy.com/embed/UTY42CoHu6wixtxTDh'
   }];
 
 }

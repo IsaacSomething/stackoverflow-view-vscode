@@ -73,9 +73,10 @@ export function activate(context: vscode.ExtensionContext) {
         // Post article Id to app, read in App.svelte as window.addEventListener("message"
         stackoverflowPanel.webview.postMessage({
           action: 'topPick',
+          language: language,
           questionId: selectedArticle.id,
-          gif: selectedArticle.gif,
-          language: language
+          label: selectedArticle.label,
+          gif: selectedArticle.gif
         });
 
         // Show progress loader

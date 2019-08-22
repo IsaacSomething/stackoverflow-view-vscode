@@ -23,14 +23,10 @@
   }
 
   function hideLabelBasedOnSection(label) {
-    if (
-      ($section === "search" && label === "Oldest") ||
+    return ($section === "search" && label === "Oldest") ||
       ($section === "question" && ["Relevance", "Newest"].includes(label))
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+      ? true
+      : false;
   }
 
   function showFilters() {
@@ -48,7 +44,7 @@
   }
 
   onDestroy(() => {
-    selectedAnswerFilter.set(resultFilters[2]);
+    selectedAnswerFilter.set(resultFilters[4]);
   });
 </script>
 

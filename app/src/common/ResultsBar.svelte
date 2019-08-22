@@ -1,9 +1,7 @@
 <script>
-  import { onDestroy } from "svelte";
+  import { createEventDispatcher, onDestroy } from "svelte";
   import { i18n, languages } from "../stores/i18n.js";
-  import { kFormatter } from "../stores/k-formatter.js";
-  import { section } from "../stores/section.js";
-  import { createEventDispatcher } from "svelte";
+  import { kFormatter, section } from "../stores/common.js";
   import {
     resultFilters,
     selectedSearchFilter,
@@ -11,6 +9,7 @@
   } from "../stores/results-filter.js";
 
   export let results;
+  export let isLoading;
 
   $: total = kFormatter(results);
   $: title = $section === "search" ? $i18n.text.results : $i18n.text.answers;
@@ -19,9 +18,7 @@
     $section === "search" ? selectedSearchFilter : selectedAnswerFilter;
 
   function setLabelByLanguage(label, languageReference) {
-    const languageSet = $languages.find(
-      languageSet => languageSet.language === $i18n.language
-    );
+    const languageSet = $languages.find(_ => _.language === $i18n.language);
     return languageSet.text[languageReference];
   }
 
@@ -36,11 +33,23 @@
     }
   }
 
-  function setSearchOrder(filterIndex) {
-    dispatch("filterChange", {
-      selectedFilter: resultsFilter[filterIndex]
-    });
+  function showFilters() {
+    return $section === "question" && results < 3 ? false : true;
   }
+
+  const dispatch = createEventDispatcher();
+  function setSearchFilter(filterLabel) {
+    if ($section === "search") {
+      $selectedSearchFilter = resultFilters.find(_ => _.label === filterLabel);
+    } else if ($section === "question") {
+      $selectedAnswerFilter = resultFilters.find(_ => _.label === filterLabel);
+    }
+    dispatch("filterChange");
+  }
+
+  onDestroy(() => {
+    selectedAnswerFilter.set(resultFilters[2]);
+  });
 </script>
 
 <style>
@@ -52,8 +61,9 @@
   div:first-of-type {
     width: 30%;
   }
-  div:first-of-type h2 {
-    margin: 8px 0;
+  div:first-of-type header {
+    margin: 10px 0;
+    font-size: 16px;
   }
   div:last-of-type {
     width: 70%;
@@ -61,12 +71,16 @@
   }
   div:last-of-type span {
     margin-left: 16px;
+    padding-bottom: 12px;
   }
   .active {
-    color: var(--vscode-textLink-foreground);
+    color: var(--vscode-button-background);
     font-weight: bold;
     padding-bottom: 12px;
-    border-bottom: 2px solid var(--vscode-textLink-foreground);
+    border-bottom: 2px solid var(--vscode-button-background);
+  }
+  .is-loading {
+    border: 0;
   }
   .hide-based-on-section {
     display: none;
@@ -76,21 +90,22 @@
 <section>
 
   <div>
-    {#if results > 0}
-      <h2>{total} {title}</h2>
-    {:else}
-      <h2 class="text-capitalize">{titleForNoResults}</h2>
-    {/if}
+    <header>
+      {#if results > 0}
+        {total} {title}
+      {:else if results === 0}{titleForNoResults}{:else if isLoading}------{/if}
+    </header>
   </div>
 
   <div>
-    {#if results > 2}
+    {#if showFilters()}
       {#each resultFilters as filter, i}
         <span
           class="link"
-          class:active={$selectedFilter.label === filter.label}
+          class:active={$selectedFilter.apiSort === filter.apiSort}
+          class:is-loading={isLoading}
           class:hide-based-on-section={hideLabelBasedOnSection(filter.label)}
-          on:click={() => setSearchOrder(i)}>
+          on:click={() => setSearchFilter(filter.label)}>
           {setLabelByLanguage(filter.label, filter.languageReference)}
         </span>
       {/each}

@@ -11,14 +11,14 @@ Visual Studio Code extension for access to Stack Overflow inside of the editor.
 
 ### Configuration
 ---
-Supports internationalization
+Supported internationalization
   - English (default)
+  - Spanish
   - Russian
   - Portuguese
   - Japanese
-  - Spanish
 
-<blockquote><h6> Please note: Some of the translation was done by copying Stack Overflows language sites -and their integrated i18n api call - and some of it was done with Google translate - if there are any issues with translation it is unintentional. </h6></blockquote>
+<blockquote><h6> Please Note: Some of the translation was done by copying Stack Overflows language sites - with the integrated i18n api call - and some of it was done with Google translate - if there are any issues with translation it is unintentional. </h6></blockquote>
 
 Set your preferred sort type
   - relevance

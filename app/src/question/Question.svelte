@@ -20,10 +20,12 @@
   import QuestionClosed from "./QuestionClosed.svelte";
 
   export let questionId;
+  export let questionTitle;
   export let gif;
   export let vscode;
   let question;
   let answers;
+  let isLoading = true;
   let relatedQuestions; // THIS IS NOT WORKING ... yet
 
   /* vscode.postMessage({ command: "progress", action: "start" }); */
@@ -32,28 +34,31 @@
   const uri = `${uriSegments.baseUri}/questions/${questionId}?order=desc&sort=activity&site=${site}&filter=${uriSegments.questionFilter}&key=${uriSegments.key}`;
 
   axios.get(uri).then(response => {
+    isLoading = false;
+
     if (response.status === 200) {
       question = response.data.items[0];
       // TODO send progress message, change title?
       /* vscode.postMessage({ command: "progress", action: "stop" }); */
-
       fetchRelatedQuestions();
     } else {
       // TODO send message to extension
-      console.log("ERROR:", error);
     }
   });
 
   function fetchRelatedQuestions() {
+    isLoading = true;
+
     const site = `${$i18n.code}stackoverflow`;
     const uri = `${uriSegments.baseUri}/questions/${questionId}/related?order=desc&sort=activity&site=${site}&filter=${uriSegments.relatedQuestionsFilter}&key=${uriSegments.key}`;
 
     axios.get(uri).then(response => {
+      isLoading = false;
       if (response.status === 200) {
         relatedQuestions = response.data.items;
       } else {
         // TODO send message to extension
-        console.log("ERROR:", error); // Could be a quite error - jusut dont show the related action button?
+        // Could be a quit error - just dont show the related action button?
       }
     });
   }
@@ -70,6 +75,7 @@
     display: block;
     width: 100%;
     height: 70px;
+    margin-bottom: 30px;
   }
   .view-online {
     width: 100%;
@@ -84,6 +90,9 @@
     min-height: 500px;
     min-width: 500px;
   }
+  .loader {
+    margin-top: 40px;
+  }
 </style>
 
 {#if question}
@@ -93,7 +102,7 @@
   {/if}
 
   <QuestionTitle
-    title={question.title}
+    title={questionTitle}
     asked={question.creation_date}
     active={question.last_activity_date}
     viewed={question.view_count}
@@ -114,7 +123,7 @@
       </div>
 
       <div class="tags">
-        <Tags tags={question.tags} />
+        <Tags tags={question.tags} on:searchByTag />
       </div>
 
       <div class="question-answer-bottom">
@@ -146,11 +155,18 @@
 
   </RowLayout>
 
-  <ResultsBar results={question.answer_count} on:filterChange />
+  <ResultsBar results={question.answer_count} {isLoading} on:filterChange />
 
   {#if question.answer_count > 0}
     <QuestionAnswers {questionId} {vscode} />
   {/if}
 {:else}
-  <Loader />
+  <div class="loader">
+    <Loader />
+  </div>
+  <p>
+    Loading Question:
+    <i>"{questionTitle}"</i>
+    ...
+  </p>
 {/if}

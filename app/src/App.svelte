@@ -1,12 +1,12 @@
 <script>
   import { languages, i18n } from "./stores/i18n.js";
   import { uriSegments } from "./models/static-models.js";
-  import { section } from "./stores/section.js";
+  import { page, section } from "./stores/common.js";
   import {
     selectedSearchFilter,
     resultFilters
   } from "./stores/results-filter.js";
-  import { page } from "./stores/page.js";
+
   import axios from "axios";
   import Header from "./common/Header.svelte";
   import Question from "./question/Question.svelte";
@@ -17,15 +17,22 @@
   let searchQuery;
   let searchData;
   let questionId;
+  let questionTitle;
   let totalResults;
   let isLoading = true;
-  let eventAction;
+  let extensionAction;
   let tagData;
   let gif;
 
-  // Posted properties on search from extension.ts => showInputBox()
+  /**
+   * Posted properties on search from extension.ts => showInputBox()
+   * action: 'search', // or topPick
+   * query: searchQuery, // inputbox value
+   * language: currentLanguageSelection, // user settings configuation
+   * sortType: currentSortTypeSelection // user settings configuation
+   */
   window.addEventListener("message", event => {
-    eventAction = event.data.action;
+    extensionAction = event.data.action;
 
     if (event.data.action === "search") {
       searchQuery = event.data.query;
@@ -35,7 +42,7 @@
 
       // Find & set sort filter
       const searchFilterToSetAsSelected = resultFilters.find(
-        filter => filter.label === event.data.sortType
+        _ => _.label === event.data.sortType
       );
       selectedSearchFilter.set(searchFilterToSetAsSelected);
 
@@ -60,15 +67,27 @@
       title: `SO: ${event.detail.questionTitle}`
     });
     questionId = event.detail.questionId;
+    questionTitle = event.detail.questionTitle;
   }
 
   // From back button clicked on question page
-  function handleGotoSearch() {
+  function handleGotoSearch(event) {
     section.set("search");
     vscode.postMessage({
       command: "titleChange",
       title: `SO: ${searchQuery}`
     });
+  }
+
+  //
+  function handleTagFromQuestionSearch(event) {
+    console.log(" handleTagFromQuestionSearch ev", event);
+    section.set("search");
+    vscode.postMessage({
+      command: "titleChange",
+      title: `SO: ${event.detail.tag}`
+    });
+    handleTagSearch(event);
   }
 
   // Set tag page
@@ -82,9 +101,21 @@
     search();
   }
 
+  function handlePageSearch() {
+    window.scroll({ top: 80, behavior: "smooth" });
+    search();
+  }
+
+  function handleFilterChangeSearch() {
+    page.set(1);
+    search();
+  }
+
   // Search by selected tag - Only gets the wiki info, full search still needs to be done based on tag name
   function handleTagSearch(event) {
     isLoading = true;
+    page.set(1);
+    window.scroll({ top: 0, behavior: "smooth" });
     const selectedTag = event.detail.tag;
 
     if (selectedTag) {
@@ -111,8 +142,16 @@
   function search(tag) {
     progressMesssage("start", "Loading Stackoverflow Search Results", false);
     isLoading = true;
-    totalResults = null;
-    tagData = !tag ? null : tagData;
+
+    // Handle tag
+    let firstChar = searchQuery[0];
+    let lastChar = searchQuery[searchQuery.length - 1];
+    if (!tag && firstChar === "[" && lastChar === "]") {
+      handleTagSearch({ detail: { tag: searchQuery } });
+      return;
+    } else if (!tagData) {
+      tag = null;
+    }
 
     const tagProperties = !tag ? "" : `&tagged=${tag}`;
     const site = `${$i18n.code}stackoverflow`;
@@ -143,7 +182,7 @@
   }
 </script>
 
-<Header on:goBack={handleGotoSearch} {eventAction} />
+<Header on:goBack={handleGotoSearch} {extensionAction} />
 
 {#if $section === 'search'}
   <Search
@@ -151,7 +190,8 @@
     on:gotoTag={handleGotoTag}
     on:searchByTag={handleTagSearch}
     on:searchInput={handleInputSearch}
-    on:searchByPage={search}
+    on:searchByPage={handlePageSearch}
+    on:filterChange={handleFilterChangeSearch}
     {isLoading}
     {searchQuery}
     {searchData}
@@ -159,7 +199,12 @@
     {totalResults}
     {vscode} />
 {:else if $section === 'question'}
-  <Question {questionId} {vscode} {gif} />
+  <Question
+    on:searchByTag={handleTagFromQuestionSearch}
+    {questionId}
+    {questionTitle}
+    {vscode}
+    {gif} />
 {:else if $section === 'tag'}
   <Tag {tagData} />
 {/if}

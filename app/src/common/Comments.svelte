@@ -23,7 +23,7 @@
 <style>
   section {
     padding-bottom: 20px;
-    margin-top: 30px;
+    margin-top: 15px;
   }
   .container {
     display: table;
@@ -53,6 +53,9 @@
     font-size: 11px;
     word-break: keep-all;
   }
+  .highlight-score {
+    color: var(--vscode-textLink-foreground);
+  }
 </style>
 
 <section in:fade>
@@ -61,7 +64,7 @@
     {#if i <= commentsShowAmount}
       <div class="container">
         <div class="col">
-          <strong>
+          <strong class:highlight-score={comment.score > 9}>
             {#if comment.score === 0}-{:else}{comment.score}{/if}
           </strong>
         </div>

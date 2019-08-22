@@ -1,9 +1,9 @@
 <script>
   import { i18n } from "../stores/i18n.js";
-  import { section } from "../stores/section.js";
+  import { section } from "../stores/common.js";
   import { createEventDispatcher } from "svelte";
 
-  export let eventAction;
+  export let extensionAction;
 
   const dispatch = createEventDispatcher();
   function goBack() {
@@ -36,11 +36,12 @@
   }
   small {
     color: var(--vscode-textLink-foreground);
+    margin-left: 12px;
   }
 </style>
 
 <h3 class="text-capitalize">
-  {#if ($section === 'question' && eventAction === 'search') || $section === 'tag'}
+  {#if ($section === 'question' && extensionAction === 'search') || $section === 'tag'}
     <div class="back text-capitalize" on:click={goBack}>
       <span />
       {$i18n.text.back_to_search_results}
@@ -50,7 +51,6 @@
     <strong>overflow</strong>
     {#if $i18n && $i18n.code !== ''}
       <small>
-        &nbsp;&nbsp;
         <i>{$i18n.language}</i>
       </small>
     {/if}

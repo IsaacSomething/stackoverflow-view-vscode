@@ -1,7 +1,7 @@
 <script>
-  import { i18n } from "../stores/i18n.js";
-  import { page } from "../stores/page.js";
   import { createEventDispatcher } from "svelte";
+  import { i18n } from "../stores/i18n.js";
+  import { page } from "../stores/common.js";
 
   export let totalResults;
   let pageNumbers = [9, 10, 20, 30, 40];

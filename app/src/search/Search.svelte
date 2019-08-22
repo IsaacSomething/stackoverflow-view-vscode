@@ -12,14 +12,14 @@
   export let searchData;
   export let totalResults;
   export let tagData;
-  export let isLoading = true;
+  export let isLoading;
 </script>
 
 <SearchTitle {tagData} on:gotoTag />
 
 <SearchInput {searchQuery} on:searchInput />
 
-<ResultsBar results={totalResults} />
+<ResultsBar results={totalResults} {isLoading} on:filterChange />
 
 {#if isLoading}
   <Loader />

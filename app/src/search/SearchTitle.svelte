@@ -17,46 +17,49 @@
 </script>
 
 <style>
-  div {
-    display: block;
-    width: 100%;
-    height: 42px;
-  }
-  div h1 {
-    float: left;
-    margin-top: 6px;
-  }
-  div span {
-    padding: 20px 10px 11px 10px;
-    display: inline-block;
+  .header-container {
+    height: 40px;
+    display: flex;
+    justify-content: flex-start;
   }
   h1 {
-    margin-bottom: 0;
+    margin-top: 6px;
+  }
+  .advanced-search-tips {
+    margin: 20px;
+  }
+  .learn-more {
+    margin-left: 3px;
   }
 </style>
 
-{#if !tagData}
-  <div>
-    <h1 class="text-capitalize">{$i18n.text.search_results}</h1>
-    <span class="link" on:click={toggleAdvancedTips}>
+<div class="header-container">
+  <h1 class="text-capitalize">
+    {#if !tagData}
+      {$i18n.text.search_results}
+    {:else}{$i18n.text.questions_tagged} [{tagData.tag_name}]{/if}
+  </h1>
+
+  {#if !tagData}
+    <span class="link advanced-search-tips" on:click={toggleAdvancedTips}>
       {#if !showTips}
         {$i18n.text.advanced_search_tips}
       {:else}{$i18n.text.close_search_tips}{/if}
     </span>
-  </div>
-  {#if showTips}
-    <SearchTips />
   {/if}
-{:else}
-  <h1 class="text-capitalize">{$i18n.text.questions_tagged} [{tagData.tag_name}]</h1>
-  {#if tagData.excerpt}
-    <p>
-      {@html tagData.excerpt}
-      {#if tagData.body !== ''}
-        <span class="link" on:click={learnMoreAboutTag}>
-          <strong>...{$i18n.text.learn_more}</strong>
-        </span>
-      {/if}
-    </p>
-  {/if}
+</div>
+
+{#if showTips}
+  <SearchTips />
+{/if}
+
+{#if tagData && tagData.excerpt}
+  <p>
+    {@html tagData.excerpt}
+    {#if tagData.body !== ''}
+      <span class="link learn-more" on:click={learnMoreAboutTag}>
+        <strong>...{$i18n.text.learn_more}</strong>
+      </span>
+    {/if}
+  </p>
 {/if}

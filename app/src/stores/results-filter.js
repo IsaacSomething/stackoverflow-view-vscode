@@ -16,4 +16,4 @@ export const resultFilters = [
 ];
 
 export const selectedSearchFilter = writable();
-export const selectedAnswerFilter = writable(resultFilters[1]); // This should reset to active onDestroy()
+export const selectedAnswerFilter = writable(resultFilters[2]); // This should reset to active onDestroy()

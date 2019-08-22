@@ -1,5 +1,6 @@
 <script>
   import { i18n } from "../stores/i18n.js";
+
   export let searchQuery;
 </script>
 

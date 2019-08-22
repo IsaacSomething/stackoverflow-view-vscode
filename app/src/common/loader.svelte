@@ -1,30 +1,34 @@
 <style>
-  .loader-item {
-    height: 2px;
-    background: var(--vscode-textSeparator-foreground);
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    width: calc(100% - 48px);
-  }
-  .loader-item::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 2px;
+  div {
+    position: relative;
+    display: block;
     width: 100%;
-    background: var(--vscode-textLink-foreground);
-    animation: loader-item 800ms linear infinite;
+    height: 2px;
+    overflow: hidden;
+    background-color: var(--vscode-textSeparator-foreground);
+    margin: -2px auto;
   }
-  @keyframes loader-item {
+
+  div:before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: -25%;
+    width: 50%;
+    height: 100%;
+    background-color: var(--vscode-button-background);
+    animation: loader 1.25s ease infinite;
+  }
+
+  @keyframes loader {
     0% {
-      transform: translateX(-90vw);
+    }
+    50% {
+      left: 75%;
     }
     100% {
-      transform: translateX(100%);
     }
   }
 </style>
 
-<div class="loader-item" />
+<div class="loader" />

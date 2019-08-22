@@ -11,15 +11,16 @@
   }
   header {
     float: left;
-    font-size: 14px;
+    font-size: 11px;
     min-width: 40px;
     text-align: center;
     margin-right: 16px;
+    padding: 1px 4px;
+    font-weight: bold;
   }
   .is-answered,
   .has-answer {
     border-radius: 2px;
-    padding: 0 4px;
   }
   .is-answered {
     background-color: var(--vscode-textLink-foreground);

@@ -83,6 +83,7 @@ blockquote {
 p,
 ul li {
   font-size: 15px;
+  word-break: normal;
 }
 
 p img {

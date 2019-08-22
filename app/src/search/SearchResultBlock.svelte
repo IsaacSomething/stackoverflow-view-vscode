@@ -3,7 +3,7 @@
   import { i18n } from "../stores/i18n.js";
   import { createEventDispatcher } from "svelte";
   import { format, fromUnixTime } from "date-fns";
-  import SearchVotesAnswers from "./SearchVotesAnswers.svelte";
+  import SearchItemScore from "./SearchItemScore.svelte";
   import Tags from "../common/Tags.svelte";
 
   export let searchData;
@@ -28,7 +28,7 @@
     display: flex;
     margin-top: 12px;
     border-bottom: 1px solid var(--vscode-textSeparator-foreground);
-    padding-bottom: 18px;
+    padding-bottom: 15px;
   }
   section:last-child {
     border: 0;
@@ -51,17 +51,15 @@
   .asked-info {
     text-align: right;
   }
-  .is-loading {
-    filter: blur(0.4);
+  p {
+    margin-top: 8px;
   }
 </style>
 
 {#each searchData as searchItem, i}
-  <section
-    in:fade
-    class:is-loading={isLoading}>
+  <section in:fade>
 
-    <SearchVotesAnswers {searchItem} />
+    <SearchItemScore {searchItem} />
 
     <div class="information">
 

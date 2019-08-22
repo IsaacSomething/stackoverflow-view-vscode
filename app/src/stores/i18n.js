@@ -2,7 +2,9 @@ import { readable, writable } from 'svelte/store';
 
 export const languages = readable([
   {
-    language: 'English', code: '', text: {
+    language: 'English',
+    code: '',
+    text: {
       search: 'search',
       search_results: 'search results',
       results_for: 'results for',
@@ -46,7 +48,9 @@ export const languages = readable([
     }
   },
   {
-    language: 'Spanish', code: 'es.', text: {
+    language: 'Spanish',
+    code: 'es.',
+    text: {
       search: 'buscar',
       search_results: 'resultados de Búsqueda',
       results: 'results',
@@ -92,7 +96,9 @@ export const languages = readable([
     }
   },
   {
-    language: 'Russian', code: 'ru.', text: {
+    language: 'Russian',
+    code: 'ru.',
+    text: {
       search: 'поиск',
       search_results: 'pезультаты поиска',
       results_for: 'результаты для',
@@ -135,7 +141,9 @@ export const languages = readable([
     }
   },
   {
-    language: 'Portuguese', code: 'pt.', text: {
+    language: 'Portuguese',
+    code: 'pt.',
+    text: {
       search: 'pesquisar',
       search_results: 'search results',
       results_for: 'resultados para',
@@ -179,7 +187,9 @@ export const languages = readable([
     }
   },
   {
-    language: 'Japanese', code: 'ja.', text: {
+    language: 'Japanese',
+    code: 'ja.',
+    text: {
       search: '検索',
       search_results: '検索結果',
       results_for: 'の結果',

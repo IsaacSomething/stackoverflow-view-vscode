@@ -32,8 +32,9 @@
   .metrics {
     margin-top: 10px;
   }
-  .metrics span {
+  .metrics span:not(:last-of-type) {
     margin-right: 20px;
+    font-weight: bold;
   }
   .metrics span.view-related-questions,
   .metrics span.hide-related-questions {
@@ -54,18 +55,11 @@
 
   <div class="metrics">
     {$i18n.text.asked}
-    <span>
-      <strong>{formatDistanceToNow(fromUnixTime(asked))}</strong>
-    </span>
+    <span>{formatDistanceToNow(fromUnixTime(asked))}</span>
     {$i18n.text.active}
-    <span>
-      <strong>{formatDistanceToNow(fromUnixTime(active))}</strong>
-    </span>
+    <span>{formatDistanceToNow(fromUnixTime(active))}</span>
     {$i18n.text.viewed}
-    <span>
-      <strong>{totalViews}</strong>
-      {$i18n.text.times}
-    </span>
+    <span>{totalViews} {$i18n.text.times}</span>
 
     <span
       class="link view-related-questions"

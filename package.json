@@ -1,7 +1,7 @@
 {
   "name": "stack-overflow-view",
   "displayName": "Stack Overflow View",
-  "description": "Integrated solution for searching and finding answers in stackoverflow",
+  "description": "Integrated solution for searching and finding answers in Stack Overflow",
   "version": "0.0.1",
   "homepage": "https://github.com/IsaacSomething/stackoverflow-view-vscode",
   "repository": {
@@ -54,7 +54,7 @@
               "Japanese"
             ],
             "default": "English",
-            "description": "Select your preferred language for Stackoverflow.",
+            "description": "Select your preferred language for Stack Overflow.",
             "scope": "window"
           },
           "stackoverflow.view.sort": {

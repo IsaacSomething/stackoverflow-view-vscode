@@ -1,5 +1,5 @@
 {
-  "name": "sstackoverflow-view-app",
+  "name": "stack-overflow-view-app",
   "version": "0.0.1",
   "devDependencies": {
     "npm-run-all": "^4.1.5",

@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { page } from "../stores/page.js";
+  import { page } from "../stores/common.js";
   import { i18n } from "../stores/i18n.js";
 
   export let searchQuery;
@@ -43,16 +43,14 @@
   }
   section input {
     background-color: var(--vscode-input-background);
-    border: 0;
     box-shadow: 0 0 0 1px var(--vscode-input-border);
-    margin-top: 12px;
-    margin-bottom: 12px;
-    margin-right: 5px;
     color: var(--vscode-input-foreground);
+    border: 0;
+    border-radius: 2px;
+    margin: 8px 5px 12px 0;
     padding: 5px;
     height: 17px;
     width: calc(100% - 120px);
-    border-radius: 2px;
   }
   section button {
     min-width: 100px;

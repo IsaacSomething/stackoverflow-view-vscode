@@ -1,16 +1,12 @@
 <script>
   import { i18n } from "../stores/i18n.js";
-  import { format, fromUnixTime } from "date-fns";
+  import { formatDate } from "../stores/format-date.js";
 
   export let details;
   export let closedDate;
   export let reason;
 
-  const date = fromUnixTime(closedDate);
-  $: atTime = `${format(date, "MMM dd")} '${format(date, "yy")} at ${format(
-    date,
-    "HH:mm"
-  )}`;
+  $: atTime = formatDate(closedDate, $i18n, "generic");
 </script>
 
 <style>

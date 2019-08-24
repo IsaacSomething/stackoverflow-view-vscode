@@ -2,22 +2,20 @@
   import SearchInput from "./SearchInput.svelte";
   import SearchTitle from "./SearchTitle.svelte";
   import ResultsBar from "../Common/ResultsBar.svelte";
-  import SearchResultBlock from "./SearchResultBlock.svelte";
+  import SearchItem from "./SearchItem.svelte";
   import SearchNoResults from "./SearchNoResults.svelte";
   import SearchPager from "./SearchPager.svelte";
   import Loader from "../common/Loader.svelte";
 
-  export let vscode;
-  export let searchQuery;
   export let searchData;
   export let totalResults;
   export let tagData;
   export let isLoading;
 </script>
 
-<SearchTitle {tagData} on:gotoTag />
+<SearchTitle {tagData} on:gotoTagLearnMore />
 
-<SearchInput {searchQuery} on:searchInput />
+<SearchInput {tagData} on:searchInput />
 
 <ResultsBar results={totalResults} {isLoading} on:filterChange />
 
@@ -26,9 +24,9 @@
 {/if}
 
 {#if searchData && totalResults !== 0}
-  <SearchResultBlock {isLoading} {searchData} on:gotoQuestion on:searchByTag />
+  <SearchItem {isLoading} {searchData} on:gotoQuestion on:searchByTag />
 {:else if !isLoading}
-  <SearchNoResults {searchQuery} />
+  <SearchNoResults />
 {/if}
 
 <SearchPager {totalResults} on:searchByPage />

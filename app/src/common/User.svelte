@@ -1,19 +1,15 @@
 <script>
   import { i18n } from "../stores/i18n.js";
-  import { kFormatter } from "../stores/k-formatter.js";
-  import { format, fromUnixTime } from "date-fns";
+  import { formatNumber } from "../stores/common.js";
+  import { formatDate } from "../stores/format-date.js";
 
   export let user;
   export let createdDate;
   export let isQuestion = false;
 
-  const date = fromUnixTime(createdDate);
-  $: atTime = `${$i18n.text.asked} ${format(date, "MMM dd")} '${format(
-    date,
-    "yy"
-  )} ${$i18n.text.at} ${format(date, "HH:mm")}`;
-
-  $: rep = kFormatter(user.reputation);
+  const isTypeOf = isQuestion ? "question" : "answer";
+  $: atTime = formatDate(createdDate, $i18n, isTypeOf);
+  $: rep = formatNumber(user.reputation);
 </script>
 
 <style>

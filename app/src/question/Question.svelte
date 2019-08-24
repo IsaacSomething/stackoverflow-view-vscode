@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { i18n } from "../stores/i18n.js";
+  import { vscodeWindowTitle, vscodeProgress } from "../stores/vscode-api.js";
   import { uriSegments } from "../models/static-models.js";
   import axios from "axios";
   import Comments from "../Common/Comments.svelte";
@@ -18,7 +19,6 @@
   export let questionId;
   export let questionTitle;
   export let gif;
-  export let vscode;
   export let extensionAction;
   let question;
   let answers;
@@ -26,18 +26,14 @@
   let relatedQuestions;
 
   onMount(() => {
-    searchQuestion();
+    fetchQuestion();
   });
 
   function handleOnRelatedSearch(event) {
     isLoading = true;
-
     questionId = event.detail.questionId;
     questionTitle = event.detail.questionTitle;
-    vscode.postMessage({
-      command: "titleChange",
-      title: `SO: ${questionTitle}`
-    });
+    vscodeWindowTitle(questionTitle);
     searchQuestion();
   }
 
@@ -51,15 +47,15 @@
       isLoading = false;
       if (response.status === 200) {
         relatedQuestions = response.data.items;
+        vscodeProgress("stop", null, false);
       } else {
-        // TODO send message to extension
-        // Could be a quit error - just dont show the related action button?
+        vscodeProgress("stop", null, true);
       }
     });
   }
 
-  function searchQuestion() {
-    /* vscode.postMessage({ command: "progress", action: "start" }); */
+  function fetchQuestion() {
+    vscodeProgress("start", "Loading Search Results", false);
     const site = `${$i18n.code}stackoverflow`;
     const uri = `${uriSegments.baseUri}/questions/${questionId}?site=${site}&filter=${uriSegments.questionFilter}&key=${uriSegments.key}`;
 
@@ -67,11 +63,9 @@
       isLoading = false;
       if (response.status === 200) {
         question = response.data.items[0];
-        // TODO send progress message, change title?
-        vscode.postMessage({ command: "progress", action: "stop" });
         fetchRelatedQuestions();
       } else {
-        // TODO send message to extension
+        vscodeProgress("stop", null, true);
       }
     });
   }
@@ -112,7 +106,9 @@
 <QuestionTitle
   on:relatedQuestionSearch={handleOnRelatedSearch}
   title={questionTitle}
-  {question}
+  creationDate={question && question.creation_date}
+  lastActivityDate={question && question.last_activity_date}
+  viewCount={question && question.view_count}
   {relatedQuestions}
   {extensionAction} />
 
@@ -171,6 +167,6 @@
   </RowLayout>
 
   {#if question.answer_count > 0}
-    <QuestionAnswers {questionId} {vscode} />
+    <QuestionAnswers {questionId} />
   {/if}
 {/if}

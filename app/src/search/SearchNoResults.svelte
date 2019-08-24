@@ -1,19 +1,19 @@
 <script>
+  import { onMount } from "svelte";
   import { i18n } from "../stores/i18n.js";
+  import { searchQuery } from "../stores/common.js";
 
-  export let searchQuery;
+  let query;
+
+  onMount(() => {
+    query = $searchQuery;
+  });
 </script>
-
-<style>
-  p {
-    font-size: 15px;
-  }
-</style>
 
 <p>
   {$i18n.text.no_results_abbr_01}
   <strong>
-    <i>"{searchQuery}"</i>
+    <i>"{query}"</i>
     .
   </strong>
   {$i18n.text.no_results_abbr_02}

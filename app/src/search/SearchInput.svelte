@@ -1,23 +1,31 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import { page } from "../stores/common.js";
+  import { createEventDispatcher, onMount } from "svelte";
+  import { page, searchQuery } from "../stores/common.js";
   import { i18n } from "../stores/i18n.js";
 
-  export let searchQuery;
-  let searchQueryPreviousValue = searchQuery;
+  export let tagData;
+  let searchQueryPreviousValue;
+
+  onMount(() => {
+    searchQueryPreviousValue = $searchQuery;
+  });
+
+  $: console.log("tagData", tagData);
+
+  $: tagData && (searchQueryPreviousValue = $searchQuery);
 
   function handleSearchByEnterKey(event) {
     if (
       event.keyCode === 13 &&
-      searchQuery !== "" &&
-      searchQuery !== searchQueryPreviousValue
+      $searchQuery !== "" &&
+      $searchQuery !== searchQueryPreviousValue
     ) {
       search();
     }
   }
 
   function handleSearchByClick() {
-    if (searchQuery === searchQueryPreviousValue || searchQuery === "") {
+    if ($searchQuery === searchQueryPreviousValue || $searchQuery === "") {
       return;
     } else {
       search();
@@ -27,8 +35,8 @@
   const dispatch = createEventDispatcher();
   function search() {
     page.set(1);
-    searchQueryPreviousValue = searchQuery;
-    dispatch("searchInput", { query: searchQuery });
+    searchQueryPreviousValue = $searchQuery;
+    dispatch("searchInput");
   }
 </script>
 
@@ -71,7 +79,8 @@
     </strong>
   </div>
 
-  <input type="text" bind:value={searchQuery} />
+  <input type="text" bind:value={$searchQuery} />
+
   <button on:click={handleSearchByClick} class="text-capitalize">
     {$i18n.text.search}
   </button>

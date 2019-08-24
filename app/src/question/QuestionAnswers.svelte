@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { i18n } from "../stores/i18n.js";
+  import { vscodeProgress } from "../stores/vscode-api.js";
   import { uriSegments } from "../models/static-models.js";
   import {
     selectedAnswerFilter,
@@ -16,20 +17,19 @@
   import QuestionAnswerIndicies from "./QuestionAnswerIndicies.svelte";
 
   export let questionId;
-  export let vscode;
   let answers = [];
   let isLoading = true;
 
   onMount(() => {
-    searchForAnswers();
+    fetchAnswers();
   });
 
   function handleFilterChangeSearch(event) {
     isLoading = true;
-    searchForAnswers();
+    fetchAnswers();
   }
 
-  function searchForAnswers() {
+  function fetchAnswers() {
     const site = `${$i18n.code}stackoverflow`;
     const uri = `${uriSegments.baseUri}/questions/${questionId}/answers?order=${$selectedAnswerFilter.apiOrder}&sort=${$selectedAnswerFilter.apiSort}&site=${site}&filter=${uriSegments.answersFilter}&key=${uriSegments.key}`;
 
@@ -38,13 +38,7 @@
       if (response.status === 200) {
         answers = response.data.items;
       } else {
-        vscode.postMessage({
-          command: "progress",
-          action: "stop",
-          error: true,
-          errorMessage:
-            "An error getting question. Check your internet connection."
-        });
+        vscodeProgress("stop", null, true);
       }
     });
   }
@@ -57,7 +51,7 @@
   section:last-of-type {
     border-bottom: 0;
   }
-  /* Duplicate code from Questions.svelte */
+  /* Duplicate styles from Questions.svelte */
   .question-answer-bottom {
     display: block;
     width: 100%;

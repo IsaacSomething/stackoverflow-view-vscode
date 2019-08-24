@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         // Show progress loader
-        showWindowProgress(stackoverflowPanel);
+        windowProgress(stackoverflowPanel);
 
         // Listen for changes to window title
         changeWindowTitle(stackoverflowPanel);
@@ -80,7 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         // Show progress loader
-        showWindowProgress(stackoverflowPanel);
+        windowProgress(stackoverflowPanel);
 
       }
     });
@@ -104,39 +104,35 @@ function createWebViewPanel(panelTitle: string, path: string): vscode.WebviewPan
   });
 }
 
-/**
- * Show progress in window - bottom left
- * @param title string
- */
-function showWindowProgress(panel: vscode.WebviewPanel) {
+function windowProgress(panel: vscode.WebviewPanel) {
+  panel.webview.onDidReceiveMessage(message => {
+    if (message.command === 'progress' && message.action === 'start') {
+      showWindowProgress(panel, message.title);
+    }
+  });
+}
+
+function showWindowProgress(panel: vscode.WebviewPanel, title: string) {
   vscode.window.withProgress({
-    location: vscode.ProgressLocation.Window
+    location: vscode.ProgressLocation.Window,
+    title: title
   }, (progress, token) => {
 
-    // Resolve once GET is complete 
-    // message has command: "progress", action: "stop" | "start" 
     const progressPromise = new Promise(resolve => {
       panel.webview.onDidReceiveMessage(message => {
 
-        if (message.command === 'progress') {
-          switch (message.action) {
-            case 'start':
-              progress.report({ message: 'Loading Stackoverflow Article' });
-              break;
-            case 'stop':
-              resolve();
-              break;
+        if (message.command === 'progress' && message.action === 'stop') {
+          resolve();
+          if (message.error) {
+            vscode.window.showErrorMessage(message.errorMessage);
           }
-        }
-
-        if (message.error) {
-          vscode.window.showErrorMessage(message.errorMessage);
         }
 
       });
     });
 
     return progressPromise;
+
   });
 }
 

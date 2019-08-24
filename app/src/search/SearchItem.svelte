@@ -1,25 +1,22 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
   import { i18n } from "../stores/i18n.js";
-  import { createEventDispatcher } from "svelte";
-  import { format, fromUnixTime } from "date-fns";
+  import { formatDate } from "../stores/format-date.js";
   import SearchItemScore from "./SearchItemScore.svelte";
   import Tags from "../common/Tags.svelte";
 
   export let searchData;
   export let isLoading;
 
-  function setAskedValue(date) {
-    const dateFromUnix = fromUnixTime(date);
-    return ` ${format(dateFromUnix, "MMM dd")} '${format(dateFromUnix, "yy")}`;
-  }
-
   const dispatch = createEventDispatcher();
   function navigateToQuestion(id, title) {
-    dispatch("gotoQuestion", {
-      questionId: id,
-      questionTitle: title
-    });
+    if (!isLoading) {
+      dispatch("gotoQuestion", {
+        questionId: id,
+        questionTitle: title
+      });
+    }
   }
 </script>
 
@@ -54,10 +51,16 @@
   p {
     margin-top: 8px;
   }
+  .is-loading {
+    filter: blur(2px);
+  }
+  .is-loading header:hover {
+    cursor: not-allowed;
+  }
 </style>
 
 {#each searchData as searchItem, i}
-  <section in:fade>
+  <section in:fade class:is-loading={isLoading}>
 
     <SearchItemScore {searchItem} />
 
@@ -79,7 +82,7 @@
       <div class="information-bottom">
         <Tags tags={searchItem.tags} on:searchByTag />
         <div class="asked-info">
-          {$i18n.text.asked} {setAskedValue(searchItem.creation_date)}
+          {formatDate(searchItem.creation_date, $i18n, 'search')}
           {$i18n.text.by}
           <i>{searchItem.owner.display_name}</i>
         </div>

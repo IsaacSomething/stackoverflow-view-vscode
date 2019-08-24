@@ -1,19 +1,12 @@
 <script>
-  import { i18n } from "../stores/i18n.js";
   import { fade } from "svelte/transition";
-  import { format, fromUnixTime } from "date-fns";
+  import { i18n } from "../stores/i18n.js";
+  import { formatDate } from "../stores/format-date.js";
 
   export let comments;
   let commentsShowAmount = 5;
-  $: commentsLength = comments && comments.length - commentsShowAmount - 1;
 
-  function setDate(date) {
-    const dateFromUnix = fromUnixTime(date);
-    return `${$i18n.text.asked} ${format(date, "MMM dd")} '${format(
-      date,
-      "yy"
-    )} at ${format(date, "HH:mm")}`;
-  }
+  $: commentsLength = comments && comments.length - commentsShowAmount - 1;
 
   function toggleComments() {
     commentsShowAmount = commentsShowAmount === 5 ? comments.length : 5;
@@ -28,6 +21,7 @@
   .container {
     display: table;
     border-bottom: 1px solid var(--vscode-textSeparator-foreground);
+    width: 100%;
   }
   .container:last-of-type {
     border-bottom: 0;
@@ -58,7 +52,7 @@
   }
 </style>
 
-<section in:fade>
+<section>
 
   {#each comments as comment, i}
     {#if i <= commentsShowAmount}
@@ -73,7 +67,7 @@
           <i>
             &nbsp;&nbsp;–&nbsp;&nbsp
             <span class="display-name">{comment.owner.display_name}</span>
-            &nbsp {setDate(comment.creation_date)}
+            &nbsp {formatDate(comment.creation_date, $i18n, 'generic')}
           </i>
         </div>
       </div>

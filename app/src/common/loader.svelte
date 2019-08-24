@@ -1,5 +1,8 @@
 <style>
-  div {
+  section {
+    height: 2px;
+  }
+  .loader {
     position: relative;
     display: block;
     width: 100%;
@@ -9,7 +12,7 @@
     margin: -2px auto;
   }
 
-  div:before {
+  .loader:before {
     position: absolute;
     content: "";
     top: 0;
@@ -21,14 +24,12 @@
   }
 
   @keyframes loader {
-    0% {
-    }
     50% {
       left: 75%;
-    }
-    100% {
     }
   }
 </style>
 
-<div class="loader" />
+<section>
+  <div class="loader" />
+</section>

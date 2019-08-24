@@ -12,7 +12,7 @@
   }
 
   function learnMoreAboutTag() {
-    dispatch("gotoTag");
+    dispatch("gotoTagLearnMore");
   }
 </script>
 

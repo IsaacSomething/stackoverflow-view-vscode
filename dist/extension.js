@@ -276,7 +276,7 @@ function activate(context) {
                     sortType: currentSortTypeSelection
                 });
                 // Show progress loader
-                showWindowProgress(stackoverflowPanel);
+                windowProgress(stackoverflowPanel);
                 // Listen for changes to window title
                 changeWindowTitle(stackoverflowPanel);
             }
@@ -307,7 +307,7 @@ function activate(context) {
                     gif: selectedArticle.gif
                 });
                 // Show progress loader
-                showWindowProgress(stackoverflowPanel);
+                windowProgress(stackoverflowPanel);
             }
         });
     });
@@ -327,30 +327,25 @@ function createWebViewPanel(panelTitle, path) {
         retainContextWhenHidden: true
     });
 }
-/**
- * Show progress in window - bottom left
- * @param title string
- */
-function showWindowProgress(panel) {
+function windowProgress(panel) {
+    panel.webview.onDidReceiveMessage(message => {
+        if (message.command === 'progress' && message.action === 'start') {
+            showWindowProgress(panel, message.title);
+        }
+    });
+}
+function showWindowProgress(panel, title) {
     vscode.window.withProgress({
-        location: vscode.ProgressLocation.Window
+        location: vscode.ProgressLocation.Window,
+        title: title
     }, (progress, token) => {
-        // Resolve once GET is complete 
-        // message has command: "progress", action: "stop" | "start" 
         const progressPromise = new Promise(resolve => {
             panel.webview.onDidReceiveMessage(message => {
-                if (message.command === 'progress') {
-                    switch (message.action) {
-                        case 'start':
-                            progress.report({ message: 'Loading Stackoverflow Article' });
-                            break;
-                        case 'stop':
-                            resolve();
-                            break;
+                if (message.command === 'progress' && message.action === 'stop') {
+                    resolve();
+                    if (message.error) {
+                        vscode.window.showErrorMessage(message.errorMessage);
                     }
-                }
-                if (message.error) {
-                    vscode.window.showErrorMessage(message.errorMessage);
                 }
             });
         });

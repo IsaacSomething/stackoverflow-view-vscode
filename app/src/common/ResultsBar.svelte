@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher, onDestroy } from "svelte";
   import { i18n, languages } from "../stores/i18n.js";
-  import { kFormatter, section } from "../stores/common.js";
+  import { formatNumber, section } from "../stores/common.js";
   import {
     resultFilters,
     selectedSearchFilter,
@@ -11,9 +11,10 @@
   export let results;
   export let isLoading;
 
-  $: total = kFormatter(results);
+  $: total = formatNumber(results);
   $: title = $section === "search" ? $i18n.text.results : $i18n.text.answers;
-  $: titleForNoResults = $section === "search" ? "" : $i18n.text.no_answers;
+  $: titleForNoResults =
+    $section === "search" ? $i18n.text.no_results_found : $i18n.text.no_answers;
   $: selectedFilter =
     $section === "search" ? selectedSearchFilter : selectedAnswerFilter;
 
@@ -89,7 +90,7 @@
     <header>
       {#if results > 0}
         {total} {title}
-      {:else if results === 0}{titleForNoResults}{:else if isLoading}------{/if}
+      {:else if results === 0}{titleForNoResults}{:else if isLoading}&nbsp;{/if}
     </header>
   </div>
 

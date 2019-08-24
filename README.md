@@ -5,11 +5,11 @@
 [![made-for-VSCode](https://img.shields.io/badge/Made%20for-VSCode-1f425f.svg?logo=visual-studio-code&style=flat-square)](https://code.visualstudio.com/)
 [![made-with-svelte](https://img.shields.io/badge/Made%20With-svelte-orange?style=flat-square)](https://github.com/sveltejs/svelte)
 
-<img src="assets/logo.png" height="95" />
+<img src="https://github.com/IsaacSomething/stackoverflow-view-vscode/blob/master/assets/logo.png?raw=true" height="95" />
 
 Visual Studio Code extension for access to Stack Overflow inside of the editor. `["vscode":"^1.37.0"]`
 
-![snippet](assets/snippet.gif)
+![snippet](https://github.com/IsaacSomething/stackoverflow-view-vscode/blob/master/assets/snippet.gif?raw=true)
 
 ### Configuration
 ---

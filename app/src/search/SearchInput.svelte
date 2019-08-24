@@ -4,30 +4,27 @@
   import { i18n } from "../stores/i18n.js";
 
   export let tagData;
+  export let isLoading;
   let searchQueryPreviousValue;
 
   onMount(() => {
     searchQueryPreviousValue = $searchQuery;
   });
 
-  $: console.log("tagData", tagData);
-
-  $: tagData && (searchQueryPreviousValue = $searchQuery);
+  $: isLoading && (searchQueryPreviousValue = $searchQuery);
 
   function handleSearchByEnterKey(event) {
-    if (
-      event.keyCode === 13 &&
-      $searchQuery !== "" &&
-      $searchQuery !== searchQueryPreviousValue
-    ) {
-      search();
+    if (event.keyCode === 13) {
+      handleSearch();
     }
   }
 
-  function handleSearchByClick() {
-    if ($searchQuery === searchQueryPreviousValue || $searchQuery === "") {
-      return;
-    } else {
+  function handleSearch() {
+    if (
+      !isLoading &&
+      $searchQuery !== searchQueryPreviousValue &&
+      $searchQuery !== ""
+    ) {
       search();
     }
   }
@@ -81,7 +78,7 @@
 
   <input type="text" bind:value={$searchQuery} />
 
-  <button on:click={handleSearchByClick} class="text-capitalize">
+  <button on:click={handleSearch} class="text-capitalize">
     {$i18n.text.search}
   </button>
 

@@ -29,6 +29,11 @@
     font-weight: bold;
     border-radius: 2px;
   }
+  @media screen and (max-width: 765px) {
+    section {
+      margin: 0 22px 0 0;
+    }
+  }
 </style>
 
 <section>

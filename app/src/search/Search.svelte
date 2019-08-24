@@ -15,7 +15,7 @@
 
 <SearchTitle {tagData} on:gotoTagLearnMore />
 
-<SearchInput {tagData} on:searchInput />
+<SearchInput {tagData} {isLoading} on:searchInput />
 
 <ResultsBar results={totalResults} {isLoading} on:filterChange />
 

@@ -12,37 +12,37 @@ export class ExtensionModel {
 
   public static readonly topPickQuickInputItems: QuickPickItem[] = [{
     label: 'Why does HTML think "chucknorris" is a color?',
-    detail: '712^ (Asked 7 years, 8 months ago)'
+    detail: '712 up votes'
   }, {
     label: 'What\'s your favorite "programmer" cartoon?',
-    detail: '835^ (Asked 10 years, 11 months ago)'
+    detail: '835 up votes'
   }, {
     label: 'What is the best comment in source code you have ever encountered?',
-    detail: '360^ (Asked 10 years, 10 months ago)'
+    detail: '360 up votes'
   }, {
     label: 'How to pair socks from a pile efficiently?',
-    detail: '3810^ (Asked 6 years, 6 months ago)'
+    detail: '3810 up votes'
   }, {
     label: 'What\'s the difference between JavaScript and Java?',
-    detail: '77^ (Asked 10 years, 9 months ago)'
+    detail: '77 up votes'
   }, {
     label: 'Strangest language feature',
-    detail: '975^ (Asked 9 years, 7 months ago)'
+    detail: '975 up votes'
   }, {
     label: 'Why does ++[[]][+[]]+[+[]] return the string "10"?',
-    detail: '1582^ (Asked 7 years, 11 months ago)'
+    detail: '1582 up votes'
   }, {
     label: 'What\'s the least useful comment you\'ve ever seen?',
-    detail: '20^ (10 years, 10 months ago)'
+    detail: '20 up votes'
   }, {
     label: 'What was the strangest coding standard rule that you were forced to follow?',
-    detail: '173^ (Asked 10 years, 9 months ago)'
+    detail: '173 up votes'
   }, {
     label: 'What is the coolest thing you can do in <10 lines of simple code? Help me inspire beginners!',
-    detail: '406^ (Asked 10 years, 3 months ago)'
+    detail: '406 up votes'
   }, {
     label: 'What\'s your most controversial programming opinion?',
-    detail: '363^ (Asked 10 years, 7 months ago)'
+    detail: '363 up votes'
   }];
 
   public static readonly topPickIds = [{
@@ -52,7 +52,7 @@ export class ExtensionModel {
   }, {
     label: 'What\'s your favorite "programmer" cartoon?',
     id: '84556',
-    gif: 'https://thecodinglove.com/wp-content/uploads/2019/07/img_2661-1.jpg'
+    gif: 'https://giphy.com/embed/Qc4i40SWi42rK'
   }, {
     label: 'What is the best comment in source code you have ever encountered?',
     id: '184618',

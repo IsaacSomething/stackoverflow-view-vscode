@@ -1,5 +1,5 @@
 <script>
-  import { uriSegments } from "./models/static-models.js";
+  import { uriSegments } from "./stores/static-models.js";
   import { languages, i18n } from "./stores/i18n.js";
   import { page, section, searchQuery } from "./stores/common.js";
   import { vscodeProgress, vscodeWindowTitle } from "./stores/vscode-api.js";
@@ -47,7 +47,7 @@
 
       search();
     } else if (event.data.action === "topPick") {
-      progressMesssage("stop", null, false);
+      vscodeProgress("stop", null, false);
       $i18n = $languages[0];
       questionId = event.data.questionId;
       gif = event.data.gif;
@@ -65,7 +65,7 @@
 
   function handleGotoSearch(event) {
     section.set("search");
-    vscodeWindowTitle(searchQuery);
+    vscodeWindowTitle($searchQuery);
   }
 
   function handlePageSearch() {
@@ -84,20 +84,17 @@
   }
 
   function handleTagFromQuestionSearch(event) {
-    selectedTag = event.detail.tag;
     section.set("search");
-    window.scroll({ top: 0, behavior: "smooth" });
-    tagSearch(selectedTag);
+    handleTagSelected(event);
   }
 
   // Search by selected tag - Only gets the wiki info -
   // Full search still needs to be done based on tag name with added property &tagged= to uri
   function handleTagSelected(event) {
-    selectedTag = event.detail.tag;
-
     vscodeProgress("start", "Loading Tag Results", false);
-    window.scroll({ top: 0, behavior: "smooth" });
     isLoading = true;
+    window.scroll({ top: 0, behavior: "smooth" });
+    selectedTag = event.detail.tag;
     page.set(1);
 
     const site = `${$i18n.code}stackoverflow`;
@@ -115,6 +112,7 @@
         }
       })
       .catch(() => {
+        isLoading = false;
         vscodeProgress("stop", null, true);
       });
   }
@@ -140,12 +138,22 @@
         }
       })
       .catch(() => {
+        isLoading = false;
         vscodeProgress("stop", null, true);
       });
   }
 
   // Main search functionality
   function search() {
+    if (
+      $searchQuery[0] === "[" &&
+      $searchQuery[$searchQuery.length - 1] === "]"
+    ) {
+      const tag = $searchQuery.substring(1, $searchQuery.length - 1);
+      handleTagSelected({ detail: { tag: tag } }); // (o.0)
+      return;
+    }
+
     vscodeProgress("start", "Loading Search Results", false);
     isLoading = true;
     tagData = null;
@@ -167,6 +175,7 @@
         }
       })
       .catch(() => {
+        isLoading = false;
         vscodeProgress("stop", null, true);
       });
   }

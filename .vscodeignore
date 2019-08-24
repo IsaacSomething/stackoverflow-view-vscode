@@ -16,3 +16,4 @@ app/public/favicon.png
 app/*.json
 app/**.md
 app/rollup.config.js
+assets/**

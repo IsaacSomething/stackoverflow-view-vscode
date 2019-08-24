@@ -5,4 +5,4 @@ node_modules
 
 app/node_modules
 app/public/bundle.*
-app/src/models/static-models.js
+app/src/stores/static-models.js

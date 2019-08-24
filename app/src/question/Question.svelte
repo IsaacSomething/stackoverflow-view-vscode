@@ -3,7 +3,7 @@
   import { fade } from "svelte/transition";
   import { i18n } from "../stores/i18n.js";
   import { vscodeWindowTitle, vscodeProgress } from "../stores/vscode-api.js";
-  import { uriSegments } from "../models/static-models.js";
+  import { uriSegments } from "../stores/static-models.js";
   import axios from "axios";
   import Comments from "../Common/Comments.svelte";
   import RowLayout from "../Common/RowLayout.svelte";
@@ -34,7 +34,7 @@
     questionId = event.detail.questionId;
     questionTitle = event.detail.questionTitle;
     vscodeWindowTitle(questionTitle);
-    searchQuestion();
+    fetchQuestion();
   }
 
   function fetchRelatedQuestions() {

@@ -25,11 +25,10 @@ export function activate(context: vscode.ExtensionContext) {
         const currentLanguageSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.language');
         // Get sort type
         const currentSortTypeSelection = vscode.workspace.getConfiguration().get('stackoverflow.view.sort');
-
         // Create webview panel
         const stackoverflowPanel = createWebViewPanel(`SO: ${searchQuery}`, context.extensionPath);
         // Set webview - svelte - built to ./app/public/*
-        stackoverflowPanel.webview.html = AppPageHtml(context.extensionPath);
+        stackoverflowPanel.webview.html = AppPageHtml(context.extensionPath, stackoverflowPanel);
         // Post search term, read in App.svelte as window.addEventListener("message"
         stackoverflowPanel.webview.postMessage({
           action: 'search',
@@ -69,7 +68,7 @@ export function activate(context: vscode.ExtensionContext) {
         // Create webview panel
         const stackoverflowPanel = createWebViewPanel(`SO: ${selectedTopPick.label}`, context.extensionPath);
         // Set webview - svelte built to ./app/public/*
-        stackoverflowPanel.webview.html = AppPageHtml(context.extensionPath);
+        stackoverflowPanel.webview.html = AppPageHtml(context.extensionPath, stackoverflowPanel);
         // Post article Id to app, read in App.svelte as window.addEventListener("message"
         stackoverflowPanel.webview.postMessage({
           action: 'topPick',

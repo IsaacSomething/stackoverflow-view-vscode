@@ -2,8 +2,10 @@
   "name": "stack-overflow-view",
   "displayName": "Stack Overflow View",
   "description": "Integrated solution for searching and finding answers in Stack Overflow",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "homepage": "https://github.com/IsaacSomething/stackoverflow-view-vscode",
+  "icon": "assets/logo.png",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/IsaacSomething/stackoverflow-view-vscode"

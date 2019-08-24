@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { i18n } from "../stores/i18n.js";
   import { vscodeProgress } from "../stores/vscode-api.js";
-  import { uriSegments } from "../models/static-models.js";
+  import { uriSegments } from "../stores/static-models.js";
   import {
     selectedAnswerFilter,
     resultFilters
@@ -55,7 +55,7 @@
   .question-answer-bottom {
     display: block;
     width: 100%;
-    height: 70px;
+    height: 82px;
   }
 </style>
 

@@ -1,3 +1,6 @@
+# No longer maintained :(
+If i have time i will try to update this, but i just dont have any. Sorry
+
 # Stack Overflow View
 
 
